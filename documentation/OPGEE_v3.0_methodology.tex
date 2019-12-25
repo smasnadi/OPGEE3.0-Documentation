@@ -179,7 +179,7 @@ OPGEE \version \;\\
 \noindent 
 \textrm{\\
 \\
- Mohammad Masnadi,$^1$ Hassan M. El-Houjeiri,$^{1,\star}$ Jeff S. Rutherford,$^1$ Yulia Chen,$^1$ Kourosh Vafi,$^{1,\star}$ Patrick Perrier,$^{1}$ James Duffy,$^2$ Adam R. Brandt$^{1,\dagger}$\\
+ Mohammad S. Masnadi,$^1$ Hassan M. El-Houjeiri,$^{1,\star}$ Jeff S. Rutherford,$^1$ Yulia Chen,$^1$ Kourosh Vafi,$^{1,\star}$ Patrick Perrier,$^{1}$ James Duffy,$^2$ Adam R. Brandt$^{1,\dagger}$\\
 \\
 With technical contributions from:\\
 Jingfan Wang$^1$, Sylvia Sleep,$^3$  Diana Pacheco,$^4$ Zainab Dashnadi,$^3$ Andrea Orellana,$^{4,\star}$ Jacob Englander,$^1$ Scott McNally,$^{1,\star}$ Heather MacLean,$^4$ Joule Bergerson$^3$\\
@@ -566,6 +566,8 @@ After checking that our results are error-free, we look at emissions results. Fi
 \label{fig:example_ghgsummary}
 \end{figure}
 
+% issue 1: are you sure the y-axis unit is correct? 
+
 \begin{figure}[!htbp]
 \includegraphics[width=1\columnwidth]{documentation/images/User_Guide_figs/vffsource.jpg}
 \caption{Summary venting and fugitive emissions for summary fields, broken down by source}
@@ -577,7 +579,7 @@ After checking that our results are error-free, we look at emissions results. Fi
 \subsection{Uncertainty analysis} 
 
 For this analysis, we wish to assess error for 200 Monte Carle realizations. Inputs for multiple fields can be handled sequentially in a single OPGEE ``run'' from the \sheet{Inputs} worksheet. Again recalling that hydraulic fracturing and horizontal drilling need to be adjusted in \sheet{Secondary Inputs} for our tight oil field, we split our model runs into two batches. One run includes 200 realizations each of our gassy and heavy fields, and our second run includes 200 realizations of our tight oil field (with adjustments in \sheet{Secondary Inputs}).
-After running the model, we perform analysis using the 200 realizations gathered in the \sheet{Uncertainty} worksheet. For this analysis, plotting is not performed in OPGEE, so we post-process the data in Matlab. For each field, a GHG intensity value was iteratively pulled from the OPGEE generated data as a new realization, and added to the pool of realizations. At each iteration, the sample mean ($\bar{\mu_{CI}}$) and standard deviation ($\bar{\sigma_{CI}}$) of the pool is recorded. In this way, we test the effect of number of realizations on $\bar{\mu_{CI}}$ and $\bar{\sigma_{CI}}$. By comparing how our three different fields behave, we can assess how data availability affects the number of realizations required for stable values of $\bar{\mu_{CI}}$ and $\bar{\sigma_{CI}}$. Based on our results (Figure \ref{fig:example_uncertainty}), $\bar{\mu_{CI}}$ stabilizes very quickly, and $\bar{\sigma_{CI}}$ stabilizes at a small value (less than 1 $gCO_{2e}/MJ$ for all fields) after about 100 realizations.
+After running the model, we perform analysis using the 200 realizations gathered in the \sheet{Uncertainty} worksheet. For this analysis, plotting is not performed in OPGEE, so we post-process the data in Matlab. For each field, a GHG intensity value was iteratively pulled from the OPGEE generated data as a new realization, and added to the pool of realizations. At each iteration, the sample mean ($\bar{\mu_{CI}}$) and standard deviation ($\bar{\sigma_{CI}}$) of the pool is recorded. In this way, we test the effect of number of realizations on $\bar{\mu_{CI}}$ and $\bar{\sigma_{CI}}$. By comparing how our three different fields behave, we can assess how data availability affects the number of realizations required for stable values of $\bar{\mu_{CI}}$ and $\bar{\sigma_{CI}}$. Based on our results (Figure \ref{fig:example_uncertainty}), $\bar{\mu_{CI}}$ stabilizes very quickly, and $\bar{\sigma_{CI}}$ stabilizes at a small value (less than 1 gCO$_2$eq/MJ for all fields) after about 100 realizations.
 
 \begin{figure}[h]
 \includegraphics[width=1\columnwidth]{documentation/images/User_Guide_figs/uncertaintypage_2.jpg}
@@ -590,6 +592,8 @@ After running the model, we perform analysis using the 200 realizations gathered
 \caption{$\bar{\mu_{CI}}$ and $\bar{\sigma_{CI}}$ versus number of Monte Carlo realizations (n).}
 \label{fig:example_uncertainty}
 \end{figure}
+
+% issue 2: Jeff: move all three plots of figure 3.12 in one column
 
 \begin{figure}[!htbp]
 \includegraphics[width=1\columnwidth]{documentation/images/User_Guide_figs/histos.jpg}
@@ -798,7 +802,7 @@ When input data are not available, OPGEE supplies defaults based on statistical 
 
 \subsection{Default field age}
 
-Field age data were collected for global oil fields. A total of 8,434 global oil fields were collected from the Oil \& Gas Journal \emph{2010 Worldwide Oil Field Production Survey} \cite{OGJ2009a} and elsewhere \cite{masnadi2018global}. The histogram of field production start year is shown in Figure \ref{fig:age_distribution_all}. The mean date of discovery in the dataset was 1988.
+Field age (\xlname{Field\_age}) data were collected for global oil fields. A total of 8,434 global oil fields were collected from the Oil \& Gas Journal \emph{2010 Worldwide Oil Field Production Survey} \cite{OGJ2009a} and elsewhere \cite{masnadi2018global}. The histogram of field production start year is shown in Figure \ref{fig:age_distribution_all}. The mean date of discovery in the dataset was 1988.
 
  However, many of these fields are likely small fields that do not supply large quantities of oil to the global export markets. It is known that giant oilfields are somewhat older on average than the general field population \cite{Simmons2005, Simmons2006, Deffeyes2001, Deffeyes2005}. Figure \ref{fig:age_distribution_giant} shows the corresponding histogram if we only include fields with over 100,000 bbl/d production (109 fields in total). These fields produced cumulative ~32 million bbl/d crude oil in the year 2015 (~40\% of global production). These giant fields have a count distribution and production-weighted average age distribution that are somewhat older than the complete set of global fields. See Table \ref{tab:oilfield_age} for a summary of fields age data. The giant oilfields volume-weighted average is used as OPGEE default. 
  
@@ -835,7 +839,7 @@ Giant oilfields & 1972 & 1980 & 22 \\
 
 \subsection{Default field depth}
 
-Field depth data were collected for a total of 7,344 global oilfields \cite{masnadi2018global}. For fields where a range of depths is presented, the mean of the range is used as a point estimate. The distribution of depths by number of fields per depth range is presented in in Figure \ref{fig:depth_distribution}. The mean depth for these fields is around 7,122 ft (used as deterministic default) and the standard deviation (STDV) is around 3,851 ft. The depth distribution has a longer right (deep) tail than left (shallow) tail, so the mean is somewhat larger than the median (6,654 ft).
+Field depth (\xlname{Field\_depth}) data were collected for a total of 7,344 global oilfields \cite{masnadi2018global}. For fields where a range of depths is presented, the mean of the range is used as a point estimate. The distribution of depths by number of fields per depth range is presented in in Figure \ref{fig:depth_distribution}. The mean depth for these fields is around 7,122 ft (used as deterministic default) and the standard deviation (STDV) is around 3,851 ft. The depth distribution has a longer right (deep) tail than left (shallow) tail, so the mean is somewhat larger than the median (6,654 ft).
 
 \begin{figure}[t]
 \includegraphics[width=0.8\columnwidth]{images/depth_distribution.pdf}
@@ -845,7 +849,7 @@ Field depth data were collected for a total of 7,344 global oilfields \cite{masn
 
 \subsection{Default oil volumetric production}
 
-In total, 5,070 global oilfields with available oil production data are collected \cite{masnadi2018global}. As shown in Figure \ref{fig:production_distribution}, the majority of oilfields produce less than 250 bbl/d, with average and STDV of 2,098 and 2,445 bbl/d, respectively. 
+In total, 5,070 global oilfields with available oil production data (\xlname{Oil\_prod}) are collected \cite{masnadi2018global}. As shown in Figure \ref{fig:production_distribution}, the majority of oilfields produce less than 250 bbl/d, with average and STDV of 2,098 and 2,445 bbl/d, respectively. 
 
 \begin{figure}[t]
 \includegraphics[width=0.8\columnwidth]{images/production_distribution.pdf}
@@ -877,7 +881,7 @@ It is commonly known that the higher the field productivity index (PI, bbl/psi-d
 
 \subsection{Default number of injector wells}
 
-The default number of injector wells is a smart default based on the number of producing wells. To model this relationship, data from California, Alaska, and a variety of offshore fields from Canada, Nigeria, Norway and U.K. (206 fields in total) was collected \cite{DOGGR2011, AOGCC2012a}. Data from some of the offshore fields is provided in Table \ref{tab:offshore_inj_prod} below. Per-well productivity across these fields ranges from less than 10 bbl/d to over 10,000 bbl/d.
+The default number of injector wells (\xlname{Num\_water\_inj\_wells}) is a smart default based on the number of producing wells. To model this relationship, data from California, Alaska, and a variety of offshore fields from Canada, Nigeria, Norway and U.K. (206 fields in total) was collected \cite{DOGGR2011, AOGCC2012a}. Data from some of the offshore fields is provided in Table \ref{tab:offshore_inj_prod} below. Per-well productivity across these fields ranges from less than 10 bbl/d to over 10,000 bbl/d.
 
 A strong relationship is seen between the productivity of producing wells and the number of injection wells required. Highly productive wells require a significantly larger number of injectors. Figure \ref{fig:inj_prod} shows the relationship between the per-well productivity of a field and the ratio of injectors to producers. Figure \ref{fig:inj_prod_hist} also shows the ratio of injectors to producers histogram that is not normally distributed. From these data, a relationship was generated for the mean and median ratio for each logarithmic bin of production well productivity (see Table \ref{tab:inj_prod_ratios}). Median values for each bin are used to define the smart default for the number of injector wells.
 
@@ -954,37 +958,37 @@ Sapinhoa &10 &10 &120000 & \url{http://www.offshore-technology.com/projects/guar
 \end{landscape}
 
 \subsection{Default well diameter}
-It is uncommon for a production tubing diameter to be over 5 inch (some highly productive wells in Middle East region excepted). Therefore, a triangularly distributed default well diameter with 1 to 5 inch range is defined in OPGEE. The OPGEE default diameter is 2.78 inches.   
+It is uncommon for a production tubing diameter (\xlname{Well\_diam}) to be over 5 inch (some highly productive wells in Middle East region excepted). Therefore, a triangularly distributed default well diameter with 1 to 5 inch range is defined in OPGEE. The OPGEE default diameter is 2.78 inches.   
 
 \subsection{Default productivity index}
-Oilfields productivity index (PI) is an important OPGEE input parameter, as field PI directly affects the productivity of wells and is therefore a strategic datapoint. However, PI data are rarely reported in the literature. Based on few available data (20 data points), a mean of 17 and STDV of 18 are set as OPGEE PI default. PI is bounded to be positive in all cases.  
+Oilfields productivity index (\xlname{Prod\_index}) is an important OPGEE input parameter, as field PI directly affects the productivity of wells and is therefore a strategic datapoint. However, PI data are rarely reported in the literature. Based on few available data (20 data points), a mean of 17 and STDV of 18 are set as OPGEE PI default. PI is bounded to be positive in all cases.  
 
 \subsection{Default reservoir pressure}
-The reservoir pressure is calculated based on a multiplication of a coefficient $\alpha$(\emph{t}) (a function of reservoir age, \emph{t}) to the normal reservoir pressure, the pressure in the reservoir fluids necessary to sustain a column of water to the surface \cite{fertl1981abnormal}. 
+The reservoir pressure (\xlname{Res\_press}) is calculated based on a multiplication of a coefficient $\alpha$(\emph{t}) (a function of reservoir age, \emph{t}) to the normal reservoir pressure, the pressure in the reservoir fluids necessary to sustain a column of water to the surface \cite{fertl1981abnormal}. 
 %%%%%%%%%%
 \begin{equation} \label{eq:res_pressure1}
-P_{res}= \alpha(t)D_{res}/2.31 \quad\quad\eqnunit{psia}
+\xlname{Res\_press}= \alpha\xlname{Field\_depth}/2.31 \quad\quad\eqnunit{psia}
 \end{equation}
 %%%%%%%%%%
-where \emph{D$_{res}$} is the reservoir depth (ft). In order to find a relationship for $\alpha$(\emph{t}), (2.31*\emph{P$_{res}$}/\emph{D$_{res}$}) of several offshore and onshore global fields are plotted as a function of field age. Minimizing the square of residuals, different functions (i.e. exponential, logarithmic, polynomial, and power) are examined to find the best fit: 
+where \xlname{Field\_depth} is the reservoir depth (ft). In order to find a relationship for $\alpha$, (2.31*\xlname{Res\_press}/\xlname{Field\_depth}) of several offshore and onshore global fields are plotted as a function of field age. Minimizing the square of residuals, different functions (i.e. exponential, logarithmic, polynomial, and power) are examined to find the best fit: 
 %%%%%%%%%%
 \begin{equation}\label{eq:res_pressure2}
-\alpha(t)=4.9*10^{-8}t{^2}+0.95 \quad\quad\eqnunit{s}
+\alpha=4.9*10^{-8}\xlname{Field\_age} {^2}+0.95 \quad\quad\eqnunit{s}
 \end{equation}
 %%%%%%%%%%
 
 \subsection{Default reservoir temperature}
-Reservoir temperature is also a direct function of the reservoir depth and is found to increase by 1$^{\circ}$F for about 60 ft in many reservoirs. Reservoir temperature can be estimated base on the following expression:
+Reservoir temperature (\xlname{Res\_temp}) is also a direct function of the reservoir depth and is found to increase by 1$^{\circ}$F for about 60 ft in many reservoirs. Reservoir temperature can be estimated base on the following expression:
 %%%%%%%%%%
 \begin{equation}\label{eq:res_temp}
-T_{res}=T_{a}+Thermal gradient\cdot D_{rev}/100^{\circ}F \quad\quad\eqnunit{$^{\circ}$F}
+\xlname{Res\_temp}=T_{a}+\Delta T\cdot \xlname{Field\_depth}/100^{\circ}F \quad\quad\eqnunit{$^{\circ}$F}
 \end{equation}
 %%%%%%%%%%
-where \emph{T$_{res}$} and \emph{T$_{a}$} are reservoir and ambient temperatures, respectively. A geothermal gradient of 1.8$^{\circ}$ per 100 ft is assumed. 
+where \xlname{Res\_temp} and \emph{T$_{a}$} are reservoir and ambient temperatures, respectively. A geothermal gradient of 1.8$^{\circ}$ per 100 ft is assumed. 
 
 \subsection{Default API gravity}
 
-The API gravity of 7,223 global oilfields have been obtained \cite{masnadi2018global}. The histogram shown in Figure \ref{fig:API} reveals that the majority of global fields lie within 35-40 $^\circ$API with an average of 32.8 $^\circ$API and a STDV of 8.4 $^\circ$API.  
+The API gravity (\xlname{API\_grav}) of 7,223 global oilfields have been obtained \cite{masnadi2018global}. The histogram shown in Figure \ref{fig:API} reveals that the majority of global fields lie within 35-40 $^\circ$API with an average of 32.8 $^\circ$API and a STDV of 8.4 $^\circ$API.  
 
 \begin{figure}
 \includegraphics[width=0.8\columnwidth]{images/API.pdf}
@@ -1004,7 +1008,7 @@ The default gas composition for associated gas from oil production is derived fr
 
 \subsection{Default GOR} \label{sec:GOR_default}
 
-The gas-oil ratio (GOR) varies over the life of the field. The amount of gas able to be evolved from crude oil depends on its API gravity, the gas gravity, and the temperature and pressure of the crude oil \cite[p. 297]{Mccain1990}. As the reservoir pressure drops, increasing amounts of gas evolve from the liquid hydrocarbons (beginning at the bubble point pressure if the oil is initially undersaturated) \cite{Mccain1990}. This tends to result in increasing producing GOR over time. Also, lighter crude oils tend to have a higher GOR. 
+The gas-oil ratio (GOR, \xlname{GOR}) varies over the life of the field. The amount of gas able to be evolved from crude oil depends on its API gravity, the gas gravity, and the temperature and pressure of the crude oil \cite[p. 297]{Mccain1990}. As the reservoir pressure drops, increasing amounts of gas evolve from the liquid hydrocarbons (beginning at the bubble point pressure if the oil is initially undersaturated) \cite{Mccain1990}. This tends to result in increasing producing GOR over time. Also, lighter crude oils tend to have a higher GOR. 
 
 Because of this complexity, a static single value for GOR is not desirable. However, all data required to use empirical correlations for GOR is not likely to be available for all crude oils modeled. We obtained GOR data of 3,161 global oilfields \cite{masnadi2018global}. 
 
@@ -1036,7 +1040,7 @@ Light & 2254 & $>$ 30 & 37.7 & 2,429.3 & 910.8 & 3,635.9 \\
 
 \subsection{Default water oil ratio (WOR)} \label{WORSmartDefault}
 
-Some defaults require more flexible ($“$smart$”$) default specifications. The water-oil-ratio (WOR) is a major parameter in influencing GHG emissions. OPGEE includes a statistical relationship for water production as a function of reservoir age. The default exponential relationship is a moderate case parameterized with a variety of industry data. Nevertheless, this relationship does not work well in predicting WOR for giant fields with very high per well productivity (e.g., Ghawar in Saudi Arabia).
+Some defaults require more flexible ($“$smart$”$) default specifications. The water-oil-ratio (WOR, \xlname{WOR}) is a major parameter in influencing GHG emissions. OPGEE includes a statistical relationship for water production as a function of reservoir age. The default exponential relationship is a moderate case parameterized with a variety of industry data. Nevertheless, this relationship does not work well in predicting WOR for giant fields with very high per well productivity (e.g., Ghawar in Saudi Arabia).
 
 A smart default for the water oil ratio as a function of field age was generated using data from large fields in various world regions. Data on oil and water production were extracted from reports issued by California Division of Oil, Gas and Geothermal Resources (DOGGR), Alberta Energy Resources Conservation Board (ERCB), Alaska Oil and Gas Conservation Commission (AOGCC), Natural Resources Canada (NRC), United Kingdom Department of Energy and Climate Change (DECC), and the Norwegian Petroleum Directorate (NPD). For the Norwegian fields, water production data were not available prior to the year 2000. For Alberta fields, data were not available prior to 1962. Only data for the first 60 years of production were included. Only California fields contained data beyond 55 years, and therefore we excluded these years to avoid possibly atypical depleted field behavior in California from significantly affecting the least squares fit. 
 
@@ -1048,16 +1052,17 @@ Additionally, a small number of fields were excluded because of apparent data an
 The default WOR is represented by an exponential function:
 %%%%%%%%%%
 \begin{equation}\label{eq:smart_default_WOR}
-WOR(t) = a_{WOR} \exp [b_{WOR} ( t - t_0 )] - a_{WOR} \quad\quad\eqnunitfrac{bbl water}{bbl oil}
+\xlname{WOR} = a_{WOR} \exp [b_{WOR} ( t - t_0 )] - a_{WOR} \quad\quad\eqnunitfrac{bbl water}{bbl oil}
 \end{equation}
 %%%%%%%%%%
 where $a_{WOR}$ = fitting constant for the initial WOR in time = $t_0$ [bbl water/bbl oil]; $b_{WOR}$ = exponential growth rate [1/y]; $t_0$ = initial year of production (or year of discovery if year of first production unavailable) [y]; and $t$ = year being modeled (independent variable) [y]. Note that the pre-exponential $a_{WOR}$ is subtracted to force WOR to start at 0 when $t = t_0$. This model was fit to the collected data using a nonlinear least-squares fit from multiple starting points to ensure robustness.
 The results of fitting this model to the smart default fit values, compared to oil fields from a variety of world regions, is show in Figure \ref{fig:exponenital_fit_WOR}. The resulting fit gives $a_{WOR} = 4.020$ and $b_{WOR} = 0.024$. Figure \ref{fig:WOR_hist} histogram also shows that the 30 global oilfields WORs are distributed lognormally, with the majority of the data between 0-0.25 bbl water/bbl oil. 
 
-The WOR data STDVs are also plotted vs. field age, as shown in Figure \ref{fig:WOR_STDV}. A power function with R$^2$ = 91\% is fitted to the data in order to be used as smart default WOR STDV:
+The WOR data STDVs are also plotted vs. field age, as shown in Figure \ref{fig:WOR_STDV}. A power function with R$^2$ = 91\% is fitted to the data in order to be used as smart default WOR_{STDV}:
+
 %%%%%%%%%%
 \begin{equation}\label{eq:smart_default_WOR_STDV}
-WOR STDV(t) = C_{WOR}( t - t_0 )^{d_{WOR}} \quad\quad\eqnunitfrac{bbl water}{bbl oil}
+WOR_{STDV}(t) = C_{WOR}( t - t_0 )^{d_{WOR}} \quad\quad\eqnunitfrac{bbl water}{bbl oil}
 \end{equation}
 %%%%%%%%%%
 
@@ -1084,32 +1089,32 @@ Here \emph{C$_{WOR}$}=0.012 and \emph{d$_{WOR}$}=1.662.
 
 \subsection{Default waterflooding volume}
 
-The volume of water injected in a waterflooding project is meant to maintain reservoir pressure.As a default value, OPGEE assumes that the surface volume is replaced, such that the total oil produced plus the water produced is reinjected, or the injection per bbl = 1 + WOR.
+The volume of water injected in a waterflooding project (\xlname{WIR}) is meant to maintain reservoir pressure.As a default value, OPGEE assumes that the surface volume is replaced, such that the total oil produced plus the water produced is reinjected, or the injection per bbl = 1 + \xlname{WOR}.
 
-\subsection{Default flood gas injection ratio}
+\subsection{Default gas flooding injection ratio}
 
-This is the ratio of the volume of flood gas injected [scf] to the volume of oil produced [bbl]. The volume of the oil is measured after bulk processing has removed the associated gas. The default flood gas injection ratio value depends on the choice of flood gas. If natural gas is selected as the flood gas, then the default ratio is calculated as follows:
+Gas flooding injection ratio (\xlname{GFIR}) is the ratio of the volume of flood gas injected [scf] to the volume of oil produced [bbl]. The volume of the oil is measured after bulk processing has removed the associated gas. The default flood gas injection ratio value depends on the choice of flood gas. If natural gas is selected as the flood gas, then the default ratio is calculated as follows:
 %%%%%%%%%%
 \begin{equation}\label{eq:NaturalGasAirOxygenFloodGasRatio}
-R_{fl}=1.5\cdot GOR \quad\quad\eqnunitfrac{scf gas}{bbl oil}
+\xlname{GFIR}=1.5\cdot \xlname{GOR} \quad\quad\eqnunitfrac{scf gas}{bbl oil}
 \end{equation}
 %%%%%%%%%%
-where $R_{fl}$ = flood gas injection ratio [scf/bbl] and GOR is the gas-oil-ratio [scf/bbl].
+where \xlname{GFIR} is gas flooding injection ratio [scf/bbl] and \xlname{GOR} is the gas-oil-ratio [scf/bbl].
 
-If N$_2$ is selected as the flood gas, then $R_{fl}$ is 1,200 scf/bbl. This is based on the immiscible nitrogen flood operation at the Cantarell field in Mexico to maintain reservoir pressure. As described in the \nameref{sec:gas_flooding_compressor} section, the field operating equipment is designed to inject 1,200 mmscf/d \cite{Kuo2001}. In 2008, the injection rate was approximately 1,200 mmscf/d and the field was producing approximately 1.2 million bbl/d, leading to a default ratio of 1,200 scf/bbl \cite{Guzman2014}.
+If N$_2$ is selected as the flood gas, then \xlname{GFIR} is 1,200 scf/bbl. This is based on the immiscible nitrogen flood operation at the Cantarell field in Mexico to maintain reservoir pressure. As described in the \nameref{sec:gas_flooding_compressor} section, the field operating equipment is designed to inject 1,200 mmscf/d \cite{Kuo2001}. In 2008, the injection rate was approximately 1,200 mmscf/d and the field was producing approximately 1.2 million bbl/d, leading to a default ratio of 1,200 scf/bbl \cite{Guzman2014}.
 
-If CO$_2$ is selected as the flood gas, then default $R_{fl}$ is 10,000 scf/bbl. As with all injection ratios, $R_{fl}$  changes over the life cycle of the flood project. It can also vary based on the specific reservoir engineering strategies selected by the operator.  An example comes from DiPietro and Murrel (2013), who presented data from Kinder Morgan indicating that the injection ratio during the overall lifespan of an anonymous representative project was 6,000 scf/bbl. 
+If CO$_2$ is selected as the flood gas, then default \xlname{GFIR} is 10,000 scf/bbl. As with all injection ratios, \xlname{GFIR} changes over the life cycle of the flood project. It can also vary based on the specific reservoir engineering strategies selected by the operator.  An example comes from DiPietro and Murrel (2013), who presented data from Kinder Morgan indicating that the injection ratio during the overall lifespan of an anonymous representative project was 6,000 scf/bbl. 
 
 Another example is provided by Pyo et al. \cite{Pyo2003}, who reviewed the performance of a CO$_2$ flood at the Joffre Viking Pool in Alberta, Canada that had been active for approximately 30 years. The overall flood gas injection ratio during the life of the project was 10,800 scf/bbl; the ratios for the individual injector-producer well patterns within the field varied from 3,500 to 24,900 scf/bbl. 
 
 The OPGEE default flood gas injection ratios are presented only as representative values that provide an order-of-magnitude estimate. Actual field data should be obtained when possible.
 
 \subsection{Default proportion of injected CO$_2$ that is newly acquired}
-The OPGEE default for the proportion of CO$_2$ that is newly acquired (not previously injected) is 41\%. This figure is from the Malone et al. \cite{NETL2014} discussion of an offshore CO$_2$ flood project at Weeks Island, Louisiana over an 9-year period (based on dates in the original reference by Johnston \cite{Johnson1988}). As with the flood gas injection ratio, actual data should be used if possible. 
+The OPGEE default for the proportion of CO$_2$ that is newly acquired (\xlname{Perc\_new\_CO2}) (not previously injected) is 41\%. This figure is from the Malone et al. \cite{NETL2014} discussion of an offshore CO$_2$ flood project at Weeks Island, Louisiana over an 9-year period (based on dates in the original reference by Johnston \cite{Johnson1988}). As with the flood gas injection ratio, actual data should be used if possible. 
 
 \subsection{Default steam-oil-ratio (SOR)}
 
-Because the SOR is a key parameter driving GHG emissions from thermal oil production operations, we examine default values for SOR in more detail. 
+Because the SOR (\xlname{SOR}) is a key parameter driving GHG emissions from thermal oil production operations, we examine default values for SOR in more detail. 
 
 SOR data are collected for California and Alberta thermal oil recovery operations for 2010 and 2011 \cite{DOGGR2010, DOGGR2011, DOGGRmonthly2010, ERCB2010, ERCB2011a}. 
 
@@ -1151,7 +1156,7 @@ As mentioned before, OPGEE requires about 50 parameters as input data for each f
 It has been shown before that emissions uncertainty depends on the key input parameters, and the use of default values in the place of specific data (\cite{brandt2014uncertainty,vafi2014uncertainty}). Therefore, OPGEE only analyzes the uncertainty associated with missing input parameters in \sheet{Inputs} worksheet. Other uncertainty sources include: unchanging parameters embedded into OPGEE (e.g. downhole pump efficiency, etc.), model structure, and modeling equations used for process units.
 
 In OPGEE 3.0, the uncertainty associated with the GHG emissions estimates can be computed probabilistically using a Monte Carlo (MC) simulation method. In each Monte Carlo realization, for each field, missing data are replaced not with the OPGEE default value but instead with a value from the underlying distribution or statistical values presented in Section \ref{sec:smart_defaults}. The total number of Monte Carlo realizations per field can be determined by the user at the top panel of \sheet{Inputs} worksheet. It should be pointed out that the convergence analysis shows that after about 300 realizations, a consistent result distribution can be obtained per field. This implies that more MC simulations no longer strongly affects mean, median or standard deviation (STDV) of uncertainty realizations. 
-A summary of input parameters and their probabilistic distribution indices used for this analysis are listed in Table \ref{tab:Montecarlo}. The same indices are included from columns M to U of \sheet{Active Field} sheet where the user can customize the uncertainty analysis assumptions and settings. See \cite{masnadi2018global} for an example of global oilfields GHG emissions uncertainty analysis using OPGEE.
+A summary of input parameters and their probabilistic distribution indices used for this analysis are listed in Table \ref{tab:Montecarlo}. The same indices are included from columns \emph{M} to \emph{U} of \sheet{Active Field} sheet where the user can customize the uncertainty analysis assumptions and settings. See \cite{masnadi2018global} for an example of global oilfields GHG emissions uncertainty analysis using OPGEE.
 
 \begin{landscape}
 \begin{scriptsize}
@@ -1166,99 +1171,99 @@ A summary of input parameters and their probabilistic distribution indices used 
 \begin{supertabular*}{1\columnwidth}{p{0.4\columnwidth}p{0.09\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.1\columnwidth}}
 \midrule
 1. Production methods &            &           &            &                    &                   \\                                                              \midrule
-1.1   Downhole pump                                                                                                                                            & 0        & 0          & 0         & 0          & 0.95               & Binary            \\
-1.2   Water reinjection                                                                                                                                        & 0        & 0          & 0         & 0          & 0.25               & Binary            \\
-1.3   Natural gas reinjection                                                                                                                                  & 0        & 0          & 0         & 0          & 0.95               & Binary            \\
-1.4   Water flooding                                                                                                                                           & 0        & 0          & 0         & 0          & 0.75               & Binary            \\
-1.5   Gas lifting                                                                                                                                              & 0        & 0          & 0         & 0          & 0.05               & Binary            \\
-1.6   Gas flooding                                                                                                                                             & 0        & 0          & 0         & 0          & 0.05               & Binary            \\
-1.7   Steam flooding                                                                                                                                           & 0        & 0          & 0         & 0          & 0                  & Binary            \\
-1.8   Oil sands mine                                                                                                                                           & 0        & 0          & 0         & 0          & 0                  & Binary            \\
-1.9   Oil sands mine                                                                                                                                           & 0        & 0          & 0         & 0          & 0                  & Binary            \\
+1.1   Downhole pump \xlname{Downhole\_Pump\_01}                                                                                                                                            & 0        & 0          & 0         & 0          & 0.95               & Binary            \\
+1.2   Water reinjection \xlname{Water\_reinjection\_01}                                                                                                                                       & 0        & 0          & 0         & 0          & 0.25               & Binary            \\
+1.3   Natural gas reinjection \xlname{Natural\_gas\_reinjection\_01}                                                                                                                                  & 0        & 0          & 0         & 0          & 0.95               & Binary            \\
+1.4   Water flooding \xlname{Water\_flooding\_01}                                                                                                                                           & 0        & 0          & 0         & 0          & 0.75               & Binary            \\
+1.5   Gas lifting \xlname{Gas\_lifting\_01}                                                                                                                                           & 0        & 0          & 0         & 0          & 0.05               & Binary            \\
+1.6   Gas flooding \xlname{Gas\_flooding\_01}                                                                                                                                     & 0        & 0          & 0         & 0          & 0.05               & Binary            \\
+1.7   Steam flooding \xlname{Steam\_flooding\_01}                                                                                                                                           & 0        & 0          & 0         & 0          & 0                  & Binary            \\
+1.8   Oil sands mine \xlname{Oil\_sands\_mine\_int\_01}                                                                                                                                          & 0        & 0          & 0         & 0          & 0                  & Binary            \\
+1.9   Oil sands mine \xlname{Oil\_sands\_mine\_nonint\_01}                                                                                                                                     & 0        & 0          & 0         & 0          & 0                  & Binary            \\
 \midrule
 2. Field properties                                                                                                                                            &          &            &           &            &                    &                   \\
 \midrule
-2.1   Field age (\emph{t}) {[}y{]}                                                                                                                                    & 35       & 22         & 2         & 82         & -                  & Lognormal         \\
+2.1   Field age \xlname{Field\_age} \emph{t}) {[}y{]}                                                                                                                                    & 35       & 22         & 2         & 82         & -                  & Lognormal         \\
 2.2   Field depth \xlname{Field\_depth} {[}ft{]}                                                                                                                              & 7,122    & 3,851      & 59        & 35,837     & -                  & Lognormal         \\
 2.3   Oil production volume \xlname{Oil\_prod} {[}bbl/d{]}                                                                                                                  & 2,098    & 2,445      & 10        & 10,000     & -                  & Lognormal         \\
-2.4   Number of producing wells {[}\#{]}                                                                                                                       & \xlname{Oil\_prod}/87.5 & 2,445/87.5 & 1         & 114        & -                  & Lognormal         \\
-2.5   Number of water injecting wells {[}\#{]}                                                                                                                 & \ref{tab:inj_prod_ratios} & \ref{tab:inj_prod_ratios}   & 1         & 95         & -                  & Lognormal         \\
-2.6   Well diameter {[}inch{]}                                                                                                                                 & 3        & 1          & 1         & 5          & -                  & Triangular        \\
+2.4   Number of producing wells \xlname{Num\_prod\_wells} {[}\#{]}                                                                                                                       & \xlname{Oil\_prod}/87.5 & 2,445/87.5 & 1         & 114        & -                  & Lognormal         \\
+2.5   Number of water injecting wells \xlname{Num\_water\_inj\_wells} {[}\#{]}                                                                                                                 & \ref{tab:inj_prod_ratios} & \ref{tab:inj_prod_ratios}   & 1         & 95         & -                  & Lognormal         \\
+2.6   Well diameter \xlname{Well\_diam} {[}inch{]}                                                                                                                                 & 3        & 1          & 1         & 5          & -                  & Triangular        \\
 2.7   Productivity index \xlname{Prod\_index} {[}bbl/psi-d{]}                                                                                                                  & 17       & 18         & 1         & 50         & -                  & Lognormal         \\
 2.8   Average reservoir pressure \xlname{Res\_press} {[}psi{]}                                                                                                              &  eq. \ref{eq:res_pressure1}   & eq. \ref{eq:res_pressure1}     & 24        & 14,738     & -                  & Lognormal         \\
 2.9   Average reservoir temperature \xlname{Res\_temp} {[}$^{\circ}$F{]}                                                                                                            & eq. \ref{eq:res_temp}  & eq. \ref{eq:res_temp}      & 71        & 582        & -                  & Normal            \\
-2.10 Offshore?                                                                                                                                                 & 0        & 0          & 0         & 0          & 0.2                & Binary            \\
+2.10 Offshore? \xlname{Offshore\_01}                                                                                                                                                 & 0        & 0          & 0         & 0          & 0.2                & Binary            \\
 \midrule
 3. Fluid properties                                                                                                                                            &          &            &           &            &                    &                   \\
 \midrule
-3.1   API gravity of produced crude {[}$^{\circ}$API{]}                                                                                                                 & 33       & 8          & 3         & 88         & -                  & Normal            \\
+3.1   API gravity of produced crude \xlname{API\_grav} {[}$^{\circ}$API{]}                                                                                                                 & 33       & 8          & 3         & 88         & -                  & Normal            \\
 3.2   Associated gas composition {[}mol\%{]}                                                                                                                   &          &            &           &            &                    &                   \\
-N$_2$                                                                                                                                                             & 2        & 2          & 0         & 14         & -                  & Lognormal         \\
-CO$_2$                                                                                                                                                            & 6        & 4          & 0         & 35         & -                  & Lognormal         \\
-C$_1$                                                                                                                                                             & 84       & 5          & 62        & 100        & -                  & Lognormal         \\
-C$_2$                                                                                                                                                             & 4        & 2          & 0         & 15         & -                  & Lognormal         \\
-C$_3$                                                                                                                                                             & 2        & 1          & 0         & 10         & -                  & Lognormal         \\
-C$_4$+                                                                                                                                                            & 1        & 1          & 0         & 6          & -                  & Lognormal         \\
-H$_2$S                                                                                                                                                            & 0.5      & 1          & 0         & 1          & -                  & Lognormal         \\
+N$_2$ \xlname{Gas\_comp\_N2}                                                                                                                                                             & 2        & 2          & 0         & 14         & -                  & Lognormal         \\
+CO$_2$ \xlname{Gas\_comp\_CO2}                                                                                                                                                                       & 6        & 4          & 0         & 35         & -                  & Lognormal         \\
+C$_1$ \xlname{Gas\_comp\_C1}                                                                                                                                                                      & 84       & 5          & 62        & 100        & -                  & Lognormal         \\
+C$_2$ \xlname{Gas\_comp\_C2}                                                                                                                                                                       & 4        & 2          & 0         & 15         & -                  & Lognormal         \\
+C$_3$ \xlname{Gas\_comp\_C3}                                                                                                                                                                     & 2        & 1          & 0         & 10         & -                  & Lognormal         \\
+C$_4$+ \xlname{Gas\_comp\_C4}                                                                                                                                                                    & 1        & 1          & 0         & 6          & -                  & Lognormal         \\
+H$_2$S \xlname{Gas\_comp\_H2S}                                                                                                                                                                      & 0.5      & 1          & 0         & 1          & -                  & Lognormal         \\
 \midrule
 4. Production practices                                                                                                                                        &          &            &           &            &                    &                   \\
 \midrule
 4.1   Gas-to-oil ratio \xlname{GOR} {[}ssc/bbl oil{]}                                                                                                                 & \ref{tab:GOR_averages} & \ref{tab:GOR_averages}   & 1         & 34,000     & -                  & Lognormal         \\
 4.2   Water-to-oil ratio \xlname{WOR} {[}bbl produced/bbl oil{]}                                                                                                      & eq. \ref{eq:smart_default_WOR}   & eq. \ref{eq:smart_default_WOR}     & 1         & 33         & -                  & Lognormal         \\
-4.3   Water injection ratio {[}bbl injected/bbl oil{]}                                                                                                         & \xlname{WOR}+1    & 0          & \xlname{WOR}+1     & \xlname{WOR}+1      & -                  & Uniform           \\
-4.4   Gas lifting injection ratio {[}scf/bbl oil{]}                                                                                                            & 363      & 500        & 200       & 2500       & -                  & Lognormal         \\
-4.5   Gas flooding injection ratio {[}scf/bbl oil{]}                                                                                                           & eq. \ref{eq:NaturalGasAirOxygenFloodGasRatio}   & 0          & eq. \ref{eq:NaturalGasAirOxygenFloodGasRatio}    & eq. \ref{eq:NaturalGasAirOxygenFloodGasRatio}     & -                  & Uniform           \\
-4.6   Flood gas (1:Natural gas, 2: N$_2$, 3: CO$_2$)                                                                                                                 & 1        & 0          & 1         & 1          & -                  & Uniform           \\
+4.3   Water injection ratio \xlname{WIR}  {[}bbl injected/bbl oil{]}                                                                                                         & \xlname{WOR}+1    & 0          & \xlname{WOR}+1     & \xlname{WOR}+1      & -                  & Uniform           \\
+4.4   Gas lifting injection ratio \xlname{GLIR} {[}scf/bbl oil{]}                                                                                                            & 363      & 500        & 200       & 2500       & -                  & Lognormal         \\
+4.5   Gas flooding injection ratio \xlname{GFIR} {[}scf/bbl oil{]}                                                                                                           & eq. \ref{eq:NaturalGasAirOxygenFloodGasRatio}   & 0          & eq. \ref{eq:NaturalGasAirOxygenFloodGasRatio}    & eq. \ref{eq:NaturalGasAirOxygenFloodGasRatio}     & -                  & Uniform           \\
+4.6   Flood gas (1:Natural gas, 2: N$_2$, 3: CO$_2$) \xlname{Flood\_gas\_type}                                                                                                               & 1        & 0          & 1         & 1          & -                  & Uniform           \\
 4.7   CO$_2$ flooding and sequestration parameters                                                                                                                &          &            &           &            &                    &                   \\
-4.7.1   Percentage of newly acquired CO$_2$ (total injected CO$_2$ includes both new and recycled)                                                                   & 41       & 20         & 0         & 100        & -                  & Normal            \\
-4.7.2   Source of CO$_2$ (1: Natural subsurface reservoir, 2: Anthropogenic)                                                                                      & 1        & 0          & 1         & 1          & -                  & Uniform           \\
-4.7.3   Percentage of sequestration credit assigned to the oilfield                                                                                            & 0        & 0          & 0         & 0          & -                  & Uniform           \\
+4.7.1   Percentage of newly acquired CO$_2$ (total injected CO$_2$ includes both new and recycled) \xlname{Perc\_new\_CO2}                                                                   & 41       & 20         & 0         & 100        & -                  & Normal            \\
+4.7.2   Source of CO$_2$ \xlname{Source\_CO2} (1: Natural subsurface reservoir, 2: Anthropogenic)                                                                                      & 1        & 0          & 1         & 1          & -                  & Uniform           \\
+4.7.3   Percentage of sequestration credit assigned to the oilfield \xlname{Perc\_sequestration\_credit}                                                                                            & 0        & 0          & 0         & 0          & -                  & Uniform           \\
 4.8   Steam-to-oil ratio \xlname{SOR} {[}bbl steam/bbl oil{]}                                                                                                         & 3.5      & 2          & 0         & 5          & -                  & Lognormal         \\
-4.9   Fraction of required electricity generated onsite                                                                                                        & 0.5      & 0.25       & 0         & 1          & -                  & Normal            \\
-4.10 Fraction of remaining gas reinjected                                                                                                                      & 0.5      & 0.25       & 0         & 1          & -                  & Normal            \\
-4.11 Fraction of water produced that is reinjected                                                                                                             & 0.77     & 0.38       & 0         & 1          & -                  & Normal            \\
-4.12 Fraction of steam generation via co-generation                                                                                                            & 0.37     & 0.42       & 0         & 1          & -                  & Normal            \\
+4.9   Fraction of required electricity generated onsite \xlname{Fraction\_elec\_onsite}                                                                                                        & 0.5      & 0.25       & 0         & 1          & -                  & Normal            \\
+4.10 Fraction of remaining gas reinjected \xlname{Fraction\_remaining\_gas\_inj}                                                                                                                      & 0.5      & 0.25       & 0         & 1          & -                  & Normal            \\
+4.11 Fraction of water produced that is reinjected \xlname{Fraction\_water\_reinjected}                                                                                                             & 0.77     & 0.38       & 0         & 1          & -                  & Normal            \\
+4.12 Fraction of steam generation via co-generation \xlname{Fraction\_steam\_cogen}                                                                                                           & 0.37     & 0.42       & 0         & 1          & -                  & Normal            \\
 \midrule
 5. Processing practices                                                                                                                                        &          &            &           &            &                    &                   \\
 \midrule
-5.1   Heater/treater                                                                                                                                           & 0        & 0          & 0         & 0          &                    & Binary            \\
-5.2   Stabilizer column                                                                                                                                        & 0        & 0          & 0         & 0          &                    & Binary            \\
-5.3   Upgrader type (0: None, 1: Delayed coking, 2: Hydroconversion, 3: Hydroconversion and fluid coking)                                                      & 0        & 0          & 0         & 0          & 0                  & Uniform           \\
-5.4   Associated gas processing path (1: None, 2: Minimal - Dehydrator, 3: Acid Gas, 4: Wet Gas, 5: Acid Wet Gas, 6: CO$_2$-EOR Membrane, 7: CO$_2$-EOR Ryan Holmes) & 5        & 0          & 5         & 5          & -                  & Uniform           \\
+5.1   Heater/treater \xlname{Heater\_treater}                                                                                                                                           & 0        & 0          & 0         & 0          &                    & Binary            \\
+5.2   Stabilizer column \xlname{Stabilizer}                                                                                                                                        & 0        & 0          & 0         & 0          &                    & Binary            \\
+5.3   Upgrader type \xlname{Upgrader\_type} (0: None, 1: Delayed coking, 2: Hydroconversion, 3: Hydroconversion and fluid coking)                                                      & 0        & 0          & 0         & 0          & 0                  & Uniform           \\
+5.4   Associated gas processing path \xlname{Gas\_processing\_path} (1: None, 2: Minimal - Dehydrator, 3: Acid Gas, 4: Wet Gas, 5: Acid Wet Gas, 6: CO$_2$-EOR Membrane, 7: CO$_2$-EOR Ryan Holmes) & 5        & 0          & 5         & 5          & -                  & Uniform           \\
 5.5   Flare-oil-ratio \xlname{FOR} {[}scf flared/bbl oil{]}                                                                                                           & NOAA     & NOAA*0.2   & 1         & 3000       & -                  & Normal            \\
-5.6   Ratio of venting to oil production                                                                                                                       & 10       & 3          & 0         & 100        & -                  & Normal            \\
-5.7   Volume fraction of diluent in diluted crude                                                                                                              & 0        & 0          & 0         & 0          & -                  & Uniform           \\
+5.6   Ratio of venting to oil production \xlname{vOR}                                                                                                                       & 10       & 3          & 0         & 100        & -                  & Normal            \\
+5.7   Volume fraction of diluent in diluted crude \xlname{Fraction\_diluent}                                                                                                             & 0        & 0          & 0         & 0          & -                  & Uniform           \\
 \midrule
 6. Land use impacts                                                                                                                                            &          &            &           &            &                    &                   \\
 \midrule
 6.1   Crude ecosystem carbon richness                                                                                                                          &          &            &           &            &                    &                   \\
-6.1.1   Low carbon richness (semi-arid grasslands)                                                                                                             & 0        & 0          & 0         & 0          & 0.33               & Binary            \\
-6.1.2   Moderate carbon richness (mixed)                                                                                                                       & 0        & 0          & 0         & 0          & 0.33               & Binary            \\
-6.1.3   High carbon richness (forested)                                                                                                                        & 0        & 0          & 0         & 0          & 0.33               & Binary            \\
+6.1.1   Low carbon richness (semi-arid grasslands) \xlname{Low\_ecosystem\_richness\_01}                                                                                                             & 0        & 0          & 0         & 0          & 0.33               & Binary            \\
+6.1.2   Moderate carbon richness (mixed) \xlname{Med\_ecosystem\_richness\_01}                                                                                                                        & 0        & 0          & 0         & 0          & 0.33               & Binary            \\
+6.1.3   High carbon richness (forested) \xlname{High\_ecosystem\_richness\_01}                                                                                                                         & 0        & 0          & 0         & 0          & 0.33               & Binary            \\
 6.2   Field development intensity                                                                                                                              &          &            &           &            &                    &                   \\
-6.2.1   Low intensity dev. and low oxidation                                                                                                                   & 0        & 0          & 0         & 0          & 0.33               & Binary            \\
-6.2.2   Moderate intensity dev. and moderate oxidation                                                                                                         & 0        & 0          & 0         & 0          & 0.33               & Binary            \\
-6.2.3   High intensity dev. and high oxidation                                                                                                                 & 0        & 0          & 0         & 0          & 0.33               & Binary            \\
+6.2.1   Low intensity dev. and low oxidation \xlname{Low\_land\_disturbance\_01}                                                                                                                   & 0        & 0          & 0         & 0          & 0.33               & Binary            \\
+6.2.2   Moderate intensity dev. and moderate oxidation \xlname{Med\_land\_disturbance\_01}                                                                                                          & 0        & 0          & 0         & 0          & 0.33               & Binary            \\
+6.2.3   High intensity dev. and high oxidation \xlname{High\_land\_disturbance\_01}                                                                                                                  & 0        & 0          & 0         & 0          & 0.33               & Binary            \\
 \midrule
 7. Crude oil transport                                                                                                                                         &          &            &           &            &                    &                   \\
 \midrule
 7.1   Fraction of oil transported by each mode                                                                                                                 &          &            &           &            &                    &                   \\
-7.1.1   Ocean tanker                                                                                                                                           & 0        & 0          & 0         & 0          & 1                  & Binary            \\
-7.1.2   Barge                                                                                                                                                  & 0        & 0          & 0         & 0          & 0                  & Binary            \\
-7.1.3   Pipeline                                                                                                                                               & 0        & 0          & 0         & 0          & 1                  & Binary            \\
-7.1.4   Rail                                                                                                                                                   & 0        & 0          & 0         & 0          & 0                  & Binary            \\
-7.1.5   Truck                                                                                                                                                  & 0        & 0          & 0         & 0          & 0                  & Binary            \\
+7.1.1   Ocean tanker \xlname{Fraction\_oil\_transport\_tanker}                                                                                                                                           & 0        & 0          & 0         & 0          & 1                  & Binary            \\
+7.1.2   Barge \xlname{Fraction\_oil\_transport\_barge}                                                                                                                                                   & 0        & 0          & 0         & 0          & 0                  & Binary            \\
+7.1.3   Pipeline \xlname{Fraction\_oil\_transport\_pipeline}                                                                                                                                                & 0        & 0          & 0         & 0          & 1                  & Binary            \\
+7.1.4   Rail \xlname{Fraction\_oil\_transport\_rail}                                                                                                                                                    & 0        & 0          & 0         & 0          & 0                  & Binary            \\
+7.1.5   Truck \xlname{Fraction\_oil\_transport\_truck}                                                                                                                                                  & 0        & 0          & 0         & 0          & 0                  & Binary            \\
 7.2   Transport distance (one way)                                                                                                                             &          &            &           &            &                    &                   \\
-7.2.1   Ocean tanker {[}mile{]}                                                                                                                                & 8,000    & 2,000      & 1,000     & 12,000     & -                  & Normal            \\
-7.2.2   Barge {[}mile{]}                                                                                                                                       & NA       & NA         & NA        & NA         & -                  & NA                \\
-7.2.3   Pipeline {[}mile{]}                                                                                                                                    & 1,000    & 700        & 100       & 5,000      & -                  & Normal            \\
-7.2.4   Rail {[}mile{]}                                                                                                                                        & NA       & NA         & NA        & NA         & -                  & NA                \\
-7.2.5  Truck {[}mile{]}                                                                                                                                        & NA       & NA         & NA        & NA         & -                  & NA                \\
-7.3   Ocean tanker size, if applicable {[}ton{]}                                                                                                               & 250,000  & 25,000     & 50,000    & 300,000    & -                  & Normal            \\
+7.2.1   Ocean tanker \xlname{Oil\_transport\_distance\_tanker} {[}mile{]}                                                                                                                                & 8,000    & 2,000      & 1,000     & 12,000     & -                  & Normal            \\
+7.2.2   Barge \xlname{Oil\_transport\_distance\_barge} {[}mile{]}                                                                                                                                       & NA       & NA         & NA        & NA         & -                  & NA                \\
+7.2.3   Pipeline \xlname{Oil\_transport\_distance\_pipeline} {[}mile{]}                                                                                                                                    & 1,000    & 700        & 100       & 5,000      & -                  & Normal            \\
+7.2.4   Rail \xlname{Oil\_transport\_distance\_rail} {[}mile{]}                                                                                                                                        & NA       & NA         & NA        & NA         & -                  & NA                \\
+7.2.5  Truck \xlname{Oil\_transport\_distance\_truck} {[}mile{]}                                                                                                                                        & NA       & NA         & NA        & NA         & -                  & NA                \\
+7.3   Ocean tanker size, if applicable \xlname{Ocean\_tanker\_size} {[}ton{]}                                                                                                               & 250,000  & 25,000     & 50,000    & 300,000    & -                  & Normal            \\
 \midrule
-8. Other sources emissions                                                                                                                                     &          &            &           &            &                    &                   \\
+8. Other sources emissions                                                                                                                                    &          &            &           &            &                    &                   \\
 \midrule
-8.1.  Small sources emissions {[}g CO$_2$eq./MJ{]}                                                                                                                & 0.5      & 0.15       & 0.1       & 1          & -                  & Normal \\
+8.1.  Small sources emissions \xlname{Small\_sources\_adder}   {[}g CO$_2$eq./MJ{]}                                                                                                                & 0.5      & 0.15       & 0.1       & 1          & -                  & Normal \\
 \end{supertabular*}
 \end{scriptsize}
 \end{landscape}
@@ -1278,6 +1283,8 @@ H$_2$S                                                                          
 The flow sheet is the main organizing sheet for tying OPGEE process modules together and tracking the flow of fluids through the system. It includes graphical representation of the process flows and numerical results for all streams. 
 
 \section{Flow table}
+
+% Issue 3: because parameters and notations are introduced well in Flow Sheet section, isn't better to first present Flow sheet section and then Active Field section (currently section 4)?
 
 At the top of the \sheet{Flow sheet} is the \xlname{FlowTable} (see Figure \ref{fig:FlowSheet}). In the \xlname{FlowTable} Streams are numbered 1-300 (with gaps for forward compatability and model extension). At the top of the table, each stream can contain mass flow of a given set of tracked substances.  In the lower section of the flow table, a variety of other characteristics of each stream are computed. These properties are computed for all streams using equivalent formulas.
 
@@ -1400,7 +1407,7 @@ This equation holds for conventional oil, bitumen, and diluent. For LPG streams 
 
 The solution gas oil ratio $R_s$ \xlname{GOR\_OS} is the amount of gas in solution in a crude oil. The solution GOR is a function of a number of properties. If there is more gas present than the solution GOR, the gas will start to evolve from the oil into a separate gas phase (i.e., the gas will start to exsolve or bubble out of the oil).  As recommended in Fanchi \cite{Fanchi2007}, we re-arrange the bubblepoint pressure relationship to solve for the amount of gas in solution at a given pressure. We use the bubblepoint pressure relationship of Al-Shammasi (1999), as reproduced in \cite[vol 1, Table 6.6]{Fanchi2007}:
 \begin{equation}
-R_{s} = \frac{p^{\left(\frac{1}{a_2}\right)} \gamma_{o}^{\left(-\frac{a_1}{a_2}\right)} e^{\left(\frac{a_3}{a_2} \gamma_o \gamma_g\right)}}{\gamma_g T_{abs}} \eqnunitfrac{scf}{bbl}
+R_{s} = \frac{p^{\left(\frac{1}{a_2}\right)} \xlname{GAMMA\_O}^{\left(-\frac{a_1}{a_2}\right)} e^{\left(\frac{a_3}{a_2} \xlname{GAMMA\_O} \xlname{GAMMA\_g}\right)}}{\xlname{GAMMA\_g} T_{abs}} \eqnunitfrac{scf}{bbl}
 \label{eq:GOR_OS}
 \end{equation}
 If the resulting gas oil ratio is larger than the bubblepoint pressure gas oil ratio ($R_b$), then the equation defaults to the bubblepoint gas oil ratio. The equation for bubblepoint gas oil ratio is given below in Eq. \ref{eq:BOB}. This solution gas oil ratio computation is defined as a user-defined function  \xlname{SolutionGasOilRatio} for use in later calculations on sub-sheets (e.g., multi-stage separation).
@@ -1410,7 +1417,7 @@ If the resulting gas oil ratio is larger than the bubblepoint pressure gas oil r
 
 The oil formation volume factor $B_o$ \xlname{OVF} is the ratio of the number of barrels that a barrel of oil will occupy in the reservoir over the number of stock tank (standard) barrels that the oil will occupy. The oil formation volume factor is a function of the solution gas oil ratio, the temperature, and the pressure of the fluid, with the gas in solution being the largest determinant. The oil FVF at the bubblepoint pressure is generated via bubblepoint oil FVF correlations \xlname{FVF\_SAT}. We use the bubblepoint oil formation volume factor correlation from Al-Shammasi \cite[Table A-3, p. 317]{Fanchi2007}\cite{Alshammasi2001}:
 \begin{equation}
-B_{ob} = a_1+ a_2 R_s (T_r - 60) + a_3\left( \frac{R_s }{\gamma_o}\right) + a_4  \left(\frac{T_r - 60}{\gamma_o}\right)+ a_5 R_s \left(https://www.overleaf.com/project/5c49f9f3064a687b02531897 \frac{\gamma_g}{\gamma_o}\right)  \eqnunitfrac{bbl}{STB}
+B_{ob} = a_1+ a_2 R_s (T_r - 60) + a_3\left( \frac{R_s }{\xlname{GAMMA\_O}}\right) + a_4  \left(\frac{T_r - 60}{\xlname{GAMMA\_O}}\right)+ a_5 R_s \left( \frac{\xlname{GAMMA\_g}}{\xlname{GAMMA\_O}}\right)  \eqnunitfrac{bbl}{STB} 
 \label{eq:BOB}
 \end{equation}
 this correlation is useful for saturated oil, or oil with its associated gas at the maximum amount (i.e., as pressure drops gas is evolved). 
@@ -1424,7 +1431,7 @@ where $c_o$ is the isothermal compressibility of oil, $p_b$ the bubblepoint pres
 
 We use the correlation of Al-Marhoun \cite{Almarhoun1992} for the isothermal compressibility term $c_o$ \xlname{ISO\_CO}.
 \begin{equation}
-c_o = 55.233 \times 10^{-6} - 60.588\times 10^{-6}\gamma_o  \eqnunitfrac{1}{psi}
+c_o = 55.233 \times 10^{-6} - 60.588\times 10^{-6}\xlname{GAMMA\_O} \eqnunitfrac{1}{psi}
 \label{eq:CO_ISO}
 \end{equation}
 Finally, we can uses these two terms to compute the oil FVF \xlname{FVF\_UNSAT}. If $p<p_b$, $B_{ob}$ is used, while if $p \geq p_b$ then $B_o$ is used.
@@ -1433,10 +1440,10 @@ Finally, we can uses these two terms to compute the oil FVF \xlname{FVF\_UNSAT}.
 
 Using the above terms, the density of crude \xlname{RHO\_O\_LB} can then be computed in using the following relation \cite[p. 277]{Fanchi2007}:
 \begin{equation}
-\rho_o = \frac{a_1 \gamma_{o}+ a_2 \gamma_{g} R_{s}}{B_o} \eqnunitfrac{lbm}{ft$^3$}
+\rho_o = \frac{a_1 \xlname{GAMMA\_O}+ a_2 \xlname{GAMMA\_g} R_{s}}{B_o} \eqnunitfrac{lbm}{ft$^3$}
 \label{eq:rho_o}
 \end{equation}
-where $\gamma_g$ is the specific gravity of gas (defined below in Eq. \ref{eq:gamma_g}) and $a_1$ and $a_2$ are the densities of water and air at standard conditions. This value is also converted to SI units [kg/m$^3$] \xlname{RHO\_O}. For LPG the density is assumed to be 550 kg/m$^3$.
+where \xlname{GAMMA\_g} is the specific gravity of gas (defined below in Eq. \ref{eq:gamma_g}) and $a_1$ and $a_2$ are the densities of water and air at standard conditions. This value is also converted to SI units [kg/m$^3$] \xlname{RHO\_O}. For LPG the density is assumed to be 550 kg/m$^3$.
 
 \paragraph{Volumetric flow rate of oil}
 The volumetric flow rate of oil is then given by the mass flow rate $m_o$ and the density of crude oil:
@@ -1448,12 +1455,12 @@ Q_o = \frac{m_o}{\rho_o}  \eqnunitfrac{m$^3$}{d}
 
 The energy density (heating value per unit mass) of oil is computed using a polynomial correlation for LHV of crude as a function of crude API gravity from the API Technical Databook, eq. 14A1.3-3:
 \begin{equation}
-LHV_o = a_1 + a_2 API - a_3 API^2 - a_4 API^3  \eqnunitfrac{btu LHV}{lbm}
+LHV_o = a_1 + a_2 \xlname{API\_grav} - a_3 \xlname{API\_grav}^2 - a_4 \xlname{API\_grav}^3  \eqnunitfrac{btu LHV}{lbm}
 \label{eq:LHVO}
 \end{equation}
 This is then converted to SI units [MJ/kg]. A similar polynomial function can be used to compute the HHV of oil as a function of API gravity:
 \begin{equation}
-HHV_o = a_1 + a_2 API - a_3 API^2 - a_4 API^3  \eqnunitfrac{btu HHV}{lbm}
+HHV_o = a_1 + a_2 \xlname{API\_grav} - a_3 \xlname{API\_grav}^2 - a_4 \xlname{API\_grav}^3  \eqnunitfrac{btu HHV}{lbm}
 \label{eq:HHVO}
 \end{equation}
 For LPG streams the energy density is assumed equal to 50 MJ/kg.
@@ -1462,7 +1469,7 @@ For LPG streams the energy density is assumed equal to 50 MJ/kg.
 
 The energetic flow rate of oil can then be computed using the above terms:
 \begin{equation}
-F_{LHV,o} = Q_o  LHV_o
+F_{LHV,o} = Q_o  \xlname{LHV\_O}
 \end{equation}
 
 
@@ -1644,7 +1651,7 @@ where $T$ is the absolute temperature of the stream [$^\circ$R], $T_0$ is the am
 
 Gas density \xlname{RHO\_G} is given by the MW of gas relative to air, the density of air at standard conditions, and the gas formation volume factor:
 \begin{equation}
-\rho_g = \frac{\rho_{air}\gamma_g}{FVF_g}  \eqnunitfrac{tonne}{m$^3$}
+\rho_g = \frac{\rho_{air}\xlname{GAMMA\_g}}{FVF_g}  \eqnunitfrac{tonne}{m$^3$}
 \end{equation}
 
 \paragraph{Gas molecular weight}
@@ -1674,7 +1681,7 @@ where $m_i$ is the mass of gas species $i$ and $LHV_i$ is the lower heating valu
  
  The total gas energetic flow rate for a given stream is given by:
  \begin{equation}
- Q_{LHV,g} = m_{tot,g} LHV_g  \quad\quad\eqnunitfrac{m$^3$}{d}
+ Q_{LHV,g} = m_{tot,g} \xlname{LHV\_G}  \quad\quad\eqnunitfrac{m$^3$}{d}
  \end{equation}
  
  \subsection{Properties of water}
@@ -1697,9 +1704,9 @@ The water formation volume factor \xlname{WVF} is assumed to be 1.0 for all stre
 \paragraph{Water density}
 Water density \xlname{RHO\_W} is given by the specific gravity of water and the water formation volume factor:
 \begin{equation}
-\rho_w = \frac{\gamma_w \rho_{w,0}}{B_w} \eqnunitfrac{tonne}{m$^3$}.
+\rho_w = \frac{\xlname{GAMMA\_W} \rho_{w,0}}{B_w} \eqnunitfrac{tonne}{m$^3$}.
 \end{equation}
-where $\rho_{w,0}$ is the density of pure water [1000 kg/m$^3$]. Because we assume $B_w$ = 1 for simplicity, $\rho_w = \gamma_w \rho_{w,0}$. 
+where $\rho_{w,0}$ is the density of pure water [1000 kg/m$^3$]. Because we assume $B_w$ = 1 for simplicity, $\rho_w = \xlname{GAMMA\_W} \rho_{w,0}$. 
 
 \paragraph{Water flow rate}
 Water flow rate \xlname{Q\_W} is computed from mass flow rate of water $m_w$ for a given stream and the density of water $\rho_w$ for that stream:
