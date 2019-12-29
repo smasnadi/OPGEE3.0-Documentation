@@ -533,7 +533,7 @@ See Figure \ref{fig:lca_specs} below for the locations of adjustable model param
 
 We populate columns 1-3 with data collected for our three oil fields. A single column in OPGEE is parameterized according to operating conditions for a single year. Therefore, the resulting CI provides a static estimate of emissions for a barrel of oil from a single oil field at a specific point in time. For those parameters that lack data, we leave the cells blank. In the absence of data inputs, OPGEE generates ``smart defaults'': statistically determined parameters designed to be representative of known oil and gas fields (with distributions generated from a global dataset, for more on smart defaults see Section \ref{sec:smart_defaults}). 
 
-For basic interaction, we will run each field one at a time with one uncertainty realization (recalling that the \sheet{Active Field} sheet only displays information one field at a time). In the case of our tight oil field, we note that horizontal drilling and hydraulic fracturing need to be turned on in the \sheet{Secondary Inputs} worksheet (as a first approximation, navigate to ``Drilling & development'' in \sheet{Secondary Inputs} and set ``Fraction of wells fractured'' and ``Horizontal well?'' to ``1'').
+For basic interaction, we will run each field one at a time with one uncertainty realization (recalling that the \sheet{Active Field} sheet only displays information one field at a time). In the case of our tight oil field, we note that horizontal drilling and hydraulic fracturing need to be turned on in the \sheet{Secondary Inputs} worksheet (as a first approximation, navigate to ``Drilling \& development'' in \sheet{Secondary Inputs} and set ``Fraction of wells fractured'' and ``Horizontal well?'' to ``1'').
 
 \begin{figure}[h]
 \includegraphics[width=1\columnwidth]{documentation/images/User_Guide_figs/inputs.jpg}
@@ -695,9 +695,9 @@ This worksheet retrieves and calculates the fuel cycle energy consumption and GH
 
 This worksheet retrieves and builds emissions factors for the calculation of combustion and non-combustion GHG emissions from energy use and losses. The \sheet{Emission factors} worksheet is described in Section \ref{sec:emissions_factors}.
 
-\subsubsection{\sheet{Venting & Fugitives} worksheet} 
+\subsubsection{\sheet{Venting \& Fugitives} worksheet} 
 
-This worksheet calculates in detail the GHG emissions associated with venting and fugitives. The \sheet{Venting & Fugitives} worksheet is described in Section \ref{sec:VFF}.
+This worksheet calculates in detail the GHG emissions associated with venting and fugitives. The \sheet{Venting \& Fugitives} worksheet is described in Section \ref{sec:VFF}.
 
 \subsubsection{\sheet{Fuel Specs} worksheet}
 
@@ -961,30 +961,70 @@ Sapinhoa &10 &10 &120000 & \url{http://www.offshore-technology.com/projects/guar
 It is uncommon for a production tubing diameter (\xlname{Well\_diam}) to be over 5 inch (some highly productive wells in Middle East region excepted). Therefore, a triangularly distributed default well diameter with 1 to 5 inch range is defined in OPGEE. The OPGEE default diameter is 2.78 inches.   
 
 \subsection{Default productivity index}
-Oilfields productivity index (\xlname{Prod\_index}) is an important OPGEE input parameter, as field PI directly affects the productivity of wells and is therefore a strategic datapoint. However, PI data are rarely reported in the literature. Based on few available data (20 data points), a mean of 17 and STDV of 18 are set as OPGEE PI default. PI is bounded to be positive in all cases.  
+Oilfields productivity index (\xlname{Prod\_index}) is an important OPGEE input parameter, as field \emph{PI} directly affects the productivity of wells and is therefore a strategic datapoint. However, \emph{PI} data are rarely reported in the literature. Based on few available data (20 data points), a mean of 17 and STDV of 18 are set as OPGEE \emph{PI} default. \emph{PI} is bounded to be positive in all cases.  
 
 \subsection{Default reservoir pressure}
 The reservoir pressure (\xlname{Res\_press}) is calculated based on a multiplication of a coefficient $\alpha$(\emph{t}) (a function of reservoir age, \emph{t}) to the normal reservoir pressure, the pressure in the reservoir fluids necessary to sustain a column of water to the surface \cite{fertl1981abnormal}. 
+
 %%%%%%%%%%
-\begin{equation} \label{eq:res_pressure1}
-\xlname{Res\_press}= \alpha\xlname{Field\_depth}/2.31 \quad\quad\eqnunit{psia}
+\begin{minipage}{0.6\columnwidth} \label{eq:res_pressure1}
+\begin{fleqn}[0pt]
+\begin{equation}
+p_{res}= \alpha D_{field}/2.31 \quad\quad\eqnunit{psia}
 \end{equation}
+\end{fleqn}
+\end{minipage}\hfill
+\begin{minipage}{0.3\columnwidth}
+        \begin{tabular}{|cl}
+        & \\
+        $p_{res}$   & \xlname{Res\_press}\\
+        $D_{field}$   & \xlname{Field\_depth}\\
+        & \\
+        \end{tabular}
+\end{minipage}
 %%%%%%%%%%
 where \xlname{Field\_depth} is the reservoir depth (ft). In order to find a relationship for $\alpha$, (2.31*\xlname{Res\_press}/\xlname{Field\_depth}) of several offshore and onshore global fields are plotted as a function of field age. Minimizing the square of residuals, different functions (i.e. exponential, logarithmic, polynomial, and power) are examined to find the best fit: 
+
 %%%%%%%%%%
-\begin{equation}\label{eq:res_pressure2}
-\alpha=4.9*10^{-8}\xlname{Field\_age} {^2}+0.95 \quad\quad\eqnunit{s}
+\begin{minipage}{0.6\columnwidth} \label{eq:res_pressure2}
+\begin{fleqn}[0pt]
+\begin{equation}
+\alpha=4.9*10^{-8}t{^2}+0.95 \quad\quad\eqnunit{s}
+\end{equation}
+\end{fleqn}
+\end{minipage}\hfill
+\begin{minipage}{0.3\columnwidth}
+        \begin{tabular}{|cl}
+        & \\
+        $t$   & \xlname{Field\_age}\\
+        & \\
+        \end{tabular}
+\end{minipage}
+\begin{equation}
 \end{equation}
 %%%%%%%%%%
 
 \subsection{Default reservoir temperature}
 Reservoir temperature (\xlname{Res\_temp}) is also a direct function of the reservoir depth and is found to increase by 1$^{\circ}$F for about 60 ft in many reservoirs. Reservoir temperature can be estimated base on the following expression:
+
 %%%%%%%%%%
-\begin{equation}\label{eq:res_temp}
-\xlname{Res\_temp}=T_{a}+\Delta T\cdot \xlname{Field\_depth}/100^{\circ}F \quad\quad\eqnunit{$^{\circ}$F}
+\begin{minipage}{0.6\columnwidth}\label{eq:res_temp}
+\begin{fleqn}[0pt]
+\begin{equation}
+T_{res}=T_{a}+\Delta T\cdot D_{field}/100^{\circ}F \quad\quad\eqnunit{$^{\circ}$F}
 \end{equation}
+\end{fleqn}
+\end{minipage}\hfill
+\begin{minipage}{0.3\columnwidth}
+        \begin{tabular}{|cl}
+        & \\
+        $T_{res}$   & \xlname{Res\_temp}\\
+        $D_{field}$   & \xlname{Field\_depth}\\
+        & \\
+        \end{tabular}
+\end{minipage}
 %%%%%%%%%%
-where \xlname{Res\_temp} and \emph{T$_{a}$} are reservoir and ambient temperatures, respectively. A geothermal gradient of 1.8$^{\circ}$ per 100 ft is assumed. 
+where $T_{res}$ and \emph{T$_{a}$} are reservoir and ambient temperatures, respectively. A geothermal gradient of 1.8$^{\circ}$ per 100 ft is assumed. 
 
 \subsection{Default API gravity}
 
@@ -1050,15 +1090,27 @@ Additionally, a small number of fields were excluded because of apparent data an
 
 
 The default WOR is represented by an exponential function:
+
 %%%%%%%%%%
-\begin{equation}\label{eq:smart_default_WOR}
-\xlname{WOR} = a_{WOR} \exp [b_{WOR} ( t - t_0 )] - a_{WOR} \quad\quad\eqnunitfrac{bbl water}{bbl oil}
+\begin{minipage}{0.8\columnwidth}\label{eq:smart_default_WOR}
+\begin{fleqn}[0pt]
+\begin{equation}
+WOR = a_{WOR} \exp [b_{WOR} ( t - t_0 )] - a_{WOR} \quad\quad\eqnunitfrac{bbl water}{bbl oil}
 \end{equation}
+\end{fleqn}
+\end{minipage}\hfill
+\begin{minipage}{0.3\columnwidth}
+        \begin{tabular}{|cl}
+        & \\
+        $WOR$   & \xlname{WOR}\\
+        & \\
+\end{tabular}
+\end{minipage}
 %%%%%%%%%%
-where $a_{WOR}$ = fitting constant for the initial WOR in time = $t_0$ [bbl water/bbl oil]; $b_{WOR}$ = exponential growth rate [1/y]; $t_0$ = initial year of production (or year of discovery if year of first production unavailable) [y]; and $t$ = year being modeled (independent variable) [y]. Note that the pre-exponential $a_{WOR}$ is subtracted to force WOR to start at 0 when $t = t_0$. This model was fit to the collected data using a nonlinear least-squares fit from multiple starting points to ensure robustness.
+where $a_{WOR}$ = fitting constant for the initial $WOR$ in time = $t_0$ [bbl water/bbl oil]; $b_{WOR}$ = exponential growth rate [1/y]; $t_0$ = initial year of production (or year of discovery if year of first production unavailable) [y]; and $t$ = year being modeled (independent variable) [y]. Note that the pre-exponential $a_{WOR}$ is subtracted to force WOR to start at 0 when $t = t_0$. This model was fit to the collected data using a nonlinear least-squares fit from multiple starting points to ensure robustness.
 The results of fitting this model to the smart default fit values, compared to oil fields from a variety of world regions, is show in Figure \ref{fig:exponenital_fit_WOR}. The resulting fit gives $a_{WOR} = 4.020$ and $b_{WOR} = 0.024$. Figure \ref{fig:WOR_hist} histogram also shows that the 30 global oilfields WORs are distributed lognormally, with the majority of the data between 0-0.25 bbl water/bbl oil. 
 
-The WOR data STDVs are also plotted vs. field age, as shown in Figure \ref{fig:WOR_STDV}. A power function with R$^2$ = 91\% is fitted to the data in order to be used as smart default WOR_{STDV}:
+The WOR data STDVs are also plotted vs. field age, as shown in Figure \ref{fig:WOR_STDV}. A power function with R$^2$ = 91\% is fitted to the data in order to be used as smart default WOR$_STDV$:
 
 %%%%%%%%%%
 \begin{equation}\label{eq:smart_default_WOR_STDV}
@@ -1094,16 +1146,32 @@ The volume of water injected in a waterflooding project (\xlname{WIR}) is meant 
 \subsection{Default gas flooding injection ratio}
 
 Gas flooding injection ratio (\xlname{GFIR}) is the ratio of the volume of flood gas injected [scf] to the volume of oil produced [bbl]. The volume of the oil is measured after bulk processing has removed the associated gas. The default flood gas injection ratio value depends on the choice of flood gas. If natural gas is selected as the flood gas, then the default ratio is calculated as follows:
+
 %%%%%%%%%%
-\begin{equation}\label{eq:NaturalGasAirOxygenFloodGasRatio}
-\xlname{GFIR}=1.5\cdot \xlname{GOR} \quad\quad\eqnunitfrac{scf gas}{bbl oil}
+\begin{minipage}{0.6\columnwidth}\label{eq:NaturalGasAirOxygenFloodGasRatio}
+\begin{fleqn}[0pt]
+\begin{equation}
+GFIR=1.5\cdot GOR \quad\quad\eqnunitfrac{scf gas}{bbl oil}
+\end{equation}
+\end{fleqn}
+\end{minipage}\hfill
+\begin{minipage}{0.3\columnwidth}
+        \begin{tabular}{|cl}
+        & \\
+        $GFIR$   & \xlname{GFIR}\\
+        $GOR$   & \xlname{GOR}\\
+        & \\
+        \end{tabular}
+\end{minipage}
+
+\begin{equation}
 \end{equation}
 %%%%%%%%%%
-where \xlname{GFIR} is gas flooding injection ratio [scf/bbl] and \xlname{GOR} is the gas-oil-ratio [scf/bbl].
+where $GFIR$ is gas flooding injection ratio [scf/bbl] and $GOR$ is the gas-oil-ratio [scf/bbl].
 
-If N$_2$ is selected as the flood gas, then \xlname{GFIR} is 1,200 scf/bbl. This is based on the immiscible nitrogen flood operation at the Cantarell field in Mexico to maintain reservoir pressure. As described in the \nameref{sec:gas_flooding_compressor} section, the field operating equipment is designed to inject 1,200 mmscf/d \cite{Kuo2001}. In 2008, the injection rate was approximately 1,200 mmscf/d and the field was producing approximately 1.2 million bbl/d, leading to a default ratio of 1,200 scf/bbl \cite{Guzman2014}.
+If N$_2$ is selected as the flood gas, then $GFIR$ is 1,200 scf/bbl. This is based on the immiscible nitrogen flood operation at the Cantarell field in Mexico to maintain reservoir pressure. As described in the \nameref{sec:gas_flooding_compressor} section, the field operating equipment is designed to inject 1,200 mmscf/d \cite{Kuo2001}. In 2008, the injection rate was approximately 1,200 mmscf/d and the field was producing approximately 1.2 million bbl/d, leading to a default ratio of 1,200 scf/bbl \cite{Guzman2014}.
 
-If CO$_2$ is selected as the flood gas, then default \xlname{GFIR} is 10,000 scf/bbl. As with all injection ratios, \xlname{GFIR} changes over the life cycle of the flood project. It can also vary based on the specific reservoir engineering strategies selected by the operator.  An example comes from DiPietro and Murrel (2013), who presented data from Kinder Morgan indicating that the injection ratio during the overall lifespan of an anonymous representative project was 6,000 scf/bbl. 
+If CO$_2$ is selected as the flood gas, then default $GFIR$ is 10,000 scf/bbl. As with all injection ratios, $GFIR$ changes over the life cycle of the flood project. It can also vary based on the specific reservoir engineering strategies selected by the operator.  An example comes from DiPietro and Murrel (2013), who presented data from Kinder Morgan indicating that the injection ratio during the overall lifespan of an anonymous representative project was 6,000 scf/bbl. 
 
 Another example is provided by Pyo et al. \cite{Pyo2003}, who reviewed the performance of a CO$_2$ flood at the Joffre Viking Pool in Alberta, Canada that had been active for approximately 30 years. The overall flood gas injection ratio during the life of the project was 10,800 scf/bbl; the ratios for the individual injector-producer well patterns within the field varied from 3,500 to 24,900 scf/bbl. 
 
@@ -1356,6 +1424,8 @@ A number of properties of oil are tracked.  These properties are a function of o
 
 \paragraph{API gravity of oil}
 
+% ISSUE 5: shouldn't we name it as API_grav? Is API_0=API_grav? If so, shouldn't we merge them? 
+
 The API gravity of the oil is tracked as variable \xlname{API\_O}.  For conventional oil streams, this is defined as equal to the defined parameter \xlname{API\_grav} (streams given in Table \ref{tab:Source_API_Gravity}).  For bitumen streams it is equal to defined parameter \xlname{Bitumen\_API}.  For diluent streams it is equal to \xlname{Diluent\_API}. For LPG the API gravity is not computed as this parameter is not typically used to represent these products.
 
 \begin{table}
@@ -1394,22 +1464,46 @@ Stream num. & Stream name	&	Source of API gravity term		& Default		& Notes \\
 \paragraph{Specific gravity of oil}
 
 The specific gravity of the oil is tracked as variable \xlname{GAMMA\_O}. Specific gravity is the density of a fluid compared to the density of water, both measured at 60 $^\circ$F. Specific gravity is computed from the API gravity as follows:
+
+\begin{minipage}{0.6\columnwidth}
+\begin{fleqn}[0pt]
 \begin{equation}
 \gamma_o = \frac{141.5}{131.5 + API} \eqnunitfrac{g}{g}
 \end{equation}
-\begin{equation}
-\xlname{GAMMA\_O} = \frac{141.5}{131.5 + \xlname{API\_O}} \eqnunitfrac{g}{g}
-\end{equation}
+\end{fleqn}
+\end{minipage}\hfill
+\begin{minipage}{0.3\columnwidth}
+        \begin{tabular}{|cl}
+        & \\
+        $\gamma_o$   & \xlname{GAMMA\_O}\\
+        \emph{API}   & \xlname{API\_O}\\
+        & \\
+        \end{tabular}
+\end{minipage}
 
 This equation holds for conventional oil, bitumen, and diluent. For LPG streams the density is assumed equal to 550 kg/$m^3$, or midway between the density of propane (504 kg/m$^3$ at 60 $^\circ$F) and butane (600 kg/m$^3$ at 60 $^\circ$F). This $\gamma_o$, computed as sales oil specific gravity, is used as an input to computing the specific gravity of oil at pressure with dissolved gases in solution.
 
 \paragraph{Solution gas oil ratio of oil}
 
 The solution gas oil ratio $R_s$ \xlname{GOR\_OS} is the amount of gas in solution in a crude oil. The solution GOR is a function of a number of properties. If there is more gas present than the solution GOR, the gas will start to evolve from the oil into a separate gas phase (i.e., the gas will start to exsolve or bubble out of the oil).  As recommended in Fanchi \cite{Fanchi2007}, we re-arrange the bubblepoint pressure relationship to solve for the amount of gas in solution at a given pressure. We use the bubblepoint pressure relationship of Al-Shammasi (1999), as reproduced in \cite[vol 1, Table 6.6]{Fanchi2007}:
+
+\begin{minipage}{0.6\columnwidth}
+\begin{fleqn}[0pt]
 \begin{equation}
-R_{s} = \frac{p^{\left(\frac{1}{a_2}\right)} \xlname{GAMMA\_O}^{\left(-\frac{a_1}{a_2}\right)} e^{\left(\frac{a_3}{a_2} \xlname{GAMMA\_O} \xlname{GAMMA\_g}\right)}}{\xlname{GAMMA\_g} T_{abs}} \eqnunitfrac{scf}{bbl}
+R_{s} = \frac{p^{\left(\frac{1}{a_2}\right)} \gamma_o^{\left(-\frac{a_1}{a_2}\right)} e^{\left(\frac{a_3}{a_2}  \gamma_o  \gamma_g\right)}}{ \gamma_g T_{abs}} \eqnunitfrac{scf}{bbl}
 \label{eq:GOR_OS}
 \end{equation}
+\end{fleqn}
+\end{minipage}\hfill
+\begin{minipage}{0.3\columnwidth}
+        \begin{tabular}{|cl}
+        & \\
+        $\gamma_o$   & \xlname{GAMMA\_O}\\
+        $\gamma_g$   & \xlname{GAMMA\_g}\\
+        & \\
+        \end{tabular}
+\end{minipage}
+
 If the resulting gas oil ratio is larger than the bubblepoint pressure gas oil ratio ($R_b$), then the equation defaults to the bubblepoint gas oil ratio. The equation for bubblepoint gas oil ratio is given below in Eq. \ref{eq:BOB}. This solution gas oil ratio computation is defined as a user-defined function  \xlname{SolutionGasOilRatio} for use in later calculations on sub-sheets (e.g., multi-stage separation).
 
 
@@ -1417,7 +1511,7 @@ If the resulting gas oil ratio is larger than the bubblepoint pressure gas oil r
 
 The oil formation volume factor $B_o$ \xlname{OVF} is the ratio of the number of barrels that a barrel of oil will occupy in the reservoir over the number of stock tank (standard) barrels that the oil will occupy. The oil formation volume factor is a function of the solution gas oil ratio, the temperature, and the pressure of the fluid, with the gas in solution being the largest determinant. The oil FVF at the bubblepoint pressure is generated via bubblepoint oil FVF correlations \xlname{FVF\_SAT}. We use the bubblepoint oil formation volume factor correlation from Al-Shammasi \cite[Table A-3, p. 317]{Fanchi2007}\cite{Alshammasi2001}:
 \begin{equation}
-B_{ob} = a_1+ a_2 R_s (T_r - 60) + a_3\left( \frac{R_s }{\xlname{GAMMA\_O}}\right) + a_4  \left(\frac{T_r - 60}{\xlname{GAMMA\_O}}\right)+ a_5 R_s \left( \frac{\xlname{GAMMA\_g}}{\xlname{GAMMA\_O}}\right)  \eqnunitfrac{bbl}{STB} 
+B_{ob} = a_1+ a_2 R_s (T_r - 60) + a_3\left( \frac{R_s }{\gamma_o}\right) + a_4  \left(\frac{T_r - 60}{\gamma_o}\right)+ a_5 R_s \left( \frac{\gamma_g}{\gamma_o}\right)  \eqnunitfrac{bbl}{STB} 
 \label{eq:BOB}
 \end{equation}
 this correlation is useful for saturated oil, or oil with its associated gas at the maximum amount (i.e., as pressure drops gas is evolved). 
@@ -1430,17 +1524,29 @@ B_o = B_{ob} e^{[c_o (p_b-p)]} \eqnunitfrac{bbl}{STB}
 where $c_o$ is the isothermal compressibility of oil, $p_b$ the bubblepoint pressure of oil, and $p$ the pressure of the stream.
 
 We use the correlation of Al-Marhoun \cite{Almarhoun1992} for the isothermal compressibility term $c_o$ \xlname{ISO\_CO}.
+
+\begin{minipage}{0.6\columnwidth}
+\begin{fleqn}[0pt]
 \begin{equation}
-c_o = 55.233 \times 10^{-6} - 60.588\times 10^{-6}\xlname{GAMMA\_O} \eqnunitfrac{1}{psi}
-\label{eq:CO_ISO}
+c_o = 55.233 \times 10^{-6} - 60.588\times 10^{-6}\gamma_o \quad\quad\eqnunitfrac{1}{psi}
 \end{equation}
+\end{fleqn}
+\end{minipage}\hfill
+\begin{minipage}{0.3\columnwidth}
+        \begin{tabular}{|cl}
+        & \\
+        $\gamma_o$   & \xlname{GAMMA\_O}\\
+        & \\
+        \end{tabular}
+\end{minipage}
+
 Finally, we can uses these two terms to compute the oil FVF \xlname{FVF\_UNSAT}. If $p<p_b$, $B_{ob}$ is used, while if $p \geq p_b$ then $B_o$ is used.
 
 \paragraph{Density of oil}
 
 Using the above terms, the density of crude \xlname{RHO\_O\_LB} can then be computed in using the following relation \cite[p. 277]{Fanchi2007}:
 \begin{equation}
-\rho_o = \frac{a_1 \xlname{GAMMA\_O}+ a_2 \xlname{GAMMA\_g} R_{s}}{B_o} \eqnunitfrac{lbm}{ft$^3$}
+\rho_o = \frac{a_1 \gamma_o+ a_2 \gamma_g R_{s}}{B_o} \eqnunitfrac{lbm}{ft$^3$}
 \label{eq:rho_o}
 \end{equation}
 where \xlname{GAMMA\_g} is the specific gravity of gas (defined below in Eq. \ref{eq:gamma_g}) and $a_1$ and $a_2$ are the densities of water and air at standard conditions. This value is also converted to SI units [kg/m$^3$] \xlname{RHO\_O}. For LPG the density is assumed to be 550 kg/m$^3$.
@@ -1454,13 +1560,15 @@ Q_o = \frac{m_o}{\rho_o}  \eqnunitfrac{m$^3$}{d}
 \paragraph{Energy density of oil}
 
 The energy density (heating value per unit mass) of oil is computed using a polynomial correlation for LHV of crude as a function of crude API gravity from the API Technical Databook, eq. 14A1.3-3:
+
 \begin{equation}
-LHV_o = a_1 + a_2 \xlname{API\_grav} - a_3 \xlname{API\_grav}^2 - a_4 \xlname{API\_grav}^3  \eqnunitfrac{btu LHV}{lbm}
+LHV_o = a_1 + a_2 API - a_3 API^2 - a_4 API^3  \eqnunitfrac{btu LHV}{lbm}
 \label{eq:LHVO}
 \end{equation}
+
 This is then converted to SI units [MJ/kg]. A similar polynomial function can be used to compute the HHV of oil as a function of API gravity:
 \begin{equation}
-HHV_o = a_1 + a_2 \xlname{API\_grav} - a_3 \xlname{API\_grav}^2 - a_4 \xlname{API\_grav}^3  \eqnunitfrac{btu HHV}{lbm}
+HHV_o = a_1 + a_2 API - a_3 API^2 - a_4 API^3  \eqnunitfrac{btu HHV}{lbm}
 \label{eq:HHVO}
 \end{equation}
 For LPG streams the energy density is assumed equal to 50 MJ/kg.
@@ -1468,10 +1576,20 @@ For LPG streams the energy density is assumed equal to 50 MJ/kg.
 \paragraph{Energetic flow rate of oil}
 
 The energetic flow rate of oil can then be computed using the above terms:
-\begin{equation}
-F_{LHV,o} = Q_o  \xlname{LHV\_O}
-\end{equation}
 
+\begin{minipage}{0.6\columnwidth}
+\begin{fleqn}[0pt]
+\begin{equation}F_{LHV,o} = Q_o  LHV_o
+\end{equation}
+\end{fleqn}
+\end{minipage}\hfill
+\begin{minipage}{0.3\columnwidth}
+        \begin{tabular}{|cl}
+        & \\
+         \emph{LHV$_o$} & \xlname{LHV\_o}\\
+        & \\
+        \end{tabular}
+\end{minipage}
 
 
 
@@ -1651,7 +1769,7 @@ where $T$ is the absolute temperature of the stream [$^\circ$R], $T_0$ is the am
 
 Gas density \xlname{RHO\_G} is given by the MW of gas relative to air, the density of air at standard conditions, and the gas formation volume factor:
 \begin{equation}
-\rho_g = \frac{\rho_{air}\xlname{GAMMA\_g}}{FVF_g}  \eqnunitfrac{tonne}{m$^3$}
+\rho_g = \frac{\rho_{air}\gamma_g}{FVF_g}  \eqnunitfrac{tonne}{m$^3$}
 \end{equation}
 
 \paragraph{Gas molecular weight}
@@ -1680,19 +1798,44 @@ where $m_i$ is the mass of gas species $i$ and $LHV_i$ is the lower heating valu
  \paragraph{Total gas energetic flow rate}
  
  The total gas energetic flow rate for a given stream is given by:
- \begin{equation}
- Q_{LHV,g} = m_{tot,g} \xlname{LHV\_G}  \quad\quad\eqnunitfrac{m$^3$}{d}
- \end{equation}
+ 
+\begin{minipage}{0.6\columnwidth}
+\begin{fleqn}[0pt]
+\begin{equation}
+ Q_{LHV,g} = m_{tot,g} LHV_g \quad\quad\eqnunitfrac{m$^3$}{d}
+\end{equation}
+\end{fleqn}
+\end{minipage}\hfill
+\begin{minipage}{0.3\columnwidth}
+        \begin{tabular}{|cl}
+        & \\
+       \emph{LHV$_g$}   & \xlname{LHV\_G}\\
+        & \\
+        \end{tabular}
+\end{minipage}
  
  \subsection{Properties of water}
  
  \paragraph{Specific gravity of water}
 
-The specific gravity of produced water \xlname{GAMMA\_W} at standard conditions is calculated using \cite[p. 481]{Fanchi2007}: 
+The specific gravity of produced water (\xlname{GAMMA\_W}) at standard conditions is calculated using \cite[p. 481]{Fanchi2007}: 
 %%%%%%%%%%
-\begin{equation} \label{eq:water_gravity}
+
+\begin{minipage}{0.6\columnwidth}
+\begin{fleqn}[0pt]
+\begin{equation}
 \gamma _{w}=1+C _{sd} 0.695 \times 10^{-6} \eqnunit{-}
 \end{equation}
+\end{fleqn}
+\end{minipage}\hfill
+\begin{minipage}{0.3\columnwidth}
+        \begin{tabular}{|cl}
+        & \\
+       $\gamma_{w}$  & \xlname{GAMMA\_W}\\
+        & \\
+        \end{tabular}
+\end{minipage}
+
 %%%%%%%%%% 
 where $C _{sd}$ = concentration of dissolved solids (also known as TDS) [\unitfrac{mg}{L}]. The constant 0.695 $\times$ 10$^{-6}$ has units of [L/mg].
 
@@ -1703,10 +1846,11 @@ The water formation volume factor \xlname{WVF} is assumed to be 1.0 for all stre
 
 \paragraph{Water density}
 Water density \xlname{RHO\_W} is given by the specific gravity of water and the water formation volume factor:
+
 \begin{equation}
-\rho_w = \frac{\xlname{GAMMA\_W} \rho_{w,0}}{B_w} \eqnunitfrac{tonne}{m$^3$}.
+\rho_w = \frac{\gamma _{w} \rho_{w,0}}{B_w} \eqnunitfrac{tonne}{m$^3$}.
 \end{equation}
-where $\rho_{w,0}$ is the density of pure water [1000 kg/m$^3$]. Because we assume $B_w$ = 1 for simplicity, $\rho_w = \xlname{GAMMA\_W} \rho_{w,0}$. 
+where $\rho_{w,0}$ is the density of pure water [1000 kg/m$^3$]. Because we assume $B_w$ = 1 for simplicity, $\rho_w = \gamma _{w} \rho_{w,0}$. 
 
 \paragraph{Water flow rate}
 Water flow rate \xlname{Q\_W} is computed from mass flow rate of water $m_w$ for a given stream and the density of water $\rho_w$ for that stream:
@@ -1762,14 +1906,14 @@ This section explains three worksheets in OPGEE which are used to collect output
 
 In the \sheet{Energy Consumption} gathering worksheet, energy use is summed in order of process stages, from Exploration to Waste disposal. For consistency, all energy inputs are summed on a daily basis, either as thermal energy (mmBtu/d) or as electrical energy (kWh/d). All energy types are classified using a fuel code. The primary energy types included are: 1A) Natural gas; 1B) Natural gas liquids; 2) Diesel fuel; 3) Electricity; 4) Crude oil.
 
-First, the amount and type of fuel consumed by each process stage (e.g., Exploration, Drilling \& Development, etc) is collected using nested if then statements. Second, the fuel consumption is summed by fuel type (e.g., natural gas, diesel) to calculate the gross energy consumption. 
+First, the amount and type of fuel consumed by each process stage (e.g., Exploration, Drilling \& Development, etc.) is collected using nested if then statements. Second, the fuel consumption is summed by fuel type (e.g., natural gas, diesel) to calculate the gross energy consumption. 
 
 The gross energy consumption can include double counted energy. For example, the electricity consumed to drive a pump may be generated onsite and the energy consumed to generate that electricity would also be counted as natural gas or diesel, resulting in double counting. 
 
 The net energy consumption is calculated by  fuel type. The net energy consumption is equal to the gross energy consumption for all fuels except for electricity. The net energy consumption of electricity is calculated as:
 %%%%%%%%%%%%%
 \begin{equation}\label{net_elec}
-E_{el,net}= E_{el,gr} - E_{el,gen} \quad\quad\eqnunit{mmBtu}
+E_{el,net}= E_{el,gr} - E_{el,gen} \quad\quad\eqnunitfrac{mmBtu}{d}
 \end{equation}
 %%%%%%%%%%%%%
 where $ E_{el,net}$ = net electricity consumption [mmBtu/d]; $E_{el,gr}$ = gross electricity consumption [mmBtu/d]; and $E_{el,gen}$ = total electricity generated onsite [mmBtu/d]. The total electricity generated onsite includes electricity generated using an onsite generator or simple turbine and electricity co-generated in the steam generation system, if applicable. In other words, the net electricity consumption is equal to the electricity imported from the grid, if any.
@@ -1811,7 +1955,7 @@ EM_{s,k} = E_{s,k,gr} \, EF_{s,k} \quad\quad\eqnunitfrac{gCO$_{2}$eq}{d}
 \label{direct_emissions}
 \end{equation}
 %%%%%%%%%%%%
-where $s$ = emissions source (e.g., downhole pump driver); $k$ = fuel type;\newline $EM_{s,k}$ = direct GHG emissions from the consumption of fuel $k$ in source $s$ [gCO$_{2}$eq/d]; and $E_{s,k,gr}$ = gross energy consumption of fuel $k$ in source $s$ [mmBtu/d]; and $EF_{s,k}$ = emissions factor of source $s$ using fuel $k$ [g CO$_2$ eq./mmBtu]. This equation does not apply to electricity, where direct GHG emissions are equal to 0 gCO$_{2}$eq/d.
+where $s$ = emissions source (e.g., downhole pump driver); $k$ = fuel type;\newline $EM_{s,k}$ = direct GHG emissions from the consumption of fuel $k$ in source $s$ [gCO$_{2}$eq/d]; and $E_{s,k,gr}$ = gross energy consumption of fuel $k$ in source $s$ [mmBtu/d]; and $EF_{s,k}$ = emissions factor of source $s$ using fuel $k$ [gCO$_2$eq/mmBtu]. This equation does not apply to electricity, where direct GHG emissions are equal to 0 gCO$_{2}$eq/d.
 
 Next, the GHG emissions from land use, flaring, and venting/fugitives are calculated by process stage. This includes gathering emissions calculated in each process stage and supplemental worksheets.
 
@@ -1838,6 +1982,8 @@ CR_{CO_{2}} = P_{oilfield} \cdot (Seq_{CO_{2}} - Blow_{CO_{2}} - Leakage_{CO_{2}
 \end{equation}
 %%%%%%%%%%
  where $CR_{CO_{2}}$ = CO$_2$ sequestration credit assigned to the oilfield [gCO$_2$/d]; $P_{oilfield}$ = proportion of the overall sequestration credit assigned to the oilfield [-]; $Seq_{CO_{2}}$ = CO$_2$ sequestration rate [gCO$_2$/d]; $Blow_{CO_{2}}$ = CO$_2$ lost from the reservoir from terminal blow-down operations [gCO$_2$/d]; and $Leakage_{CO_{2}}$ = the amount of CO$_2$ leaving the reservoir from long-term leakage [gCO$_2$/d].
+ 
+ The \sheet{Active Field} worksheet is discussed in details in section \ref{sec:active_field}.
 
 
 
@@ -1859,9 +2005,9 @@ Emissions from petroleum exploration occur during clearing of land for seismic s
 
 Required inputs for exploration emissions include the following terms gathered from the \sheet{Active Field} worksheet:
 \begin{itemize}
-\item Field depth [ft]
-\item Is field offshore [0-1]
-\item Field production rate [bbl/d]
+\item Field depth \xlname{Field\_depth} [ft]
+\item Is field offshore \xlname{Offshore\_01} [0-1]
+\item Field production rate \xlname{Oil\_prod} [bbl/d]
 \end{itemize}
 
 Required inputs to be entered for secondary interaction on the \sheet{Exploration Emissions} worksheet include:
@@ -1895,25 +2041,26 @@ Energy consumed in exploration is computed as a fraction of the total lifetime e
 
 Table \ref{tab:exploration} shows the default settings for petroleum exploration.
 
+% issue 4: the last two parameters of Table 7.1 do not have defined name in OPGEE secondary sheet
 
 \begin{landscape}
 \begin{table}
 \begin{scriptsize}
-\tablefirsthead{\toprule Param. & Description & Eq. no. & Default & Literature range & Unit & Sources & Notes\\
+\tablefirsthead{\toprule Param. & Description & Defined name & Eq. no. & Default & Literature range & Unit & Sources & Notes\\
 \midrule}
-\tablehead{ \multicolumn{5}{p{1\columnwidth}}{\textit{Continued from previous page}}\\ \toprule Param. &Description & Eq. no. &Default & Literature range & Unit & Sources & Notes \\ 
+\tablehead{ \multicolumn{5}{p{1\columnwidth}}{\textit{Continued from previous page}}\\ \toprule Param. &Description & Defined name & Eq. no. &Default & Literature range & Unit & Sources & Notes \\ 
 \midrule }
 \tabletail{\bottomrule \multicolumn{5}{p{1\columnwidth}}{\textit{Continued on next page...}}\\}
 \tablelasttail{\bottomrule}
 \tablecaption{Default inputs for exploration emissions}
 \label{tab:exploration}
 \begin{threeparttable}
-\begin{supertabular*}{1\columnwidth}{p{0.05\columnwidth}p{0.4\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.07\columnwidth}p{0.1\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}}
-$D_{j} $ & Distance exploration mode $j$ travels  (same for $S$ and $T$)	& - 	& 10,000& - &[mi] & & a\\ 
-$m_{S} $ & Weight of exploration ship 	& - 	& 100 & - &[ton] & & b\\ 
-$m_{T}$ & Weight of exploration truck 	& - 	& 25  & - & [ton] & & c \\
-$UE_{S}$ & Effectiveness of exploration ship 	& - & 27 	& & [Btu/ton-mi] & \cite{Wang2009}&  \\
-$UE_{T}$ & Effectiveness of exploration truck 	& - & 969 	& & [Btu/ton-mi] & \cite{Wang2009}&  \\
+\begin{supertabular*}{1\columnwidth}{p{0.03\columnwidth}p{0.3\columnwidth}p{0.15\columnwidth}p{0.05\columnwidth}p{0.07\columnwidth}p{0.1\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}}
+$Di_{j} $ & Distance exploration mode $j$ travels  (same for $S$ and $T$)	& \xlname{Distance\_survey} 	& 10,000& - &[mi] & & a\\ 
+$m_{S} $ & Weight of exploration ship 	& \xlname{Weight\_ocean\_survey} & - 	& 100 & - &[ton] & & b\\ 
+$m_{T}$ & Weight of exploration truck & \xlname{Weight\_land\_survey} 	& - 	& 25  & - & [ton] & & c \\
+$UE_{S}$ & Effectiveness of exploration ship & 	& - & 27 	& & [Btu/ton-mi] & \cite{Wang2009}&  \\
+$UE_{T}$ & Effectiveness of exploration truck & 	& - & 969 	& & [Btu/ton-mi] & \cite{Wang2009}&  \\
 \end{supertabular*}
 \begin{tablenotes}
 \item[a] Simple assumption for distance of travel to remote exploration site. Distance traveled during actual survey is assumed by default to be small compared to distance to field location.
@@ -1965,6 +2112,8 @@ n_{w,tot}= n_{wo} + n_{wi}  \quad\quad\eqnunit{Num. wells}
 
 Drilling energy consumption must be amortized over the producing life of a well. Also, drilling and development energy must account for drilling of water injection wells. The lifetime productivity of wells varies by orders of magnitude, depending on the quality of the oil reservoir and its size. We include three cases for the productivity of wells from prior studies of embodied energy in oilfield operations \cite{Brandt2015a}.  Three options are allowed, corresponding to ``low'', ``medium'', and ``high'' per-well cumulative productivity. These settings correspond approximately to average production in the US, global average, and OPEC average productivity. Numerical values are 150 kbbl/well, 800 kbbl/well and 7,000 kbbl/well, respectively \cite[Supporting Information Table S1]{Brandt2015a}. The cumulative gas production per well is, in comparison, set to 1, 4 or 10 bcf per well \cite{}. These cumulative production values are denoted $Q_{op}$ and $Q_{gp}$ below.
 
+% Issue 6: reference missing above
+
 The cumulative production per well is converted to the cumulative energy production per well, in terms of oil and gas:
 
 \begin{minipage}{0.6\columnwidth}
@@ -1973,7 +2122,7 @@ The cumulative production per well is converted to the cumulative energy product
 E_{op} = n_{wo} Q_{op} LHV_o  \quad\quad\eqnunitfrac{mmBtu}{field}
 \end{equation}
 \begin{equation}
-E_{gp} = N_{wo} Q_{gp} LHV_g  \quad\quad\eqnunitfrac{mmBtu}{field}
+E_{gp} = n_{wo} Q_{gp} LHV_g  \quad\quad\eqnunitfrac{mmBtu}{field}
 \end{equation}
 \end{fleqn}
 \end{minipage}\hfill
@@ -2279,6 +2428,8 @@ Emissions associated with each choice are shown in Table \ref{tab:default_land_u
 
 Completions and workover events can result in flowback emissions. Flowback occurs after the completion event when the well is opened to the production system, often at low pressure, to allow any material (i.e., excess fracturing water) to flow to the surface. Gas produced during flowback can be captured for use (so-called reduced emissions completion, or REC), flared, or vented. The method to estimate flowback emissions of CO$_2$ and CH$_4$ are described below in section \ref{}. The two secondary inputs controlling emissions per completions event are \xlname{Flaring\_Fracturing\_Flowback} and \xlname{REC\_Fracturing\_Flowback}. If these are equal to 1, then the appropriate technologies, flaring or REC is applied. Similarly, these secondary inputs control whether emissions during workover flowback events are controlled with flaring, with REC, with both flaring and REC, or with neither.
 
+% issue 7: which section is referred in above paragraph?
+
 Once these emissions are estimated, they are combined with the number of wells drilled and wells worked over using. The total number of events is equal to the total number of wells \xlname{Num\_prod\_wells}+\xlname{Num\_water\_inj\_wells} times the number of events per well. Completions are only assumed to occur once per well and workovers are assumed to be performed \xlname{Number\_well\_workovers} per well.
 
 \subsection{Defaults for drilling \& development}
@@ -2287,7 +2438,7 @@ Default values for drilling \& development calculations are shown in Tables \ref
 
 \begin{table}
 \begin{scriptsize}
-\caption{Land use GHG emissions for 30 year analysis period from field drilling and development in OPGEE for conventional oil operations [g CO$_2$ eq/MJ of crude oil produced]. Data from Yeh et al \cite{Yeh2010}.}
+\caption{Land use GHG emissions for 30 year analysis period from field drilling and development in OPGEE for conventional oil operations [gCO$_2$eq/MJ of crude oil produced]. Data from Yeh et al \cite{Yeh2010}.}
 \label{tab:default_land_use_emissions}
 \begin{tabular}{p{0.13\columnwidth}p{0.06\columnwidth}p{0.06\columnwidth}p{0.06\columnwidth}p{0.06\columnwidth}p{0.06\columnwidth}p{0.06\columnwidth}p{0.06\columnwidth}p{0.06\columnwidth}p{0.06\columnwidth}}
 \toprule
@@ -2307,7 +2458,7 @@ Foregone seq.\ & 0.00 & 0.00 & 0.00 & 0.01 & 0.01 & 0.01 & 0.01 & 0.01 & 0.02\\
 
 \begin{table}
 \begin{scriptsize}
-\caption{Land use GHG emissions for 150 year analysis period from field drilling and development in OPGEE for conventional oil operations [g CO$_2$ eq./MJ of crude oil produced]. Data from Yeh et al \cite{Yeh2010}.}
+\caption{Land use GHG emissions for 150 year analysis period from field drilling and development in OPGEE for conventional oil operations [gCO$_2$eq/MJ of crude oil produced]. Data from Yeh et al \cite{Yeh2010}.}
 \label{tab:default_land_use_emissions}
 \begin{tabular}{p{0.13\columnwidth}p{0.06\columnwidth}p{0.06\columnwidth}p{0.06\columnwidth}p{0.06\columnwidth}p{0.06\columnwidth}p{0.06\columnwidth}p{0.06\columnwidth}p{0.06\columnwidth}p{0.06\columnwidth}}
 \toprule
@@ -2451,13 +2602,27 @@ The volumetric gas flow rate at reservoir conditions is looked up from the flow 
 
 These are divided by the number of wells $N_w$ \xlname{Num\_prod\_wells} to determine flow rate in bbl for the dense phases (oil + water) and in ft$^3$ for gas. 
 
-The expected bottomhole flowing pressure is computed in two different ways, and the lower pressure is used from these two methods. The first method uses the productivity index, PI, defined as \cite[p. 23]{Takacs2005}:
+The expected bottomhole flowing pressure is computed in two different ways, and the lower pressure is used from these two methods. The first method uses the productivity index, \emph{PI}, defined as \cite[p. 23]{Takacs2005}:
+
 %%%%%%%%%%
-\begin{equation} \label{eq:pressure_drawdown}
-\text{PI} = \frac{Q_{l,W}}{(p_{r}-p_{wf})} \quad\quad\eqnunitfrac{bbl}{psi-d}
+\begin{minipage}{0.6\columnwidth}\label{eq:pressure_drawdown}
+\begin{fleqn}[0pt]
+\begin{equation}
+\emph{PI} = \frac{Q_{l,W}}{(p_{res}-p_{wf})} \quad\quad\eqnunitfrac{bbl}{psi-d}
 \end{equation}
+\end{fleqn}
+\end{minipage}\hfill
+\begin{minipage}{0.3\columnwidth}
+        \begin{tabular}{|cl}
+        & \\
+        \emph{PI}   & \xlname{Prod\_index}\\
+        $p_{res}$   & \xlname{Res\_press}\\
+        & \\
+        \end{tabular}
+\end{minipage}
 %%%%%%%%%%
-where PI = well productivity index [bbl liquid/psi-d]; $Q_{l,W}$ = liquid production per well [bbl liquid/d]; $p_{r}$ = average reservior pressure [psi]; and $p_{wf}$ = wellbore pressure [psi]. In OPGEE a default PI of 3.0 [bbl liquid/psi-d] is assumed to calculate the pressure drawdown. The \sheet{Active field} parameter \xlname{Prod\_index} is used to change the default PI.
+
+where PI = well productivity index [bbl liquid/psi-d]; $Q_{l,W}$ = liquid production per well [bbl liquid/d]; $P_{res}$ = average reservoir pressure [psi]; and $p_{wf}$ = wellbore pressure [psi]. In OPGEE a default PI of 3.0 [bbl liquid/psi-d] is assumed to calculate the pressure drawdown. The \sheet{Active field} parameter \xlname{Prod\_index} is used to change the default PI.
 
 An increase in production requires an increase in pressure drawdown at a constant productivity index.  The user has to control the inputs to satisfy the condition of $p_{wf}$ $\geq$ 0.
 
@@ -2554,10 +2719,10 @@ The pressure for lifting can either be applied by a downhole pump or by gas lift
 \label{tab:primary_inputs_reservoir}
 \begin{threeparttable}
 \begin{supertabular*}{1\columnwidth}{p{0.03\columnwidth}p{0.25\columnwidth}p{0.25\columnwidth}p{0.07\columnwidth}p{0.07\columnwidth}p{0.07\columnwidth}p{0.07\columnwidth}p{0.07\columnwidth}}
-$J$             & Productivity index                & \xlname{Prod\_index}  & 3         & 1-200   & [bbl/psi-d] & & \\ 
+$PI$             & Productivity index                & \xlname{Prod\_index}  & 3         & 1-200   & [bbl/psi-d] & & \\ 
 $n_w$           & Number of wells                   & \xlname{Num\_prod\_wells} & 8     & 1-10,000      & - & & \\
-$p_{R}$           & Reservoir pressure                & \xlname{Res\_press}   & 1531      & 50-10,000     & [psi] & & \\
-$T_{R}$ 	    & Reservoir temperature			    & \xlname{Res\_temp}  & 198.2 		& 50-300 	& [$^\circ$ F] &  & \\ 
+$p_{res}$           & Reservoir pressure                & \xlname{Res\_press}   & 1531      & 50-10,000     & [psi] & & \\
+$T_{res}$ 	    & Reservoir temperature			    & \xlname{Res\_temp}  & 198.2 		& 50-300 	& [$^\circ$ F] &  & \\ 
 \end{supertabular*}
 %\begin{tablenotes}
 %\item[a] Insert text of note here
@@ -2709,14 +2874,14 @@ The area of the the production tubing cross section is computed from the product
 \begin{minipage}{0.6\columnwidth}
 \begin{fleqn}[0pt]
 \begin{equation} \label{eq:avg_wellbore_pressure}
-V_{W} =  \pi \left(\frac{D_{W}}{2}\right)^2 h_w  \quad\quad\eqnunit{psi}
+V_{W} =  \pi \left(\frac{d_{W}}{2}\right)^2 h_w  \quad\quad\eqnunit{psi}
 \end{equation}
 \end{fleqn}
 \end{minipage}\hfill
 \begin{minipage}{0.3\columnwidth}
         \begin{tabular}{|cl}
                         & \\
-        $D_{W}$         & \xlname{Well\_diam}\\
+        $d_{W}$         & \xlname{Well\_diam}\\
         $h_W$           & \xlname{Field\_depth}\\
                         & \\
         \end{tabular}
@@ -2770,7 +2935,7 @@ where $\rho_{avg}$ is the average fluid density along the wellbore column [\unit
 The frictional pressure drop is calculated using the Darcy formula \cite[p. 447]{Mcallister2009}:
 %%%%%%%%%%
 \begin{equation} \label{eq:friction_head}
-p_{f}=\frac{fh_{el}{v_{l,W}^2}}{2D_{W}{g_{c}}} \quad\quad\eqnunit{psi}
+p_{f}=\frac{fh_{el}{v_{l,W}^2}}{2d_{W}{g_{c}}} \quad\quad\eqnunit{psi}
 \end{equation}
 %%%%%%%%%%
 where $f$ = Moody friction factor [-]; $h_{el}$ = well depth [\unit{ft}]; $v_{l,W}$ = pipeline flow velocity [\unitfrac{ft}{s}]; $D_{P}$ = pipeline diameter [\unit{ft}]; and $g_{c}$ = gravitational constant, 32.2 [\unitfrac{lbm-ft}{lbf-$s^2$}]. A major determinant of friction losses is the pipeline diameter or production tubing diameter ($D_{W}$). API production tubing diameters range from 1.05 to 4.5 inches ID; the API system is a petroleum industry standardized measuring system \cite[p. 106]{Clegg2007}.
@@ -2857,10 +3022,10 @@ Default values for reservoir calculations are shown in Tables \ref{tab:primary_i
 \begin{threeparttable}
 \begin{supertabular*}{1\columnwidth}{p{0.03\columnwidth}p{0.25\columnwidth}p{0.25\columnwidth}p{0.07\columnwidth}p{0.07\columnwidth}p{0.07\columnwidth}p{0.07\columnwidth}p{0.07\columnwidth}}
 $d_{w}$ 	    & Well production tubing diameter	& \xlname{Well\_diam}  & 2.775 		& 1 - 4.5	& [in] &  & \\ 
-$D_{w}$         & Field depth                       & \xlname{Field\_depth} & 7,122      & 100-20,0000   & [ft] & & \\ 
+$D_{field}$         & Field depth                       & \xlname{Field\_depth} & 7,122      & 100-20,0000   & [ft] & & \\ 
 $n_w$           & Number of wells                   & \xlname{Num\_prod\_wells} & 8     & 1-10,000      & - & & \\
 $Q_o$           & Production rate of oil            & \xlname{Oil\_prod}    & 1,500     & 10-3,000,000  & [bbl/d] & & \\
-$R_{}$          & Gas oil ratio, producing          & \xlname{GOR}          & var.      & 5-100,000     & [scf/bbl] & & \\
+$GOR$          & Gas oil ratio, producing          & \xlname{GOR}          & var.      & 5-100,000     & [scf/bbl] & & \\
 $T_{res}$ 	    & Reservoir temperature			    & \xlname{Res\_temp}  & 198.2 		& 50-300 	& [$^\circ$ F] &  & \\ 
 \end{supertabular*}
 %\begin{tablenotes}
@@ -3232,7 +3397,7 @@ $x_{H_{2}S}$     & H$_2$S gas composition & \xlname{Gas\_comp\_H2S} & 1 & var. &
 \begin{threeparttable}
 \begin{supertabular*}{1\columnwidth}{p{0.03\columnwidth}p{0.3\columnwidth}p{0.25\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.025\columnwidth}}
 $T_{b,mi}$        & Mined bitumen temperature                                	& \xlname{Temperature\_mined\_bitumen} 			& 80					& 				& [$^\circ$F] 		& Assumption &  \\
-$P_{b,mi}$        & Mined bitumen pressure                                		& \xlname{Pressure\_mined\_bitumen} 				& 14.7				& 				& psia 			& Assumption &   \\
+$p_{b,mi}$        & Mined bitumen pressure                                		& \xlname{Pressure\_mined\_bitumen} 				& 14.7				& 				& psia 			& Assumption &   \\
 $\Gamma_{b,mi}$        	& Crude bitumen specific gravity                                & \xlname{API\_bitumen} 							& 8	 				& 2-60 			& [$^\circ$API]  	& Assumption &   \\
         	$f_{g,con.}$ 			& Fraction of gas consumed in equip.                          & \xlname{Fraction\_natural\_equip\_mined\_bitumen} 	& [binary 0-1]	 		& 				&   				& Assumption &    \\
 
@@ -3270,14 +3435,14 @@ The free gas removed by the the first stage of separation is defined as:
 \begin{minipage}{0.6\columnwidth}
 \begin{fleqn}[0pt]
 \begin{equation} \label{eq:free_gas_separator}
-R_{F,1} =  R - R_{s,1} \quad\quad\eqnunitfrac{scf}{bbl}
+R_{F,1} =  GOR - R_{s,1} \quad\quad\eqnunitfrac{scf}{bbl}
 \end{equation}
 \end{fleqn}
 \end{minipage}\hfill
 \begin{minipage}{0.3\columnwidth}
         \begin{tabular}{|cl}
                 &    \\
-                    $R$         & \xlname{GOR}     \\
+                    $GOR$         & \xlname{GOR}     \\
                     $R_{s,1}$   & \xlname{SolutionGasOilRatio(x,1)} \\
                &    \\
         \end{tabular}
@@ -3343,9 +3508,9 @@ Separator leaks to air					& \stream{251}			& O		& Environment - Atmosphere		& [
 \label{tab:primary_inputs_separation}
 \begin{threeparttable}
 \begin{supertabular*}{1\columnwidth}{p{0.03\columnwidth}p{0.25\columnwidth}p{0.25\columnwidth}p{0.07\columnwidth}p{0.07\columnwidth}p{0.07\columnwidth}p{0.07\columnwidth}p{0.07\columnwidth}}
-$F_{wo}$        & Water oil ratio                   & \xlname{WOR} & 8     & 1-10,000   & [-] & & \\
+$WOR$        & Water oil ratio                   & \xlname{WOR} & 8     & 1-10,000   & [-] & & \\
 $Q_o$           & Production rate of oil            & \xlname{Oil\_prod}    & 1,500     & 10-3,000,000  & [bbl/d] & & \\
-$R_{}$          & Gas oil ratio, producing          & \xlname{GOR}          & var.      & 5-100,000     & [scf/bbl] & & \\
+$GOR$          & Gas oil ratio, producing          & \xlname{GOR}          & var.      & 5-100,000     & [scf/bbl] & & \\
 $y_{a}$         & Mole fraction of species $a$ in gas   & \xlname{Gas\_comp\_a}     & var.      & 5-100,000     & [scf/bbl] & & \\ 
 \end{supertabular*}
 %\begin{tablenotes}
@@ -3369,7 +3534,7 @@ $y_{a}$         & Mole fraction of species $a$ in gas   & \xlname{Gas\_comp\_a} 
 \begin{supertabular*}{1\columnwidth}{p{0.03\columnwidth}p{0.25\columnwidth}p{0.25\columnwidth}p{0.07\columnwidth}p{0.07\columnwidth}p{0.07\columnwidth}p{0.07\columnwidth}p{0.07\columnwidth}}
 $C_{cm,sp}$    & Choice of separation compressor prime mover type       & \xlname{Prime\_mover\_type\_separator\_compressor} &   2 & 1 or 2  & [-] &  & $a$ \\
 $f_{w,e}$        & Mass fraction water in emulsion after separation     & \xlname{Water\_content\_oil\_emulsion} & 14 & 0-20 & [wt\%] & & \\
-$N_{sp}$        & Number of separation stages                    & \xlname{Number\_stages\_separator}  & 3 & 1-3 & - & & \\
+$n_{sp}$        & Number of separation stages                    & \xlname{Number\_stages\_separator}  & 3 & 1-3 & - & & \\
 $p_{sp,1}$       & First stage separator pressure                       & \xlname{Pressure\_first\_separator} & 1000 & 50-2000  & [psig] & & \\
 $p_{sp,2}$       & Second stage separator pressure                       & \xlname{Pressure\_second\_separator} & 575 & 50-2000  & [psig] & & \\
 $p_{sp,3}$       & Third stage separator pressure                       & \xlname{Pressure\_third\_separator} & 150 & 50-2000  & [psig] & & \\
@@ -3423,10 +3588,10 @@ Default values are 165 $^{\circ}${F} for watering temperature $T_{dw}$.
 
 The specific heat capacity of oil is a function of the temperature of the oil and its API gravity. From the Campbell equation, presented in Manning and Thompson \cite{Manning1991}:
 
-\begin{minipage}{0.6\columnwidth}
+\begin{minipage}{0.8\columnwidth}
 \begin{fleqn}[0pt]
 \begin{equation} \label{eq:CampbellCpOil}
-C_{p,o} = a_1 T_{dw,avg} A_o + a_2 A_o + a_3 T_{dw,avg} + a_4 \quad\quad\eqnunitfrac{Btu}{lb-$^\circ$F}
+C_{p,o} = a_1 T_{dw,avg} API_o + a_2 API_o + a_3 T_{dw,avg} + a_4 \quad\quad\eqnunitfrac{Btu}{lb-$^\circ$F}
 \end{equation}
 \end{fleqn}
 \end{minipage}\hfill
@@ -3434,7 +3599,7 @@ C_{p,o} = a_1 T_{dw,avg} A_o + a_2 A_o + a_3 T_{dw,avg} + a_4 \quad\quad\eqnunit
         \begin{tabular}{|cl}
          & \\
                     $a_1 \ldots a_4$ & \xlname{O\_Cp\_a1}     \\
-                    $A_{o}$   & \xlname{API} \\
+                    $API_{o}$   & \xlname{API} \\
                      & \\
         \end{tabular}
 \end{minipage}
@@ -3972,9 +4137,9 @@ $x_{DI}$ & Volume fraction of diluent in diluted crude  & \xlname{Fraction\_dilu
 \begin{supertabular*}{1\columnwidth}{p{0.03\columnwidth}p{0.3\columnwidth}p{0.25\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.025\columnwidth}}
     $API_{DI}$    & Diluent API gravity & \xlname{API\_diluent} & 55.2	& 40-60  & [$^\circ$API]  & Assumption  &   \\
     $T_{DI}$    & Diluent temperature & \xlname{Temperature\_diluent} & 80 & 60-90  & [$^\circ$F]  & Assumption  &   \\
-    $P_{DI}$    & Diluent pressure & \xlname{Pressure\_diluent} & 14.7 & 14.7  & [psia]  & Assumption  &   \\
+    $p_{DI}$    & Diluent pressure & \xlname{Pressure\_diluent} & 14.7 & 14.7  & [psia]  & Assumption  &   \\
     $T_{DI_{bitumen}}$    & Final diluted crude mixture temperature & \xlname{Temperature\_diluted\_bitumen} & 60 & 60  & [$^\circ$F]  & Assumption  & \\
-    $P_{DI_{bitumen}}$    & Final diluted crude mixture pressure & \xlname{Pressure\_diluted\_bitumen} & 14.7 & 14.7  & [psia]  & Assumption  &   \\
+    $p_{DI_{bitumen}}$    & Final diluted crude mixture pressure & \xlname{Pressure\_diluted\_bitumen} & 14.7 & 14.7  & [psia]  & Assumption  &   \\
 \end{supertabular*}
 %\begin{tablenotes}
 %\item[a] Insert text of note here
@@ -4062,7 +4227,7 @@ Default values for crude oil storage calculations are shown in Tables \ref{tab:p
 \label{tab:primary_inputs_storage}
 \begin{threeparttable}
 \begin{supertabular*}{1\columnwidth}{p{0.03\columnwidth}p{0.25\columnwidth}p{0.25\columnwidth}p{0.1\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.01\columnwidth}}
-$R$ & Gas-to-oil ratio (GOR) & \xlname{GOR} & Function of API gravity & 1->100,000 & [scf/bbl]   & Assumption & \\
+$GOR$ & Gas-to-oil ratio & \xlname{GOR} & Function of API gravity & 1->100,000 & [scf/bbl]   & Assumption & \\
 \end{supertabular*}
 %\begin{tablenotes}
 %\item[a] Insert text of note here
@@ -4351,7 +4516,7 @@ Default values for water treatment calculations are shown in Tables \ref{tab:sec
 \begin{threeparttable}
 \begin{supertabular*}{1\columnwidth}{p{0.07\columnwidth}p{0.3\columnwidth}p{0.25\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.025\columnwidth}}
      $T_{w,makeup}$  & Makeup water temperature & \xlname{Temperature\_makeup\_H2O} & 60	& 50-70  & [$^\circ$F]  & Assumption  & \\
-      $P_{w,makeup}$  & Makeup water pressure & \xlname{Pressure\_makeup\_H2O} & 90	& 80-100  & [psia]  & Assumption  &  \\
+      $p_{w,makeup}$  & Makeup water pressure & \xlname{Pressure\_makeup\_H2O} & 90	& 80-100  & [psia]  & Assumption  &  \\
 \end{supertabular*}
 %\begin{tablenotes}
 %\item[a] Insert text of note here
@@ -4426,9 +4591,9 @@ $y_{w,flood}$  & Water flooding & \xlname{Water\_flooding\_01} & 0 & 0-1 & [bina
   $D_{w}$     & Field depth  & \xlname{Field\_depth} & 7122      & 100-20,0000   & [ft] & & \\ 
 $Q_0$ & Oil production volume & \xlname{Oil\_prod} & 1500 & 10-3,000,000 & [bbl/d]   & Assumption & \\
  $n_{wi}$ & Number of water injecting wells & \xlname{Num\_water\_inj\_wells} & Function of \xlname{Oil\_prod} and \xlname{Num\_prod\_wells}  & 1-2000 & [\#]   & Assumption & \\
- $D_w$  & Well diameter     & \xlname{Well\_diam}  & 2.8         & 2-10   & [in] & Assumption & \\ 
- $P_{res}$ & Average reservoir pressure & \xlname{Res\_press} & Function of \xlname{Field\_depth}  & 1000-10,000 & [psia]   & Assumption &\\
-$J$             & Productivity index                & \xlname{Prod\_index}  & 3         & 1-200   & [bbl/psi-d] & Assumption & \\ 
+ $d_field$  & Well diameter     & \xlname{Well\_diam}  & 2.8         & 2-10   & [in] & Assumption & \\ 
+ $p_{res}$ & Average reservoir pressure & \xlname{Res\_press} & Function of \xlname{Field\_depth}  & 1000-10,000 & [psia]   & Assumption &\\
+$API$             & Productivity index                & \xlname{Prod\_index}  & 3         & 1-200   & [bbl/psi-d] & Assumption & \\ 
 $WIR$ & Water injection ratio & \xlname{WIR} & 1+\xlname{WOR} & 1-100 & [bbl water/bbl oil]   & Assumption &\\
 
 \end{supertabular*}
@@ -4666,7 +4831,7 @@ Another source for heat recovery is the exiting flue gas. The excessive heat in 
 The amount of heat recovered by economizer and air pre-heater can be computed with eq.\eqref{eq:steam_h_recovery_economizer} and eq.\eqref{eq:steam_h_recovery_preheater}.
 
 %%%%%%%%%%%%%%
-\begin{minipage}{0.6\columnwidth}
+\begin{minipage}{0.8\columnwidth}
 \begin{fleqn}[0pt]
 \begin{equation}\label{eq:steam_h_recovery_economizer}
 h_{r,econ} = \eta_{econ}(h_{in,econ}(T_{in,econ}) - h_{in,preh}(T_{in,preh})) \eqnunitfrac{MJ}{kg}
@@ -4705,6 +4870,7 @@ p_{ws} = p_{res} \epsilon_{p} \quad\quad\eqnunit{psia}
 \begin{minipage}{0.3\columnwidth}
         \begin{tabular}{|cl}
                         & \\
+        $p_{res}$   & \xlname{Res\_press}\\
         $\epsilon_p$   & \xlname{Friction\_loss\_stream\_distr}\\
                         & \\
         \end{tabular}
@@ -4826,10 +4992,22 @@ The efficiency of steam generation $\eta_{OTSG}$ (LHV basis) can be computed by 
 Liquid fuels can be used for steam generation. In general, these are produced heavy crude oils that are consumed on site for steam generation. This was common practice in California TEOR developments until the 1980s, when air quality impacts stopped the practice.
 
 Because liquid fuels do not have consistent molar compositions, computations generate lbm of fuel consumed. The heating value of crude oil as a function of API gravity is tabulated \cite{Schmidt1985}. The bulk chemical composition of crude oil is calculated \cite[p. 41]{Schmidt1985}. The mass fraction hydrogen $w_H$ as a function of crude specific gravity $sg$ is given as:
+
 %%%%%%%%%%%%%%
-\begin{equation}\label{eq:steam_wh}
+\begin{minipage}{0.6\columnwidth}\label{eq:steam_wh}
+\begin{fleqn}[0pt]
+\begin{equation}
 w_H = a_H - 15 \gamma_o \quad\quad\eqnunit{mass frac. H}
 \end{equation}
+\end{fleqn}
+\end{minipage}\hfill
+\begin{minipage}{0.3\columnwidth}
+        \begin{tabular}{|cl}
+        & \\
+        $\gamma_o$   & \xlname{GAMMA\_o}\\
+        & \\
+        \end{tabular}
+\end{minipage}
 %%%%%%%%%%%%%%
 Where $a_H$ is a constant that varies with crude API gravity (and therefore specific gravity) as show in Table \ref{tab:hydrogen_const}.
 
@@ -4850,7 +5028,7 @@ API gravity & $a_H$ \\
 \end{scriptsize}
 \end{table}
 
-
+% issue 8: below figure is not found
 The mass fraction of sulfur and other contaminants decreases with increasing API gravity, as seen in Figure \ref{fig:crude_contaminants} \cite[Ch. 8, tables 3, 4]{speight1994} \cite[Ch. 7, tables 2, 3, and 19]{speight1994} \cite{swafford2009}. We therefore include default values of $w_S$ that vary with API gravity from 5 wt.\% (API gravity 4-5) to 0.5 wt.\% (API gravity greater than 35). Nitrogen and oxygen content $w_N + w_O$ is assumed constant at 0.2 wt.\% and in element balance it is assumed to be entirely made up of N. Mass fraction carbon $w_C$ is calculated by difference using above mass fractions. Using the relative molar proportions of C, H, S, and N, the stoichiometric oxygen demand per carbon atom is computed assuming complete combustion. 
 
 Using the oxygen requirement for combustion and the excess air ratio $R_{a,comb}$, the lbmol of air required is computed similarly to eq.\ \eqref{eq:steam_N_real_comb} above. The inlet air enthalpy for combustion is computed using eq.\ \eqref{eq:steam_h_gas} above. The outlet exhaust composition is computed via element balance assuming complete oxidation (including S to SO$_2$). The outlet exhaust enthalpy is computed as in eq.\ \eqref{eq:steam_h_gas} for gaseous fuels combustion. The energy balance for combustion of liquid fuels is computed as in eq.\ \eqref{eq:steam_hcomb}.
@@ -4996,6 +5174,7 @@ $p_{R}$ & Average reservoir pressure & \xlname{Res\_press} & Function of \xlname
 \end{tiny}
 
 \newpage
+% issue 9: below figure alignments should be somehow fixed.
 
 \begin{tiny}
 \tablefirsthead{\toprule Param. & Description & Defined name & Default & Literature range & Unit & Sources & Notes\\
@@ -5077,7 +5256,7 @@ $p_{R}$ & Average reservoir pressure & \xlname{Res\_press} & Function of \xlname
 
 
 
-Flaring is used to dispose of associated natural gas produced during bulk separation (see Section \ref{sec:Separation}) when it cannot be used economically. Flaring is the major driver of GHG emissions from global oil fields \cite{masnadi2018global}. Gas flaring resulted in emissions of 0.28 Gt CO$_2$ eq.\ in 2008, or about 1\% of global GHG emissions \cite{Elvidge2009}.  Since 1994, NOAA National Geophysical Data Center has estimated flaring volume using satellite imagery \cite{Elvidge2009}. The distribution of estimate flaring volume by country is highly skewed; in 2008 Russia, Nigeria, Iran, and Iraq were the country with the highest flaring volumes \cite{Elvidge2009}.
+Flaring is used to dispose of associated natural gas produced during bulk separation (see Section \ref{sec:Separation}) when it cannot be used economically. Flaring is the major driver of GHG emissions from global oil fields \cite{masnadi2018global}. Gas flaring resulted in emissions of 0.28 GtCO$_2$eq\ in 2008, or about 1\% of global GHG emissions \cite{Elvidge2009}.  Since 1994, NOAA National Geophysical Data Center has estimated flaring volume using satellite imagery \cite{Elvidge2009}. The distribution of estimate flaring volume by country is highly skewed; in 2008 Russia, Nigeria, Iran, and Iraq were the country with the highest flaring volumes \cite{Elvidge2009}.
 
 
 The streams flowing into and out of the flaring process are shown in Figure \ref{fig:flaring_PF} and are listed in Table \ref{tab:flaring_PF}.
@@ -5386,7 +5565,7 @@ $n_wp$ & Number of producing wells & \xlname{Num\_prod\_wells} & Function of \xl
  $U$ & Average yearly windspeed  & \xlname{Windspeed\_ave\_flaring} & 10 & 1-50 & [mph]  & Assumption  &   \\
   & Is the flare tip diameter fixed or variable?  & \xlname{Type\_flaretip} & 0 & 0-1 & [binary 0-1] & Assumption  &   \\
   $U_{exit}$ & Fixed design exit velocity & \xlname{Velocity\_flaretip} &  & & [ft/sec] & Assumption  &   \\
-  $D_{flare}$ & Fixed flare tip diameter & \xlname{Diameter\_flaretip} & &  & [in] & Assumption  &   \\
+  $d_{flare}$ & Fixed flare tip diameter & \xlname{Diameter\_flaretip} & &  & [in] & Assumption  &   \\
     $n_{w,flare}$  & Number of wells per flare & \xlname{Numwells\_flare} & &  & [wells/flare] & Assumption  &  \\
     & Flare tips per flare & \xlname{Numtips\_flare} & &  & [Tips per flare] & Assumption  &   \\
 \end{supertabular*}
@@ -5457,7 +5636,7 @@ Default values for venting calculations are shown in Tables \ref{tab:primary_inp
 \begin{threeparttable}
 \begin{supertabular*}{1\columnwidth}{p{0.03\columnwidth}p{0.3\columnwidth}p{0.25\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.025\columnwidth}p{0.025\columnwidth}}
 
-$R$ & Gas-to-oil ratio (GOR) & \xlname{GOR} & Function of API gravity & 1->100,000 & [scf/bbl]   & Assumption & -\\
+$GOR$ & Gas-to-oil ratio & \xlname{GOR} & Function of API gravity & 1->100,000 & [scf/bbl]   & Assumption & -\\
 $VOR$ & Ratio of venting to oil production & \xlname{VOR} & 0 & var. & [scf/bbl]   & Assumption & -\\
  
 \end{supertabular*}
