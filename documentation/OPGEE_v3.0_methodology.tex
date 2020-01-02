@@ -7367,9 +7367,9 @@ $p_{R}$ 	    & Reservoir pressure			    & \xlname{Res\_press}  & 198.2 		& 50-30
 \tablecaption{Secondary inputs used in \sheet{Gas lifting} sheet.}
 \label{tab:secondary_inputs_gaslifting}
 \begin{threeparttable}
-\begin{supertabular*}{1\columnwidth}{p{0.03\columnwidth}p{0.2\columnwidth}p{0.2\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}}
-$y_{mover,lifting}$    & Choice for gas lifting compressor prime mover    & \xlname{Prime\_mover\_type\_lifting} &  2 & 1/2  & [-] &  & a \\
-$\eta_{comp.,lifting}$   & Efficiency of gas lifting compressor           & \xlname{Eta\_compressor\_lifting}  & 75    & 60-80 & [\%] & & \\
+\begin{supertabular*}{1\columnwidth}{p{0.05\columnwidth}p{0.2\columnwidth}p{0.2\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}}
+$y_{mover,lift.}$    & Choice for gas lifting compressor prime mover    & \xlname{Prime\_mover\_type\_lifting} &  2 & 1/2  & [-] &  & a \\
+$\eta_{comp.,lift.}$   & Efficiency of gas lifting compressor           & \xlname{Eta\_compressor\_lifting}  & 75    & 60-80 & [\%] & & \\
 \end{supertabular*}
 \begin{tablenotes}
 \item[a] Choice 1 = electric motor, Choice 2 = NG engine
@@ -7466,7 +7466,7 @@ $p_{R}$ 	    & Reservoir pressure   & \xlname{Res\_press}  & 198.2 	& 50-300 	& 
 \tablecaption{Secondary inputs used in \sheet{CO2 reinjection compressor} sheet.}
 \label{tab:secondary_inputs_CO2injection}
 \begin{threeparttable}
-\begin{supertabular*}{1\columnwidth}{p{0.03\columnwidth}p{0.2\columnwidth}p{0.2\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}}
+\begin{supertabular*}{1\columnwidth}{p{0.05\columnwidth}p{0.2\columnwidth}p{0.2\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}}
 $y_{mover,CO2inj.}$    & Choice for gas lifting compressor prime mover    & \xlname{Prime\_mover\_type\_injection\_CO2} &  2 & 1/2  & [-] &  & a \\
 $\eta_{CO2inj.}$   & Efficiency of gas lifting compressor           & \xlname{Eta\_compressor\_injection\_CO2}  & 75    & 60-80 & [\%] & & \\
 \end{supertabular*}
@@ -7685,7 +7685,7 @@ Fugitives - Pre-membrane compressor			& \stream{272}			& O		& Atmosphere					& [
 \tablecaption{Secondary inputs used in \sheet{Pre-membrane compressor} sheet.}
 \label{tab:secondary_inputs_membranecomp}
 \begin{threeparttable}
-\begin{supertabular*}{1\columnwidth}{p{0.03\columnwidth}p{0.2\columnwidth}p{0.2\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}}
+\begin{supertabular*}{1\columnwidth}{p{0.05\columnwidth}p{0.2\columnwidth}p{0.2\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}}
 $y_{mover,memb.}$    & Choice for pre-membrane compressor prime mover       & \xlname{Prime\_mover\_type\_PMC} &  2 & 1/2  & [-] &  & a \\
 $p_{disc.,memb.}$    & Discharge pressure for pre-membrane compressor     & \xlname{P\_disc\_PMC} & 1000 & 500-1500 & psia & & \\
 $\eta_{comp.,memb.}$   & Efficiency of pre-membrane compressor              & \xlname{Eta\_compressor\_PMC}  & 75    & 60-80 & [\%] & & \\
@@ -7761,12 +7761,12 @@ Fugitives - Transmission compressor			& \stream{272}			& O		& Atmosphere					& [
 \tablecaption{Secondary inputs used in \sheet{Transmissions compressor} sheet.}
 \label{tab:secondary_inputs_transmissioncomp}
 \begin{threeparttable}
-\begin{supertabular*}{1\columnwidth}{p{0.035\columnwidth}p{0.25\columnwidth}p{0.3\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}}
+\begin{supertabular*}{1\columnwidth}{p{0.04\columnwidth}p{0.25\columnwidth}p{0.3\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}}
 $y_{mover,transm.}$    & Choice for pre-membrane compressor prime mover       & \xlname{Prime\_mover\_type\_PMC}          &  2 & 1/2  & [-] &  & a \\
-$D_{transm.,1}$    & Distance between transmission line compressors       & \xlname{Frequency\_gas\_transmission\_compressors} & 200 & 100-300 & [mi] & & \\
+$D_{freq.}$    & Distance between transmission line compressors       & \xlname{Frequency\_gas\_transmission\_compressors} & 200 & 100-300 & [mi] & & \\
 $f_{transm.}$ & Fugitive emissions fraction from transmission compressors & \xlname{Fugitive\_loss\_transmission} & 0.003 & 0.001-0.005 & [-] & & \\ 
 $f_{gas}$    & Fraction of gas going to long-term storage            & \xlname{Frac\_gas\_storage\_01}           & 0 & 0-1 & [-] & & \\    
-$D_{transm.,2}$   & Distance of transmissions line                    & \xlname{Distance\_gas\_transmission}      & 2000 & 50-5000 & [mi] & & \\ 
+$D_{transm.}$   & Distance of transmissions line                    & \xlname{Distance\_gas\_transmission}      & 2000 & 50-5000 & [mi] & & \\ 
 $p_{comp.,transm.}$    & Discharge pressure for pre-membrane compressor     & \xlname{P\_disc\_PMC} & 1000 & 500-1500 & psia & & \\
 $\eta_{transm.}$   & Efficiency of pre-membrane compressor              & \xlname{Eta\_compressor\_PMC}  & 75    & 60-80 & [\%] & & \\
 \end{supertabular*}
@@ -8270,7 +8270,7 @@ The default settings for the parameters for the gas partition A are given below 
 \begin{supertabular*}{1\columnwidth}{p{0.03\columnwidth}p{0.2\columnwidth}p{0.2\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.08\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}}
 $WOR$        & Water oil ratio                   & \xlname{WOR}      & 4.31 & 0-100  & [bbl water/bbl oil] & & \\
 $Q_o$           & Oil production rate               & \xlname{Oil\_prod} & 1500 & 10-3000000 & [bbl/d] & & \\
-$f_{gas,lift.}$       & Gas lifting injection ratio       & \xlname{GLIR} &  1500 & 100-5000  & [scf/bbl] &  &  \\
+$GLIR$       & Gas lifting injection ratio       & \xlname{GLIR} &  1500 & 100-5000  & [scf/bbl] &  &  \\
 $y_{gas,lift.}$       & Is gas lifting used?       & \xlname{Gas\_lifting\_01} &  0 & 0/1  & [logical 0-1] &  &  \\
 \end{supertabular*}
 %\begin{tablenotes}
@@ -8293,14 +8293,14 @@ The \sheet{Gas partition B} sheet serves to record the gas partitioning between 
 \begin{minipage}{0.6\columnwidth}
 \begin{fleqn}[0pt]
 \begin{equation} \label{eq:flare_emissions_stripping}
-m_{x,\mstream{43}} = \left(1 - f_{gas,inj.}\right) m_{x,\mstream{41}} \eqnunitfrac{t}{d}
+m_{x,\mstream{43}} = \left(1 - GLIR\right) m_{x,\mstream{41}} \eqnunitfrac{t}{d}
 \end{equation}
 \end{fleqn}
 \end{minipage}\hfill
 \begin{minipage}{0.3\columnwidth}
         \begin{tabular}{|cl}
                         & \\
-        $f_{gas,inj.}$      & \xlname{Fraction\_remaining\_gas\_inj}\\
+        $GLIR$      & \xlname{Fraction\_remaining\_gas\_inj}\\
         & \\
         \end{tabular}
 \end{minipage}
@@ -8459,7 +8459,7 @@ e_{T} = U_T \frac{1}{LHV_o} \rho_w \gamma_o \frac{1}{2000} \quad\quad\eqnunitfra
         \end{tabular}
 \end{minipage}
 %%%%%%%%%%%%%%%%%%
-where $UE_{T}$ = crude oil transport intensity per unit of energy transported [Btu/mmBtu-mi], $LHV_o$ = crude lower heating value [mmBtu/bbl]; $\rho_w$ = density of water [lb/bbl]; $\gamma_o$ = crude specific gravity [-]; and 1/2000 = conversion factor between lb and ton.
+where $U_{T}$ = crude oil transport intensity per unit of energy transported [Btu/mmBtu-mi], $LHV_o$ = crude lower heating value [mmBtu/bbl]; $\rho_w$ = density of water [lb/bbl]; $\gamma_o$ = crude specific gravity [-]; and 1/2000 = conversion factor between lb and ton.
 
 Calculating emissions of GHG species associated with the consumption of a given energy type in a given device is performed via multiplication with the appropriate emissions factor. For example, in the case of tanker emissions:
 %%%%%%%%%%%%%%%%
@@ -8472,11 +8472,23 @@ Calculating emissions of GHG species associated with the consumption of a given 
 where $EM_{Ti}$ = emissions of species $i$ from tankers [g/mmBtu-mi]; $\lambda_{Tk}$ = fraction of fuel $k$ used in tankers [-]; and $EF_{Tki}$ = emissions factor for fuel $k$, species $i$ consumed in tankers [g/Btu]. Other modes are calculated similarly.
 
 The total CO$_2$ equivalent emissions are then computed by weighting by gas global warming potential (GWP). Again, for the case of tanker transport: 
+
 %%%%%%%%%%%%%%%%
-\begin{equation}\label{eq:trans_emtotk}
+\begin{minipage}{0.6\columnwidth}\label{eq:trans_emtotk}
+\begin{fleqn}[0pt]
+\begin{equation}
 EM_{T} = \sum_i EM_{Ti} GWP_i, \quad\quad\eqnunitfrac{g CO$_2$ eq.}{mmBtu-mi} 
 \end{equation}
-%%%%%%%%%%%%%%%%
+\end{fleqn}
+\end{minipage}\hfill
+\begin{minipage}{0.3\columnwidth}
+        \begin{tabular}{|cl}
+        & \\
+        $GWP_i$   & \xlname{GWP\_i}\\
+        & \\
+        \end{tabular}
+\end{minipage}
+%%
 where $GWP_i$ = GWP of species $i$.
 
 The total energy consumption from transport is computed using the distances and fractions of transport, along with the mode-specific energy intensity of transport:
@@ -8516,19 +8528,19 @@ Defaults for crude oil transport are generally taken from the CA-GREET model, wi
 \begin{threeparttable}
 \begin{supertabular*}{1\columnwidth}{p{0.03\columnwidth}p{0.2\columnwidth}p{0.25\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.08\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}}
 
- 	$f_{trans.,ot}$   & Fraction of oil transported by ocean tanker   & \xlname{Fraction\_oil\_transport\_tanker}  & 1 	& 0-1 	& [-] & Assumption   & \\
- 	$f_{trans.,b}$     & Fraction of oil transported by barge   & \xlname{Fraction\_oil\_transport\_barge}  & 0 	& 0-1 	& [-] & Assumption   & \\
- 	 $f_{trans.,p}$      & Fraction of oil transported by pipeline   & \xlname{Fraction\_oil\_transport\_pipeline}  & 1 	& 0-1 	& [-] & Assumption   & \\
- 	 $f_{trans.,r}$     & Fraction of oil transported by rail   & \xlname{Fraction\_oil\_transport\_rail}  & 0 	& 0-1 	& [-] & Assumption   & \\
- 	   $f_{trans.,t}$    & Fraction of oil transported by truck   & \xlname{Fraction\_oil\_transport\_truck}  & 0 	& 0-1 	& [-] & Assumption   & \\
+ 	$f_{trans.,T}$   & Fraction of oil transported by ocean tanker   & \xlname{Fraction\_oil\_transport\_tanker}  & 1 	& 0-1 	& [-] & Assumption   & \\
+ 	$f_{trans.,B}$     & Fraction of oil transported by barge   & \xlname{Fraction\_oil\_transport\_barge}  & 0 	& 0-1 	& [-] & Assumption   & \\
+ 	 $f_{trans.,P}$      & Fraction of oil transported by pipeline   & \xlname{Fraction\_oil\_transport\_pipeline}  & 1 	& 0-1 	& [-] & Assumption   & \\
+ 	 $f_{trans.,R}$     & Fraction of oil transported by rail   & \xlname{Fraction\_oil\_transport\_rail}  & 0 	& 0-1 	& [-] & Assumption   & \\
+ 	   $f_{trans.,TR}$    & Fraction of oil transported by truck   & \xlname{Fraction\_oil\_transport\_truck}  & 0 	& 0-1 	& [-] & Assumption   & \\
  	      
- 	  $d_{trans.,ot}$     & Transport distance by ocean tanker   & \xlname{Oil\_transport\_distance\_tanker}  & 5082 	& var. 	& [Miles] & Assumption   & \\
- 	   $d_{trans.,b}$    & Transport distance by barge   & \xlname{Oil\_transport\_distance\_barge}  & 500 	& var. 	& [Miles] & Assumption   & \\
- 	  $d_{trans.,p}$     & Transport distance by pipeline   & \xlname{Oil\_transport\_distance\_pipeline}  & 750 	& var. 	& [Miles] & Assumption   & \\
- 	   $d_{trans.,r}$    & Transport distance by rail   & \xlname{Oil\_transport\_distance\_rail}  & 800 	& var. 	& [Miles] & Assumption   & \\
- 	   $d_{trans.,t}$    & Transport distance by truck   & \xlname{Oil\_transport\_distance\_truck}  & 100 	& var. 	& [Miles] & Assumption   & \\
+ 	  $d_{trans.,T}$     & Transport distance by ocean tanker   & \xlname{Oil\_transport\_distance\_tanker}  & 5082 	& var. 	& [Miles] & Assumption   & \\
+ 	   $d_{trans.,B}$    & Transport distance by barge   & \xlname{Oil\_transport\_distance\_barge}  & 500 	& var. 	& [Miles] & Assumption   & \\
+ 	  $d_{trans.,P}$     & Transport distance by pipeline   & \xlname{Oil\_transport\_distance\_pipeline}  & 750 	& var. 	& [Miles] & Assumption   & \\
+ 	   $d_{trans.,R}$    & Transport distance by rail   & \xlname{Oil\_transport\_distance\_rail}  & 800 	& var. 	& [Miles] & Assumption   & \\
+ 	   $d_{trans.,TR}$    & Transport distance by truck   & \xlname{Oil\_transport\_distance\_truck}  & 100 	& var. 	& [Miles] & Assumption   & \\
  	      
- 	   $Size_{ot}$     & Ocean tanker size, if applicable   & \xlname{Ocean\_tanker\_size}  & 250000 	& var. 	& [Tons] & Assumption   & \\
+ 	   $S_{T}$     & Ocean tanker size, if applicable   & \xlname{Ocean\_tanker\_size}  & 250000 	& var. 	& [Tons] & Assumption   & \\
 
 \end{supertabular*}
 %\begin{tablenotes}
@@ -8549,30 +8561,30 @@ Defaults for crude oil transport are generally taken from the CA-GREET model, wi
 \tablecaption{Secondary inputs used in \sheet{Crude oil transport} sheet.}
 \label{tab:secondary_inputs_transport}
 \begin{threeparttable}
-\begin{supertabular*}{1\columnwidth}{p{0.03\columnwidth}p{0.15\columnwidth}p{0.27\columnwidth}p{0.03\columnwidth}p{0.03\columnwidth}p{0.15\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}}
+\begin{supertabular*}{1\columnwidth}{p{0.03\columnwidth}p{0.18\columnwidth}p{0.27\columnwidth}p{0.03\columnwidth}p{0.03\columnwidth}p{0.15\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}}
 
-$C_{barge}$ & Barge capacity & \xlname{Capacity\_barge}  & 22500 	& var. 	& [Tons] & Assumption   & \\
-$u_{ot}$  & Ocean tanker speed & \xlname{Speed\_tanker}  & 19	& var. 	& [mi/hr] & Assumption   & \\
-$u_{bt}$   & Barge tanker speed & \xlname{Speed\_tanker}  & 5	& var. 	& [mi/hr] & Assumption   & \\
+$C_{B}$ & Barge capacity & \xlname{Capacity\_barge}  & 22500 	& var. 	& [Tons] & Assumption   & \\
+$u_{T}$  & Ocean tanker speed & \xlname{Speed\_tanker}  & 19	& var. 	& [mi/hr] & Assumption   & \\
+$u_{B}$   & Barge tanker speed & \xlname{Speed\_tanker}  & 5	& var. 	& [mi/hr] & Assumption   & \\
   
-$load_{ot,od}$  & Ocean tanker load factor (origin to destination) & \xlname{Load\_factor\_to\_dest\_tanker}  & 0.8	& var. 	& [-] & Assumption   & \\
-$load_{b,od}$   & Barge load factor (origin to destination) & \xlname{Load\_factor\_to\_dest\_barge}  & 0.8	& var. 	& [-] & Assumption   & \\
- $load_{ot,do}$  & Ocean tanker load factor (destination to origin) & \xlname{Load\_factor\_to_orig\_tanker}  & 0.7	& var. 	& [-] & Assumption   & \\
-  $load_{b,do}$   & Barge load factor (destination to origin) & \xlname{Load\_factor\_to\_orig\_barge}  & 0.6	& var. 	& [-] & Assumption   & \\
+$l_{T,o-d}$  & Ocean tanker load factor (origin to destination) & \xlname{Load\_factor\_to\_dest\_tanker}  & 0.8	& var. 	& [-] & Assumption   & \\
+$l_{B,o-d}$   & Barge load factor (origin to destination) & \xlname{Load\_factor\_to\_dest\_barge}  & 0.8	& var. 	& [-] & Assumption   & \\
+ $l_{T,d-o}$  & Ocean tanker load factor (destination to origin) & \xlname{Load\_factor\_to_orig\_tanker}  & 0.7	& var. 	& [-] & Assumption   & \\
+  $l_{B,d-o}$   & Barge load factor (destination to origin) & \xlname{Load\_factor\_to\_orig\_barge}  & 0.6	& var. 	& [-] & Assumption   & \\
     
- $od$   & Origin to destination & \xlname{Energy\_intensity\_rail\_to\_dest}  & 370	& var. 	& [btu/ton-mi] & Assumption   & \\
+ $o-d$   & Origin to destination & \xlname{Energy\_intensity\_rail\_to\_dest}  & 370	& var. 	& [btu/ton-mi] & Assumption   & \\
     
-  $P_{turbine}$    & Turbine powered & \xlname{Energy\_intensity\_pipeline\_turbine}  & 240	& var. 	& [btu/ton-mi] & Assumption   & \\
-       & Reciprocating enginer powered (current) & \xlname{Energy\_intensity\_pipeline\_engine\_current}  & 270	& var. 	& [btu/ton-mi] & Assumption   & \\
-        & Reciprocating engine powered (future) & \xlname{Energy\_intensity\_pipeline\_engine\_future}  & 260	& var. 	& [btu/ton-mi] & Assumption   & \\
+  $P_{P,turbine}$    & Turbine powered & \xlname{Energy\_intensity\_pipeline\_turbine}  & 240	& var. 	& [btu/ton-mi] & Assumption   & \\
+    $P_{r,c}$    & Reciprocating enginer powered (current) & \xlname{Energy\_intensity\_pipeline\_engine\_current}  & 270	& var. 	& [btu/ton-mi] & Assumption   & \\
+      $P_{r,f}$  & Reciprocating engine powered (future) & \xlname{Energy\_intensity\_pipeline\_engine\_future}  & 260	& var. 	& [btu/ton-mi] & Assumption   & \\
         
-         & frac. Turbine powered & \xlname{Frac\_power\_pipeline\_turbine}  & 0.55 & var. 	& [-] & Assumption   & \\
-           & frac. Reciprocating enginer powered (current) & \xlname{Frac\_power\_pipeline\_engine\_current}  & 0.36 & var. 	& [-] & Assumption   & \\
-             & frac. Reciprocating engine powered (future) & \xlname{Frac\_power\_pipeline\_engine\_future}  & 0.09 & var. 	& [-] & Assumption   & \\
+       $f_t$  & frac. Turbine powered & \xlname{Frac\_power\_pipeline\_turbine}  & 0.55 & var. 	& [-] & Assumption   & \\
+        $f_{t,c}$   & frac. Reciprocating enginer powered (current) & \xlname{Frac\_power\_pipeline\_engine\_current}  & 0.36 & var. 	& [-] & Assumption   & \\
+          $f_{t,f}$    & frac. Reciprocating engine powered (future) & \xlname{Frac\_power\_pipeline\_engine\_future}  & 0.09 & var. 	& [-] & Assumption   & \\
              
-              & Share of fuel inputs table & \xlname{Fuel\_inputs\_share\_crude}  & var. & var. 	& [-] & Assumption   & \\
+          $S_{fuel}$    & Share of fuel inputs table & \xlname{Fuel\_inputs\_share\_crude}  & var. & var. 	& [-] & Assumption   & \\
               
-     & Feed losses: btu/mmBtu fuel transported & \xlname{Losses\_feed}  & 62 & var.	& [Btu/mmBtu transported] & Assumption   & \\
+    $L_{feed}$ & Feed losses: btu/mmBtu fuel transported & \xlname{Losses\_feed}  & 62 & var.	& [Btu/mmBtu transported] & Assumption   & \\
 
 \end{supertabular*}
 \begin{tablenotes}
@@ -8613,32 +8625,32 @@ The default settings for the parameters for crude oil transport are given below 
 \begin{threeparttable}
 \begin{supertabular*}{1\columnwidth}{p{0.03\columnwidth}p{0.17\columnwidth}p{0.3\columnwidth}p{0.03\columnwidth}p{0.03\columnwidth}p{0.15\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}}
 
- $f_{petcoke,ot}$ & Fraction of petcoke transported by ocean freighter   & \xlname{frac\_freighter\_pettransport}  & 1 	& 0-1 	& [] & Assumption   & \\
- 	 $f_{petcoke,b}$    & Fraction of petcoke transported by barge   & \xlname{frac\_barge\_pettranspor}  & 0 	& 0-1 	& [] & Assumption   & \\
+ $f_{petcoke,T}$ & Fraction of petcoke transported by ocean freighter   & \xlname{frac\_freighter\_pettransport}  & 1 	& 0-1 	& [] & Assumption   & \\
+ 	 $f_{petcoke,B}$    & Fraction of petcoke transported by barge   & \xlname{frac\_barge\_pettranspor}  & 0 	& 0-1 	& [] & Assumption   & \\
  	 $f_{petcoke,R}$     & Fraction of petcoke transported by rail   & \xlname{frac\_rail\_pettransport}  & 0 	& 0-1 	& [] & Assumption   & \\
- 	  $f_{petcoke,T}$    & Fraction of petcoke transported by truck   & \xlname{frac\_rail\_pettransport}  & 0 	& 0-1 	& [] & Assumption   & \\
+ 	  $f_{petcoke,TR}$    & Fraction of petcoke transported by truck   & \xlname{frac\_rail\_pettransport}  & 0 	& 0-1 	& [] & Assumption   & \\
  	      
- 	$d_{trans,ot}$      & Transport distance by ocean tanker   & \xlname{Distance\_freighter\_pettransport}  & 5082 	& var. 	& [Miles] & Assumption   & \\
- 	  	$d_{trans,b}$     & Transport distance by barge   & \xlname{Distance\_barge\_pettransport}  & 500 	& var. 	& [Miles] & Assumption   & \\
- 	   	$d_{trans,r}$    & Transport distance by rail   & \xlname{Distance\_rail\_pettransport}  & 800 	& var. 	& [Miles] & Assumption   & \\
- 	    	$d_{trans,t}$   & Transport distance by truck   & \xlname{Distance\_truck\_pettransport}  & 100 	& var. 	& [Miles] & Assumption   & \\
+ 	$D_{trans,T}$      & Transport distance by ocean tanker   & \xlname{Distance\_freighter\_pettransport}  & 5082 	& var. 	& [Miles] & Assumption   & \\
+ 	  	$D_{trans,B}$     & Transport distance by barge   & \xlname{Distance\_barge\_pettransport}  & 500 	& var. 	& [Miles] & Assumption   & \\
+ 	   	$D_{trans,R}$    & Transport distance by rail   & \xlname{Distance\_rail\_pettransport}  & 800 	& var. 	& [Miles] & Assumption   & \\
+ 	    	$D_{trans,TR}$   & Transport distance by truck   & \xlname{Distance\_truck\_pettransport}  & 100 	& var. 	& [Miles] & Assumption   & \\
  	      
- 	   	$Size_{of}$     & Ocean freighter size   & \xlname{Size\_freighter\_pettransport}  & 250000 	& var. 	& [Ton] & Assumption   & \\
- 	        & Barge capacity   & \xlname{Capacity\_barge\_pettransport}  & 22500 	& var. 	& [Ton] & Assumption   & \\
+ 	   	$S_{T}$     & Ocean freighter size   & \xlname{Size\_freighter\_pettransport}  & 250000 	& var. 	& [Ton] & Assumption   & \\
+ 	     $C_B$   & Barge capacity   & \xlname{Capacity\_barge\_pettransport}  & 22500 	& var. 	& [Ton] & Assumption   & \\
  	       
- 	    	$u_{ot}$     & Ocean tanker speed & \xlname{Speed\_tanker}  & 19	& var. 	& [mi/hr] & Assumption   & \\
- 	     	$u_{b}$   & Barge tanker speed & \xlname{Speed\_tanker}  & 5	& var. 	& [mi/hr] & Assumption   & \\
+ 	    	$u_{T}$     & Ocean tanker speed & \xlname{Speed\_tanker}  & 19	& var. 	& [mi/hr] & Assumption   & \\
+ 	     	$u_{B}$   & Barge tanker speed & \xlname{Speed\_tanker}  & 5	& var. 	& [mi/hr] & Assumption   & \\
  	        
- 	    $load_{ot,od}$    & Ocean tanker load factor (origin to destination) & \xlname{Load\_factor\_to\_dest\_tanker}  & 0.8	& var. 	& [] & Assumption   & \\
- 	        & Barge load factor (origin to destination) & \xlname{Load\_factor\_to\_dest\_barge}  & 0.8	& var. 	& [] & Assumption   & \\
- 	    $load_{ot,do}$    & Ocean tanker load factor (destination to origin) & \xlname{Load\_factor\_to_orig\_tanker}  & 0.7	& var. 	& [] & Assumption   & \\
- 	     $load_{b,do}$   & Barge load factor (destination to origin) & \xlname{Load\_factor\_to\_orig\_barge}  & 0.6	& var. 	& [] & Assumption   & \\
+ 	    $l_{T,o-d}$    & Ocean tanker load factor (origin to destination) & \xlname{Load\_factor\_to\_dest\_tanker}  & 0.8	& var. 	& [] & Assumption   & \\
+ 	      $l_{B,o-d}$   & Barge load factor (origin to destination) & \xlname{Load\_factor\_to\_dest\_barge}  & 0.8	& var. 	& [] & Assumption   & \\
+ 	    $l_{T,d-o}$    & Ocean tanker load factor (destination to origin) & \xlname{Load\_factor\_to_orig\_tanker}  & 0.7	& var. 	& [] & Assumption   & \\
+ 	     $l_{B,d-o}$   & Barge load factor (destination to origin) & \xlname{Load\_factor\_to\_orig\_barge}  & 0.6	& var. 	& [] & Assumption   & \\
  	        
- 	          & Energy intensity of rail transport & \xlname{Energy\_intensity\_rail\_to\_dest\_pettransport}  & 370	& var. 	& [btu/ton-mi] & Assumption   & \\
+ 	         $EI_R$ & Energy intensity of rail transport & \xlname{Energy\_intensity\_rail\_to\_dest\_pettransport}  & 370	& var. 	& [btu/ton-mi] & Assumption   & \\
  	          
- 	           & Share of fuel inputs table & \xlname{Fuel\_inputs\_share\_petcoke}  & var.	& var. 	& [btu/btu] & Assumption   & \\
+ 	          $S_{fuel}$ & Share of fuel inputs table & \xlname{Fuel\_inputs\_share\_petcoke}  & var.	& var. 	& [btu/btu] & Assumption   & \\
  	           
- 	             & Feed losses: btu/mmBtu fuel transported & \xlname{Losses\_feed}  & 62 & var.	& [btu/mmBtu transported] & Assumption   & \\
+ 	           $L_{feed}$  & Feed losses: btu/mmBtu fuel transported & \xlname{Losses\_feed}  & 62 & var.	& [btu/mmBtu transported] & Assumption   & \\
 
 \end{supertabular*}
 \begin{tablenotes}
@@ -8676,8 +8688,8 @@ The default settings for the parameters for gas distribution are given below in 
 \begin{threeparttable}
 \begin{supertabular*}{1\columnwidth}{p{0.03\columnwidth}p{0.25\columnwidth}p{0.25\columnwidth}p{0.03\columnwidth}p{0.03\columnwidth}p{0.1\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}}
 
-& Loss fraction at customer meter  & \xlname{Losses\_customermeter}  & 0.001 	& var. 	& [\%] & Assumption   & \\
-& Loss fraction at end use appliance or equipment  & \xlname{Losses\_enduse}  & 0.001 	& var. 	& [\%] & Assumption   & \\
+$L_{customer}$ & Loss fraction at customer meter  & \xlname{Losses\_customermeter}  & 0.001 	& var. 	& [\%] & Assumption   & \\
+$L_{equ.}$ & Loss fraction at end use appliance or equipment  & \xlname{Losses\_enduse}  & 0.001 	& var. 	& [\%] & Assumption   & \\
  	     
 \end{supertabular*}
 \begin{tablenotes}
@@ -8714,10 +8726,10 @@ The default settings for the parameters for gas distribution are given below in 
 \begin{threeparttable}
 \begin{supertabular*}{1\columnwidth}{p{0.05\columnwidth}p{0.25\columnwidth}p{0.25\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}}
 
-$T_{imported}$  & Imported gas temperature  & \xlname{Temperature\_gasimport}  & 60 	& 50-70 	& {[}$^{\circ}$F{]} & Assumption   & \\
-$p_{imported}$  & Imported gas pressure  & \xlname{Pressure\_gasimport}  & 1000 	& 900-1100 	& [psia] & Assumption   & \\
-$T_{dist.}$    & Distributed gas temperature  & \xlname{Temperature\_gasdistributed}  & 90 	& 80-100 	& {[}$^{\circ}$F{]} & Assumption   & \\
-$p_{dist.}$   & Distributed gas pressure  & \xlname{Pressure\_gasdistributed}  & 150 	& 100-200 	& [psia] & Assumption   & \\
+$T_{gas,impo.}$  & Imported gas temperature  & \xlname{Temperature\_gasimport}  & 60 	& 50-70 	& {[}$^{\circ}$F{]} & Assumption   & \\
+$p_{gas,impo.}$  & Imported gas pressure  & \xlname{Pressure\_gasimport}  & 1000 	& 900-1100 	& [psia] & Assumption   & \\
+$T_{gas,dist.}$    & Distributed gas temperature  & \xlname{Temperature\_gasdistributed}  & 90 	& 80-100 	& {[}$^{\circ}$F{]} & Assumption   & \\
+$p_{gas,dist.}$   & Distributed gas pressure  & \xlname{Pressure\_gasdistributed}  & 150 	& 100-200 	& [psia] & Assumption   & \\
  	     
 \end{supertabular*}
 \begin{tablenotes}
@@ -8782,7 +8794,7 @@ The default settings for parameters for electricity generation and imports is gi
 \begin{supertabular*}{1\columnwidth}{p{0.05\columnwidth}p{0.25\columnwidth}p{0.25\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}}
 
 $y_{gen.}$ & Onsite generator type & \xlname{Generator\_type}  & 1	& 1-3 	& [-] & Assumption   & \\
- & Grid electricity mix and efficiencies & \xlname{Electricity\_mix_grid}  & var.	& var. 	& [-] & Assumption   & \\
+ $Y_{grid}$ & Grid electricity mix and efficiencies & \xlname{Electricity\_mix_grid}  & var.	& var. 	& [-] & Assumption   & \\
 $\eta_{grid,dis.}$  & Grid transmission efficiency for displaced electricity & \xlname{eta\_grid\_displaced}  & 93.5	& 90-95 	& [\%] & Assumption   & \\
 $\eta_{grid,purch.}$ & Grid transmissions efficiency for purchased grid electricity & \xlname{eta\_grid\_purchased}  & 93.5	& 90-95 	& [\%] & Assumption   & \\
  	     
