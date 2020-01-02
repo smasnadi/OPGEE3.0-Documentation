@@ -5700,7 +5700,7 @@ Fugitives from gathering					& \stream{254}			& O		& Environment					& [t/d]			&
 \section{Glycol dehydrator}
 \label{sec:glycol_dehydrator}
 
-In addition to the sweetening process, natural gas often must be dehydrated to prevent issues such as condensation and hydrate formation that could negatively affect the gas processing and distribution process \cite[p. 139]{Manning1991}.  This section discusses thermal and electrical energy demands from gas dehydration. The dehydration process also involves operational venting of some natural gas and water \cite[p. 140]{Manning1991}; dehydrator venting is discussed in the Venting \& Fugitives section (see Section \ref{sec:VF}). 
+In addition to the sweetening process, natural gas often must be dehydrated to prevent issues such as condensation and hydrate formation that could negatively affect the gas processing and distribution process \cite[p. 139]{Manning1991}.  This section discusses thermal and electrical energy demands from gas dehydration. The dehydration process also involves operational venting of some natural gas and water \cite[p. 140]{Manning1991}; dehydrator venting is discussed in the Venting \& Fugitives section (see Section \ref{sec:VFF}). 
 
 The streams flowing into and out of the glycol dehydrator process are shown in Figure \ref{fig:glycol_dehydrator_PF} and are listed in Table \ref{tab:glycol_dehydrator_PF}.
 
@@ -5751,7 +5751,7 @@ The simulations, and consequently OPGEE, model dehydration through the use of tr
 
 The modeled system works by combing the sweet gas and water in a mixer to create a wet natural gas entering the separator unit with moisture in equilibrium with the gas. The separator removes all liquid and solid impurities from the gas and sends it to a contact tower. In the contactor, the natural gas counter-currently flows against incoming TEG. The dries the gas, which then gets passed through a heat exchanger and passed into the sales line. Meanwhile, the rich TEG leaves the contactor and passes into the regenerator. The gas rich TEG flows through the reboiler. Water is stripped, and the water vapor is vented from the top of the regenerator. The lean TEG is then passed through a make-up unit to be supplemented with fresh TEG. Finally, the lean TEG is pumped back to the contactor \cite{Manning1991}. 
 
-The goal of this research is to vary several different decision variables within the Aspen simulations in order to determine a model for energy consumption that can be utilized in OPGEE. The model will be used to adequately predict reboiler energy use, pump energy use, and cooler energy use. Meanwhile, the Aspen HYSYS simulations also allow for an ability to predict final water load in the sales gas, as long as it meets the 7 lb water / mmscf or less standard. The variables that are adjusted are:
+The goal of this research is to vary several different decision variables within the Aspen simulations in order to determine a model for energy consumption that can be utilized in OPGEE (see \cite{Masnadi2020} for more details on proxy modeling). The model will be used to adequately predict reboiler energy use, pump energy use, and cooler energy use. Meanwhile, the Aspen HYSYS simulations also allow for an ability to predict final water load in the sales gas, as long as it meets the 7 lb water / mmscf or less standard. The variables that are adjusted are:
 \begin{enumerate}
 \item Pressure of the water and gas mixture entering the separator. 
 \item Temperature of the water and gas mixture entering the separator.
@@ -5808,7 +5808,7 @@ Reboiler 	&	Reboiler feed temperature &	190		&	220 				& $^\circ$F				& \\
 \end{scriptsize}
 \end{table}
 
-In Aspen HYSYS a Box-Behnken sampling of 117 points are tested using the ranges shown in Table 2 for the inlet pressure, inlet temperature, inlet molar water flow rate, reflux ratio, and regenerator feed temperature. The values for TEG recirculation rate and TEG-to-contactor temperature are calculated from those 117 points as well. Those points are supplemented by a set of 10000 combinations generated from latin hypercube samplings in the same ranges. That combines to a total of 10117 different combinations. This set of randomly-selected settings of temperatures and flow rates is not likely to -- in general -- meet the required gas quality specifications. Therefore, after simulation, all points are vetted to ensure that they meet the 7 lb H$_2$O per mmscf moisture content maximum, and samples that do not meet this standard are rejected. This leaves 1962 sampled points to be used to generate the prediction models. 
+In Aspen HYSYS a Box-Behnken sampling of 117 points are tested using the ranges shown in Table 2 for the inlet pressure, inlet temperature, inlet molar water flow rate, reflux ratio, and regenerator feed temperature. The values for TEG recirculation rate and TEG-to-contactor temperature are calculated from those 117 points as well. Those points are supplemented by a set of 10,000 combinations generated from latin hypercube samplings in the same ranges. That combines to a total of 10,117 different combinations. This set of randomly-selected settings of temperatures and flow rates is not likely to -- in general -- meet the required gas quality specifications. Therefore, after simulation, all points are vetted to ensure that they meet the 7 lb H$_2$O per mmscf moisture content maximum, and samples that do not meet this standard are rejected. This leaves 1962 sampled points to be used to generate the prediction models. 
 
 Using these results, predictive equations are generated using MATLAB curve fitting toolbox \cite{Mathworks2016}.  A set of four predictive equations were generated for the TEG dehydration unit. These equations predict (1) reboiler heat input, (2) pump work, (3) condenser cooling electrical load, and (4) residual moisture in lbs H$_2$O/mmscf. Each dataset is split into a training dataset and a testing dataset. The testing set is a randomly selected subset of $\approx$10\% of the observations which is removed from the dataset and held aside (i.e., not used to generate the statistical fit). The training set includes the remainder of the results ($\approx$\%90\% of simulation runs). The training and testing sets are drawn independently for each predictive equation, so training $n$ and testing $n$ will vary for each predictive model. Each training dataset is fitted to a quadratic equation of all five independent variables. The quadratic equation includes all linear terms, interaction terms, and square terms. The quadratic model fits are of the general form:
 \begin{equation}
@@ -5890,18 +5890,18 @@ Default values for flaring calculations are shown in \ref{tab:secondary_inputs_g
 \tablecaption{Secondary inputs used in \sheet{Glycol dehydrator} sheet.}
 \label{tab:secondary_inputs_glycol}
 \begin{threeparttable}
-\begin{supertabular*}{1\columnwidth}{p{0.03\columnwidth}p{0.3\columnwidth}p{0.25\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.025\columnwidth}}
+\begin{supertabular*}{1\columnwidth}{p{0.05\columnwidth}p{0.3\columnwidth}p{0.25\columnwidth}p{0.05\columnwidth}p{0.15\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.025\columnwidth}}
     $y_{dehyd.}$  & Model of dehydration used & \xlname{Model\_type\_dehydration} & 1 & 1,2  & [binary 1-2] & Assumption  & -  \\
-       & Maximum water content in outlet gas & \xlname{Moisture\_outlet\_dehydration} & 7 & 5-10  & [lb H2O/mmscf] & Assumption  & -  \\
-    $TEGW$   & TEG-to-water ratio & \xlname{TEG\_water\_ratio\_dehydrator} & 2 & 1-4  & [gal TEG/lb H2O] & Assumption  & -  \\
-    $p$   & Operating pressure & \xlname{Pressure\_dehydrator} & 786 & 600-900  & [psi] & Assumption  & -  \\
-    $\eta_{P}$   & Glycol pump efficiency  & \xlname{eta\_glycolpump\_dehydrator} & 75 & 60-80  & [\%] & Assumption  & -  \\
-    $y_{reboil. heater}$   & Type of reboiler heater  & \xlname{Type\_reboiler\_dehydrator} & 1 & 1,2 & [binary 1-2] & Assumption  & -  \\
-     $T_{feed}$  & Regeneration feed temperature  & \xlname{Temperature\_regeneration\_dehydrator} & 200 & 150-300 & [$^\circ$F] & Assumption  & -  \\
-       & Reboiler heater fuel use  & \xlname{Eta\_reboiler\_dehydrator} & 1.25 & 1-1.5 & [btu/btu] & Assumption  & -  \\
-     $RR$   & Reflux ratio  & \xlname{Ratio\_reflux\_dehydrator} & 2.25 & 2-2.5 & [-] & Assumption  & -  \\
-      $\Delta T_{air}$   & Air cooler delta T, air side  & \xlname{delta\_temperature\_aircooler\_dehydrator} & 40 & 30-50 & [$^\circ$F] & Assumption  & -  \\
-     $\Delta p_{air}$    & Air cooler pressure drop  & \xlname{delta\_pressure\_aircooler\_dehydrator} & 0.6 & 0.4-0.5 & [in. H2O] & Assumption  & -  \\
+     $w_{max,dehyd.}$  & Maximum water content in outlet gas & \xlname{Moisture\_outlet\_dehydration} & 7 & 5-10  & [lb H2O/mmscf] & Assumption  & -  \\
+    $TEGW_{dehyd.}$   & TEG-to-water ratio & \xlname{TEG\_water\_ratio\_dehydrator} & 2 & 1-4  & [gal TEG/lb H2O] & Assumption  & -  \\
+    $p_{dehyd.}$   & Operating pressure & \xlname{Pressure\_dehydrator} & 786 & 600-900  & [psi] & Assumption  & -  \\
+    $\eta_{pump,dehyd.}$   & Glycol pump efficiency  & \xlname{eta\_glycolpump\_dehydrator} & 75 & 60-80  & [\%] & Assumption  & -  \\
+    $y_{reboil,dehyd.}$   & Type of reboiler heater  & \xlname{Type\_reboiler\_dehydrator} & 1 & 1,2 & [binary 1-2] & Assumption  & -  \\
+     $T_{feed,dehyd.}$  & Regeneration feed temperature  & \xlname{Temperature\_regeneration\_dehydrator} & 200 & 150-300 & [$^\circ$F] & Assumption  & -  \\
+     \eta_{reboiler,dehyd.}  & Reboiler heater fuel use  & \xlname{Eta\_reboiler\_dehydrator} & 1.25 & 1-1.5 & [btu/btu] & Assumption  & -  \\
+     $RR_{dehyd.}$   & Reflux ratio  & \xlname{Ratio\_reflux\_dehydrator} & 2.25 & 2-2.5 & [-] & Assumption  & -  \\
+      $\Delta T_{air,dehyd.}$   & Air cooler delta T, air side  & \xlname{delta\_temperature\_aircooler\_dehydrator} & 40 & 30-50 & [$^\circ$F] & Assumption  & -  \\
+     $\Delta p_{air,dehyd.}$    & Air cooler pressure drop  & \xlname{delta\_pressure\_aircooler\_dehydrator} & 0.6 & 0.4-0.5 & [in. H2O] & Assumption  & -  \\
       
 \end{supertabular*}
 %\begin{tablenotes}
@@ -6064,7 +6064,7 @@ CO$_2$ conc. [mol.\% ] 		&	1 -- 15 	 			&	1 -- 15 	 			&	1 -- 15 	  			& 1 -- 15
 
 As different mole fractions H$_2$S and CO$_2$ are explored, the remaining species are scaled proportionately by the OPGEE default molar ratios after removing N$_2$: 6.12\% CO$_2$, 1.02\% H$_2$S, 85.72\% CH$_4$, 4.08\% C$_2$H$_6$, 2.04 \% C$_3$H$_8$, 1.02\% C$_4$H$_10$.  
 
-The sampling strategy used combines deterministic and random sampling across our five independent variables $x_1$ to $x_5$. Within each amine case, 16 different gas compositions are modeled, as the cross product of 4 H$_2$S concentrations (1 mol\%, 5 mol\%, 10 mol\% and 20 mol\%) and 4 CO$_2$ concentrations ((1 mol\%, 5 mol\%, 10 mol\% and 15 mol\%). For each gas composition, deterministic sampling is performed using Box-Behnken sampling across the remaining three variables (reflux ratio, regenerator feed temperature, and feed gas pressure). Box-Behnken sampling is a deterministic sampling strategy that explores a central point and extremal points in high variable space (e.g., corners and faces of high-dimensional variable bounds). Box-Behnken sampling returns 13 combinations of variables. Additionally, a random sampling of 100 additional points for each amine and gas composition is also performed using latin hypercube sampling methodology. Thus, per gas composition we have 113 samples, or 1808 samples for each amine. Therefore a total of $\approx$ 9000 simulations of AGR systems were performed across all amine systems. All samples are generated using MATLAB \cite{Mathworks2016} and run in bulk through Aspen HYSYS.  
+The sampling strategy used combines deterministic and random sampling across our five independent variables $x_1$ to $x_5$. Within each amine case, 16 different gas compositions are modeled, as the cross product of 4 H$_2$S concentrations (1 mol\%, 5 mol\%, 10 mol\% and 20 mol\%) and 4 CO$_2$ concentrations ((1 mol\%, 5 mol\%, 10 mol\% and 15 mol\%). For each gas composition, deterministic sampling is performed using Box-Behnken sampling across the remaining three variables (reflux ratio, regenerator feed temperature, and feed gas pressure). Box-Behnken sampling is a deterministic sampling strategy that explores a central point and extremal points in high variable space (e.g., corners and faces of high-dimensional variable bounds). Box-Behnken sampling returns 13 combinations of variables. Additionally, a random sampling of 100 additional points for each amine and gas composition is also performed using latin hypercube sampling methodology. Thus, per gas composition we have 113 samples, or 1808 samples for each amine. Therefore a total of $\approx$ 9,000 simulations of AGR systems were performed across all amine systems. All samples are generated using MATLAB \cite{Mathworks2016} and run in bulk through Aspen HYSYS.  
 
 All points are required to meet the sweet gas specification of 4 ppmv H$_2$S in order to have a converged result (CO$_2$ concentrations are reduced to very low values in meeting this H$_2$S specification).  For some solvents, all possible combinations did not converge, resulting in a smaller number of sample points.
  
@@ -6126,7 +6126,7 @@ For this work, air-cooler pressure drop is chosen to be conservative value of 0.
 \begin{equation}
 ACFM = \frac{W_a}{D \times 60 \times 0.0749} \quad\quad\eqnunitfrac{ft$^3$}{min}
 \end{equation}
-Where $W_a$ is the air quantity in lbs. air, D is a air-density correction factor, and 60 and 0.0749 are conversion factors \cite[p. 10-16]{GPSA2004}.  OPGEE assumes standard conditions (70 $^\circ$F), so D=1. The quantity of air needed for heat exchange is equal to:
+where $W_a$ is the air quantity in lbs. air, D is a air-density correction factor, and 60 and 0.0749 are conversion factors \cite[p. 10-16]{GPSA2004}.  OPGEE assumes standard conditions (70 $^\circ$F), so D=1. The quantity of air needed for heat exchange is equal to:
 \begin{equation}
 W_a = \frac{Q}{0.24 \times \Delta T_a} \quad\quad\eqnunitfrac{lb}{h}
 \end{equation}
@@ -6147,11 +6147,23 @@ In the amine process an aqueous \textit{alkanolamine} solution is regenerated an
 \end{landscape}
    
 
-The inlet gas flow rate of the gas processing stage in the gas balance (see \sheet{Gas Balance} worksheet) is calculated as:  
+The inlet gas flow rate of the gas processing stage in the gas balance (see \sheet{Gas Balance} worksheet) is calculated as:
+
 %%%%%%%%%%
-\begin{equation} \label{eq:AGR_inlet_gas}
+\begin{minipage}{0.8\columnwidth}\label{eq:AGR_inlet_gas}
+\begin{fleqn}[0pt]
+\begin{equation}
 Q_{g}= Q_{o} \cdot \text{GOR}  \left( \frac{1}{10^6} \right) - Q_{F} \quad\quad\eqnunitfrac{mmscf}{d}
 \end{equation}
+\end{fleqn}
+\end{minipage}\hfill
+\begin{minipage}{0.3\columnwidth}
+        \begin{tabular}{|cl}
+        & \\
+        GOR   & \xlname{GOR}\\
+        & \\
+        \end{tabular}
+\end{minipage}
 %%%%%%%%%%
 where $Q_{g}$ = inlet gas flow rate [mmscf/d]; $Q_{o}$ = rate of oil production [bbl/d]; $Q_{F}$ = flaring rate [mmscf/d]; and GOR = gas-to-oil ratio [scf/bbl]. The inlet gas flow rate is used in the calculation of the amine circulation rate in eq.\,\eqref{eq:amine_flow_rate}. Although the accumulation of gases to flare likely occurs at various points throughout the process, OPGEE assumes that the gas flared is removed before gas processing occurs. This allows for OPGEE to account for ``early field production" or production in locations without a gas market. For these situations, no surface processing exists and all produced gas is flared.  
 
@@ -6164,7 +6176,7 @@ The heat duty of the amine reboiler can be estimated from the circulation rate o
 \Delta H_{R}= \frac{24\cdot72000 \cdot Q_{amine}}{10^6}  1.15 \quad\quad\eqnunitfrac{mmBtu}{d}
 \end{equation}
 %%%%%%%%%%
-where $\Delta H_{R}$ = heat duty [mmBtu/d]; and $Q_{amine}$ = amine flow rate [gpm].   A gallon of amine solution requires approximately 72000 Btu for regeneration \cite{Jones1973}. A safety factor of 15\% is added for start up heat losses and other inefficiencies. The flow rate of the amine solution can be estimated using the following equation \cite[p. 115]{Manning1991}:  
+where $\Delta H_{R}$ = heat duty [mmBtu/d]; and $Q_{amine}$ = amine flow rate [gpm].   A gallon of amine solution requires approximately 72,000 Btu for regeneration \cite{Jones1973}. A safety factor of 15\% is added for start up heat losses and other inefficiencies. The flow rate of the amine solution can be estimated using the following equation \cite[p. 115]{Manning1991}:  
 %%%%%%%%%%
 \begin{equation} \label{eq:amine_flow_rate}
 Q_{amine}=100\,K (Q_{ H_{2}S}+  Q_{CO2}) \quad\quad\eqnunit{gpm}
@@ -6252,15 +6264,15 @@ $x_{H_{2}S}$     & H$_2$S gas composition & \xlname{Gas\_comp\_H2S} & 1 & var. &
 \begin{twoparttable}
 \begin{supertabular*}{1\columnwidth}{p{0.05\columnwidth}p{0.2\columnwidth}p{0.25\columnwidth}p{0.03\columnwidth}p{0.03\columnwidth}p{0.12\columnwidth}p{0.05\columnwidth}p{0.01\columnwidth}}
     $y_{AGR}$  & AGR modeling method & \xlname{Model\_type\_AGR} & 1	& 1-2  & [binary 1-2] & Assumption  &  \\
-    $y_{Amine sol.}$   & Amine solution & \xlname{Type\_amine\_AGR} & 2	& 1-6  & [-] & Assumption  & \\
-    $R_{reboiler}$   & Reflux ratio in reboiler & \xlname{Ratio\_reflux\_reboiler\_AGR} & 7	& 6-8  & [-] & Assumption  &  \\
-     $T_{regen.}$    & Regeneration feed temperature & \xlname{Temperature\_regeneration\_AGR} & 205	& 200-250  & {[}$^\circ$F{]}  & Assumption  &  \\
-     $K$ & Amine solution K value & \xlname{Kvalue\_amine\_AGR} & 2.05 & 0.95-2.05 & [gpm-d/100mmscf] & \cite[p. 115]{Manning1991} & a\\
-       $P_{AGR feed}$   & Feed gas pressure & \xlname{Pressure\_feedgas\_AGR} & 200	& 150-250  & [psia]  & Assumption  &  \\
-       $P_{AGR}$ & Operating pressure & \xlname{Pressure\_operating\_AGR} & 350	& 300-400  & [psi]  & Assumption  &  \\
-        & Reboiler Gas-fired heater fuel use & \xlname{eta\_reboiler\_AGR} & 1.25	& 1-2  & [btu/btu]  & Assumption  &  \\
-    $\Delta T_{cooler}$    & Air cooler delta T, air side & \xlname{delta\_temperature\_aircooler\_AGR} & 40	& 30-50  & {[}$^\circ$F{]} & Assumption  &  \\
-      $\Delta P_{cooler}$    & Air cooler pressure drop & \xlname{delta\_pressure\_aircooler\_AGR} & 0.6	& 0.5-0.7  & [in. H2O] & Assumption  & \\
+    $y_{amine}$   & Amine solution & \xlname{Type\_amine\_AGR} & 2	& 1-6  & [-] & Assumption  & \\
+    $R_{reboiler,AGR}$   & Reflux ratio in reboiler & \xlname{Ratio\_reflux\_reboiler\_AGR} & 7	& 6-8  & [-] & Assumption  &  \\
+     $T_{regen.,AGR}$    & Regeneration feed temperature & \xlname{Temperature\_regeneration\_AGR} & 205	& 200-250  & {[}$^\circ$F{]}  & Assumption  &  \\
+     $K_{AGR}$ & Amine solution K value & \xlname{Kvalue\_amine\_AGR} & 2.05 & 0.95-2.05 & [gpm-d/100mmscf] & \cite[p. 115]{Manning1991} & a\\
+       $p_{feed,AGR}$   & Feed gas pressure & \xlname{Pressure\_feedgas\_AGR} & 200	& 150-250  & [psia]  & Assumption  &  \\
+       $p_{AGR}$ & Operating pressure & \xlname{Pressure\_operating\_AGR} & 350	& 300-400  & [psi]  & Assumption  &  \\
+       \eta_{reboiler,AGR} & Reboiler Gas-fired heater fuel use & \xlname{eta\_reboiler\_AGR} & 1.25	& 1-2  & [btu/btu]  & Assumption  &  \\
+    $\Delta T_{cooler,AGR}$    & Air cooler delta T, air side & \xlname{delta\_temperature\_aircooler\_AGR} & 40	& 30-50  & {[}$^\circ$F{]} & Assumption  &  \\
+      $\Delta P_{cooler,AGR}$    & Air cooler pressure drop & \xlname{delta\_pressure\_aircooler\_AGR} & 0.6	& 0.5-0.7  & [in. H2O] & Assumption  & \\
 \end{supertabular*}
 \multicolumn{8}{p{1\columnwidth}}{\emph{a} - The default is monoethanolamine (MEA).}\\
 %\begin{tablenotes}
@@ -6587,19 +6599,19 @@ Default values for flaring calculations are shown in Tables \ref{tab:primary_inp
 \tablecaption{Secondary inputs used in \sheet{Demethanizer} sheet.}
 \label{tab:secondary_inputs_demethanizer}
 \begin{threeparttable}
-\begin{supertabular*}{1\columnwidth}{p{0.03\columnwidth}p{0.3\columnwidth}p{0.3\columnwidth}p{0.03\columnwidth}p{0.03\columnwidth}p{0.09\columnwidth}p{0.03\columnwidth}p{0.025\columnwidth}}
+\begin{supertabular*}{1\columnwidth}{p{0.05\columnwidth}p{0.3\columnwidth}p{0.3\columnwidth}p{0.03\columnwidth}p{0.03\columnwidth}p{0.09\columnwidth}p{0.03\columnwidth}p{0.025\columnwidth}}
     $y_{demeth.}$  & Method of modeling & \xlname{Model\_type\_demethanizer} & 1	& 1-2  & [binary 1-2] & Assumption  &  \\
-    $P_{demet.}$  & Demethanizer column pressure & \xlname{Pressure\_demethanizer\_col} & 240	& 230-250  & [psi] & Assumption  &  \\
-    $f_{c_{1}/NGL}$  & Methane to ethane NGL composition molar ratio at NGL product stream & \xlname{Ratio\_NGL\_product} & 0	& var.  & [-] & Assumption  &  \\
-      & Reboiler gas-fired heater fuel use & \xlname{eta\_reboiler\_demethanizer} & 1.3	& 1-1.5  & [Btu/Btu] & Assumption  &  \\
-      $\Delta T_{cooler}$ & Air cooler delta T, air side & \xlname{delta\_temperature\_aircooler\_demethanizer} & 40	& 30-50  & [$^\circ$F]  & Assumption  &  \\
-      $\Delta P_{cooler}$ & Air cooler pressure drop & \xlname{delta\_pressure\_aircooler\_demethanizer} & 0.6	& 0.5-0.7  & [in. H_{2}O]  & Assumption  &  \\
-      $\eta _{comp.}$ & Compressor efficiency & \xlname{eta\_compressor\_demeth} & 75	& 70-80  & [\%]  & Assumption  &  \\
-     $y_{p. mover}$   & Prime mover type & \xlname{Prime\_mover\_type\_demeth} & 2	& 1,2  & [binary 1-2]  & Assumption  &  \\
-      $f_{g,demth,h}$    & Fractions of gas to demethanizer product heavy streams & \xlname{Composition\_demethanizer\_heavy} & var.	& var.  & [mol frac.]  & Assumption  &  \\
-        $f_{g,demth,l}$     & Fractions of gas to demethanizer product light streams & \xlname{Composition\_demethanizer\_light} & var.	& var.  & [mol frac.]  & Assumption  &  \\
-       $P_{ref.}$      & Refrigeration system power & \xlname{Energy\_intensity\_refrigeration} & 3.6	& 3-4  & [bhp-hr/kmolCOND]  & Assumption  &  \\
-      $P_{comp}$        & Compressor system power & \xlname{Energy\_intensity\_compressor} & 0.6	& 0-1  & [bhp-hr/kmolFEED]  & Assumption  &  \\
+    $p_{demet.}$  & Demethanizer column pressure & \xlname{Pressure\_demethanizer\_col} & 240	& 230-250  & [psi] & Assumption  &  \\
+    $f_{c_{1}/NGL,demeth.}$  & Methane to ethane NGL composition molar ratio at NGL product stream & \xlname{Ratio\_NGL\_product} & 0	& var.  & [-] & Assumption  &  \\
+     \eta_{reboiler,demeth.} & Reboiler gas-fired heater fuel use & \xlname{eta\_reboiler\_demethanizer} & 1.3	& 1-1.5  & [Btu/Btu] & Assumption  &  \\
+      $\Delta T_{cooler,demeth.}$ & Air cooler delta T, air side & \xlname{delta\_temperature\_aircooler\_demethanizer} & 40	& 30-50  & [$^\circ$F]  & Assumption  &  \\
+      $\Delta p_{cooler,demeth.}$ & Air cooler pressure drop & \xlname{delta\_pressure\_aircooler\_demethanizer} & 0.6	& 0.5-0.7  & [in. H_{2}O]  & Assumption  &  \\
+      $\eta _{comp.,demeth.}$ & Compressor efficiency & \xlname{eta\_compressor\_demeth} & 75	& 70-80  & [\%]  & Assumption  &  \\
+     $y_{p. mover,demeth.}$   & Prime mover type & \xlname{Prime\_mover\_type\_demeth} & 2	& 1,2  & [binary 1-2]  & Assumption  &  \\
+      $f_{gas/heavy,demth}$    & Fractions of gas to demethanizer product heavy streams & \xlname{Composition\_demethanizer\_heavy} & var.	& var.  & [mol frac.]  & Assumption  &  \\
+        $f_{gas/light,demth}$     & Fractions of gas to demethanizer product light streams & \xlname{Composition\_demethanizer\_light} & var.	& var.  & [mol frac.]  & Assumption  &  \\
+       $P_{ref.,demeth.}$      & Refrigeration system power & \xlname{Energy\_intensity\_refrigeration} & 3.6	& 3-4  & [bhp-hr/kmolCOND]  & Assumption  &  \\
+      $P_{comp.,demeth.}$        & Compressor system power & \xlname{Energy\_intensity\_compressor} & 0.6	& 0-1  & [bhp-hr/kmolFEED]  & Assumption  &  \\
        
 \end{supertabular*}
 %\begin{tablenotes}
@@ -6686,8 +6698,8 @@ Default values for chiller calculations are shown in Tables \ref{tab:secondary_i
 \label{tab:secondary_inputs_chiller}
 \begin{threeparttable}
 \begin{supertabular*}{1\columnwidth}{p{0.03\columnwidth}p{0.3\columnwidth}p{0.25\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.025\columnwidth}}
-     $T_{o,chiller}$ & Chiller outlet temperature & \xlname{Temperature\_chiller\_outlet} & 35	& 30-40  & [$^\circ$F] & \cite{NETLChillerModel}  & -  \\
-      & Chiller fugitive emissions rate & \xlname{Fug\_emissions\_chiller} & 0	& 0-5  & [\%] & Assumption  & -  \\
+     $T_{out,chiller}$ & Chiller outlet temperature & \xlname{Temperature\_chiller\_outlet} & 35	& 30-40  & [$^\circ$F] & \cite{NETLChillerModel}  & -  \\
+      FE_{chiller} & Chiller fugitive emissions rate & \xlname{Fug\_emissions\_chiller} & 0	& 0-5  & [\%] & Assumption  & -  \\
       
 \end{supertabular*}
 %\begin{tablenotes}
@@ -6758,8 +6770,8 @@ Defaults for the CO$_2$ separation membrane are shown in Table \ref{tab:secondar
 \tablecaption{Secondary inputs used in \sheet{Membrane} sheet.}
 \label{tab:secondary_inputs_membrane}
 \begin{threeparttable}
-\begin{supertabular*}{1\columnwidth}{p{0.03\columnwidth}p{0.3\columnwidth}p{0.25\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.025\columnwidth}}
-  $x_{membrane}$    & Membrane gas compositions & \xlname{Composition\_membrane} & var.	& 0-1  & [mol frac.] & Assumption  & \\
+\begin{supertabular*}{1\columnwidth}{p{0.05\columnwidth}p{0.3\columnwidth}p{0.25\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.025\columnwidth}}
+  $x_{gas,membrane}$    & Membrane gas compositions & \xlname{Composition\_membrane} & var.	& 0-1  & [mol frac.] & Assumption  & \\
        
 \end{supertabular*}
 %\begin{tablenotes}
@@ -6860,9 +6872,9 @@ Default values for Ryan-Holmes unit calculations are shown in Tables \ref{tab:se
 \tablecaption{Secondary inputs used in \sheet{Ryan-Holmes unit} sheet.}
 \label{tab:secondary_inputs_RH}
 \begin{threeparttable}
-\begin{supertabular*}{1\columnwidth}{p{0.03\columnwidth}p{0.3\columnwidth}p{0.25\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.025\columnwidth}}
-      & Backup diesel engine daily usage & \xlname{Daily\_Usage\_Engine\_RyanHolmes} & 2.6	& 2-3  & [h/d] & \cite{NETLRyanHolmesModel}  &  \\
-   $x_{g,R-H}$   & Ryan-Holmes gas fractions & \xlname{Composition\_Ryan\_Holmes} & VAR.	& 0-1  & [mol. frac.] & \cite{NETLRyanHolmesModel}  & \\
+\begin{supertabular*}{1\columnwidth}{p{0.05\columnwidth}p{0.3\columnwidth}p{0.25\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.025\columnwidth}}
+     H_{backup,R-H} & Backup diesel engine daily usage & \xlname{Daily\_Usage\_Engine\_RyanHolmes} & 2.6	& 2-3  & [h/d] & \cite{NETLRyanHolmesModel}  &  \\
+   $f_{gas,R-H}$   & Ryan-Holmes gas fractions & \xlname{Composition\_Ryan\_Holmes} & VAR.	& 0-1  & [mol. frac.] & \cite{NETLRyanHolmesModel}  & \\
 \end{supertabular*}
 %\begin{tablenotes}
 %\item[a] Insert text of note here
@@ -7043,8 +7055,8 @@ $p_{R}$ 	    & Reservoir pressure			    & \xlname{Res\_press}  & 198.2 		& 50-30
 \label{tab:secondary_inputs_gasreinjection}
 \begin{threeparttable}
 \begin{supertabular*}{1\columnwidth}{p{0.08\columnwidth}p{0.2\columnwidth}p{0.26\columnwidth}p{0.08\columnwidth}p{0.06\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}}
-$y_{p. mover}$    & Prime mover type & \xlname{Prime\_mover\_type\_reinjection\_gas} &  2 & 1/2  & [-] &  & a \\
-$\eta_{GRC}$   & Compressor efficiency    & \xlname{Eta\_compressor\_reinjection\_gas}  & 75    & 60-80 & [\%] & & \\
+$y_{mover,reinjection}$    & Prime mover type & \xlname{Prime\_mover\_type\_reinjection\_gas} &  2 & 1/2  & [-] &  & a \\
+$\eta_{comp,reinjection}$   & Compressor efficiency    & \xlname{Eta\_compressor\_reinjection\_gas}  & 75    & 60-80 & [\%] & & \\
 \end{supertabular*}
 \begin{tablenotes}
 \item[a] Choice 1 = electric motor, Choice 2 = NG engine
@@ -7071,17 +7083,29 @@ OPGEE computes gas flooding work to take gas from 125 psia to reservoir injectio
  Subtracting this work from the reported consumption at Cantarell, we arrive at specific work of $\approx$0.15 kWh/Nm$^3$ for only the air separation component. Depending on the reservoir pressure, OPGEE will then add to this separation work the work to compress N$_2$ to required pressure. The work for gas injection compressors is modeled as noted above. If reinjected produced natural gas is assumed, then no separation work for N$_2$ production is required.
 
 OPGEE calculates the reservoir injection pressure based on the choice of the flood gas. If a gas other than CO$_2$ is the flood gas, then the reservoir injection pressure is calculated as:
+
 %%%%%%%%%%
-\begin{equation} \label{eq:NONCO2ReservoirInjectionPressure}
-P_{inj} = P_{R} + 500 + 14.7 \quad\quad\eqnunit{psia}
+\begin{minipage}{0.6\columnwidth}\label{eq:NONCO2ReservoirInjectionPressure}
+\begin{fleqn}[0pt]
+\begin{equation}
+p_{inj} = p_{R} + 500 + 14.7 \quad\quad\eqnunit{psia}
 \end{equation}
+\end{fleqn}
+\end{minipage}\hfill
+\begin{minipage}{0.3\columnwidth}
+        \begin{tabular}{|cl}
+        & \\
+        $p_{R}$ & \xlname{Res\_press}\\
+        & \\
+        \end{tabular}
+\end{minipage}
 %%%%%%%%%%
-where $P_{inj}$ = reservoir injection pressure [psia] and $P_{res}$ = reservoir pressure [psig]. The term 14.7 converts [psig] to [psia].
+where $p_{inj}$ = reservoir injection pressure [psia] and $p_{R}$ = reservoir pressure [psig]. The term 14.7 converts [psig] to [psia].
 
 
 
 \paragraph{CO$_2$ flooding and minimum miscibility pressure}\label{par:CarbonDioxideMMP}
-OPGEE assumes that CO$_2$ injection is performed to achieve a miscible gas flood. If CO$_2$ is the flood gas, then the reservoir injection pressure must reach the minimum miscibility pressure (MMP). The MMP is the minimum pressure necessary for CO$_2$ and oil to form a single fluid phase, which increases recovery rates and is the basis of miscible gas flooding. Many factors influence the MMP, such as reservoir temperature, the presence of other chemical species such as H$_2$S, and the density and composition of the oil  \cite{orr1987effect}. 
+OPGEE assumes that CO$_2$ injection is performed to achieve a miscible gas flood. If CO$_2$ is the flood gas, then the reservoir injection pressure must reach the minimum miscibility pressure (MMP). The MMP is the minimum pressure necessary for CO$_2$ and oil to form a single fluid phase, which increases recovery rates and is the basis of miscible gas flooding. Many factors influence the MMP, such as reservoir temperature, the presence of other chemical species such as H$_2$S, and the density and composition of the oil  \cite{orr1987}. 
 
 The default MMP value is estimated using a correlation from the NPC (National Petroleum Council) based on the API gravity and reservoir temperature \cite{NPC1976}. However, actual MMP values are usually available for miscible CO$_2$ flood projects and the actual data should be used whenever possible. 
 
@@ -7125,8 +7149,9 @@ Reservoir Temperature {[}$^{\circ}$F{]} & Adjustment {[}psia{]}\tabularnewline
 \subsubsection{CO$_2$ Enhanced oil recovery and sequestration parameters}\label{sec:Sequestration}
 
 \paragraph{CO$_2$ sequestration calculation} \label{par:IntroSeq}
-In the early stage of a CO$_2$ flood project, newly acquired CO$_2$ will account for the entirety of the injected CO$_2$. As the injected CO$_2$ proceeds through the reservoir, a proportion of it will be trapped in the reservoir by factors such as blockage by surrounding rocks of low permeability or by trapping within water in the reservoir. The portion of CO$_2$ that is not immediately trapped will be produced and injected again following its separation from the oil and/or associated gas stream, if applicable, as described in the \nameref{sec:surface_processing} section. Thus, following CO$_2$ breakthrough the injected CO$_2$ will consist of two portions: 1) a newly acquired, never-injected portion and 2) a previously-injected and recycled portion. 
+In the early stage of a CO$_2$ flood project, newly acquired CO$_2$ will account for the entirety of the injected CO$_2$. As the injected CO$_2$ proceeds through the reservoir, a proportion of it will be trapped in the reservoir by factors such as blockage by surrounding rocks of low permeability or by trapping within water in the reservoir. The portion of CO$_2$ that is not immediately trapped will be produced and injected again following its separation from the oil and/or associated gas stream, if applicable, as described in the \nameref{sec:} section. Thus, following CO$_2$ breakthrough the injected CO$_2$ will consist of two portions: 1) a newly acquired, never-injected portion and 2) a previously-injected and recycled portion. 
 
+% issue 10: which section is referred in the above paragraph?
 An individual molecule of CO$_2$ injected for EOR may thus transit the reservoir and the surface processing facilities multiple times before it is trapped within the reservoir. OPGEE assumes that a molecule of newly acquired CO$_2$ will ultimately be sequestered within the reservoir. An example demonstrating this process is the EOR project at the Denver Unit of the Wasson Field in the Texas Permian Basin, where Occidental Petroleum has injected CO$_2$ since the early 1980s \cite{Oxy2015}. In a presentation submitted to California's Energy Commission, Occidental Petroleum depicts an accounting of the volume of CO$_2$ acquired, injected, produced, trapped, recycled, and lost to venting and fugitive emissions during a 25-year period at the Denver Unit flood \cite{Oxy2012}. Occidental Petroleum indicates that 115 million metric tons of CO$_2$ were supplied to the project; their material balance calculations indicated that essentially an equivalent amount was sequestered in the reservoir. Venting and fugitives accounted for the loss of 0.3\% of the cumulative volume of produced or recycled CO$_2$ \cite{Oxy2012}. 
 
 OPGEE accounts for loss of CO$_2$ due to terminal blow-down operations or long-term leakage from the reservoir. These factors decrease the overall sequestration rate and are included in the \nameref{sec:GHG_emissions} section. The gross (before deduction of aforementioned losses) daily CO$_2$ is calculated as follows:
@@ -7218,7 +7243,7 @@ Default values for Gas flooding compressor calculations are shown in Tables \ref
 $p_{R}$ 	    & Reservoir pressure			    & \xlname{Res\_press}  & 198.2 		& 50-300 	& [psia] &  & \\
 $Q_0$ & Oil production volume & \xlname{Oil\_prod} & 1500 & 10-3,000,000 & [bbl/d]   & Assumption & \\
  $GFIR$ & Gas flooding injection ratio & \xlname{GFIR} & var. & var. & [scf/bbl]   & Assumption & \\
- $y_{g,flood}$    & Flood gas type & \xlname{Flood\_gas\_type} & 1 & 1-3 & [\#] & Assumption & \\
+ $y_{flood gas}$    & Flood gas type & \xlname{Flood\_gas\_type} & 1 & 1-3 & [\#] & Assumption & \\
 
 \end{supertabular*}
 %\begin{tablenotes}
@@ -7240,18 +7265,18 @@ $Q_0$ & Oil production volume & \xlname{Oil\_prod} & 1500 & 10-3,000,000 & [bbl/
 \label{tab:secondary_inputs_gasflooding}
 \begin{threeparttable}
 \begin{supertabular*}{1\columnwidth}{p{0.04\columnwidth}p{0.26\columnwidth}p{0.25\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.02\columnwidth}}
- $x_{g,offsite}$  & Offsite hydrocarbon gas composition & \xlname{Composition\_offsite\_HC\_gas} &  var. & var.  & [mol. \%] & Assumption & \\
-  $T_{g,offsite}$   & Offsite hydrocarbon gas temperature & \xlname{Temperature\_offsite\_gas} &  60 & 50-70  & {[}$^{\circ}$F{]} & Assumption & \\
-  $p_{g,offsite}$    & Offsite hydrocarbon gas pressure & \xlname{Pressure\_offsite\_gas} &  600 & 550-650  & [psia] & Assumption & \\
-      & Air separation unit electricity consumption (cryogenic N2 gas production) & \xlname{Energy\_intensity\_airseparation} &  0 & var.  & [kWh/scf] & Assumption & \\
+ $x_{gas,offsite}$  & Offsite hydrocarbon gas composition & \xlname{Composition\_offsite\_HC\_gas} &  var. & var.  & [mol. \%] & Assumption & \\
+  $T_{gas,offsite}$   & Offsite hydrocarbon gas temperature & \xlname{Temperature\_offsite\_gas} &  60 & 50-70  & {[}$^{\circ}$F{]} & Assumption & \\
+  $p_{gas,offsite}$    & Offsite hydrocarbon gas pressure & \xlname{Pressure\_offsite\_gas} &  600 & 550-650  & [psia] & Assumption & \\
+    E_{air sep.}  & Air separation unit electricity consumption (cryogenic N2 gas production) & \xlname{Energy\_intensity\_airseparation} &  0 & var.  & [kWh/scf] & Assumption & \\
     $T_{N2,offsite}$   & Offsite N2 temperature & \xlname{Temperature\_offsite\_N2} &  197 & 190-200  & {[}$^{\circ}$F{]} & Assumption & \\
     $p_{N2,offsite}$  & Offsite N2 pressure & \xlname{Pressure\_offsite\_N2} &  125 & 110-130  & [psia] & Assumption & \\
-      & Long-term leakage rate of sequestered carbon from reservoir & \xlname{Leakage\_rate\_sequestered\_CO2} &  0.5 & var.  & [\%] & Assumption & \\
-         & Proportion of sequestered CO2 released from reservoir during post-production blow-down & \xlname{fraction\_CO2\_lost\_blowdown} &  0 & var. & [\%] & Assumption & \\
+    L_{CO2,seq.} & Long-term leakage rate of sequestered carbon from reservoir & \xlname{Leakage\_rate\_sequestered\_CO2} &  0.5 & var.  & [\%] & Assumption & \\
+     P_{CO2,released}    & Proportion of sequestered CO2 released from reservoir during post-production blow-down & \xlname{fraction\_CO2\_lost\_blowdown} &  0 & var. & [\%] & Assumption & \\
       $T_{CO2,offsite}$   & Offsite CO2 temperature & \xlname{Temperature\_offsite\_CO2} &  60 & 50-70 & {[}$^{\circ}$F{]} & Assumption & \\
-     $\eta_{comp.}$     & Compressor efficiency & \xlname{eta\_compressor\_flooding} & 75 & 70-78  & [\%] & Assumption & \\
+     $\eta_{comp.,flooding}$     & Compressor efficiency & \xlname{eta\_compressor\_flooding} & 75 & 70-78  & [\%] & Assumption & \\
          $p_{CO2,offsite}$     & Offsite CO2 pressure & \xlname{Pressure\_offsite\_CO2} & 600 & 550-650  & [psia] & Assumption & \\
-     $y_{p. mover}$    & Prime mover type & \xlname{Prime\_mover\_type\_flooding} & 2 & 1-2  & [binary 1-2] & Assumption & \\
+     $y_{mover,flooding}$    & Prime mover type & \xlname{Prime\_mover\_type\_flooding} & 2 & 1-2  & [binary 1-2] & Assumption & \\
 
 \end{supertabular*}
 \begin{tablenotes}
@@ -7343,8 +7368,8 @@ $p_{R}$ 	    & Reservoir pressure			    & \xlname{Res\_press}  & 198.2 		& 50-30
 \label{tab:secondary_inputs_gaslifting}
 \begin{threeparttable}
 \begin{supertabular*}{1\columnwidth}{p{0.03\columnwidth}p{0.2\columnwidth}p{0.2\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}}
-$C_{GLC}$    & Choice for gas lifting compressor prime mover    & \xlname{Prime\_mover\_type\_lifting} &  2 & 1/2  & [-] &  & a \\
-$\eta_{GLC}$   & Efficiency of gas lifting compressor           & \xlname{Eta\_compressor\_lifting}  & 75    & 60-80 & [\%] & & \\
+$y_{mover,lifting}$    & Choice for gas lifting compressor prime mover    & \xlname{Prime\_mover\_type\_lifting} &  2 & 1/2  & [-] &  & a \\
+$\eta_{comp.,lifting}$   & Efficiency of gas lifting compressor           & \xlname{Eta\_compressor\_lifting}  & 75    & 60-80 & [\%] & & \\
 \end{supertabular*}
 \begin{tablenotes}
 \item[a] Choice 1 = electric motor, Choice 2 = NG engine
@@ -7442,8 +7467,8 @@ $p_{R}$ 	    & Reservoir pressure   & \xlname{Res\_press}  & 198.2 	& 50-300 	& 
 \label{tab:secondary_inputs_CO2injection}
 \begin{threeparttable}
 \begin{supertabular*}{1\columnwidth}{p{0.03\columnwidth}p{0.2\columnwidth}p{0.2\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}}
-$C_{CRC}$    & Choice for gas lifting compressor prime mover    & \xlname{Prime\_mover\_type\_injection\_CO2} &  2 & 1/2  & [-] &  & a \\
-$\eta_{CRC}$   & Efficiency of gas lifting compressor           & \xlname{Eta\_compressor\_injection\_CO2}  & 75    & 60-80 & [\%] & & \\
+$y_{mover,CO2inj.}$    & Choice for gas lifting compressor prime mover    & \xlname{Prime\_mover\_type\_injection\_CO2} &  2 & 1/2  & [-] &  & a \\
+$\eta_{CO2inj.}$   & Efficiency of gas lifting compressor           & \xlname{Eta\_compressor\_injection\_CO2}  & 75    & 60-80 & [\%] & & \\
 \end{supertabular*}
 \begin{tablenotes}
 \item[a] Choice 1 = electric motor, Choice 2 = NG engine
@@ -7511,9 +7536,9 @@ Fugitives - Sour gas reinjection compressor	& \stream{274}			& O		& Atmosphere		
 \tablecaption{Secondary inputs used in \sheet{Sour gas reinjection compressor} sheet.}
 \label{tab:secondary_inputs_sourinjection}
 \begin{threeparttable}
-\begin{supertabular*}{1\columnwidth}{p{0.03\columnwidth}p{0.2\columnwidth}p{0.2\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}}
-$C_{SRC}$    & Choice for sour gas reinjection compressor prime mover    & \xlname{Prime\_mover\_type\_reinjection\_sourgas} &  2 & 1/2  & [-] &  & a \\
-$\eta_{SRC}$   & Efficiency of sour gas reinjection compressor           & \xlname{Eta\_compressor\_reinjection\_sourgas}  & 75    & 60-80 & [\%] & & \\
+\begin{supertabular*}{1\columnwidth}{p{0.05\columnwidth}p{0.25\columnwidth}p{0.25\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}}
+$y_{mover,sourinj.}$    & Choice for sour gas reinjection compressor prime mover    & \xlname{Prime\_mover\_type\_reinjection\_sourgas} &  2 & 1/2  & [-] &  & a \\
+$\eta_{comp.,sourinj.}$   & Efficiency of sour gas reinjection compressor           & \xlname{Eta\_compressor\_reinjection\_sourgas}  & 75    & 60-80 & [\%] & & \\
 \end{supertabular*}
 \begin{tablenotes}
 \item[a] Choice 1 = electric motor, Choice 2 = NG engine
@@ -7584,10 +7609,10 @@ Fugitives - VRU compressor				& \stream{280}			& O		& Atmosphere					& [t/d]			&
 \tablecaption{Secondary inputs used in \sheet{VRU compressor} sheet.}
 \label{tab:secondary_inputs_VRUcomp}
 \begin{threeparttable}
-\begin{supertabular*}{1\columnwidth}{p{0.03\columnwidth}p{0.2\columnwidth}p{0.2\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}}
-$C_{VRUC}$    & Choice for sour gas reinjection compressor prime mover    & \xlname{Prime\_mover\_type\_VRU} &  2 & 1/2  & [-] &  & a \\
-$p_{d,VRUC}$    & Discharge pressure for VRU compressor                     & \xlname{P\_disc\_VRUC} & 1000 & 500-1500 & psia & & \\
-$\eta_{VRUC}$   & Efficiency of sour gas reinjection compressor           & \xlname{Eta\_compressor\_VRU}  & 75    & 60-80 & [\%] & & \\
+\begin{supertabular*}{1\columnwidth}{p{0.03\columnwidth}p{0.25\columnwidth}p{0.2\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}}
+$y_{mover,VRU}$    & Choice for sour gas reinjection compressor prime mover    & \xlname{Prime\_mover\_type\_VRU} &  2 & 1/2  & [-] &  & a \\
+$p_{disc.,VRU}$    & Discharge pressure for VRU compressor                     & \xlname{P\_disc\_VRUC} & 1000 & 500-1500 & psia & & \\
+$\eta_{comp.,VRU}$   & Efficiency of sour gas reinjection compressor           & \xlname{Eta\_compressor\_VRU}  & 75    & 60-80 & [\%] & & \\
 \end{supertabular*}
 \begin{tablenotes}
 \item[a] Choice 1 = electric motor, Choice 2 = NG engine
@@ -7661,9 +7686,9 @@ Fugitives - Pre-membrane compressor			& \stream{272}			& O		& Atmosphere					& [
 \label{tab:secondary_inputs_membranecomp}
 \begin{threeparttable}
 \begin{supertabular*}{1\columnwidth}{p{0.03\columnwidth}p{0.2\columnwidth}p{0.2\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}}
-$C_{PMC}$    & Choice for pre-membrane compressor prime mover       & \xlname{Prime\_mover\_type\_PMC} &  2 & 1/2  & [-] &  & a \\
-$p_{d,PMC}$    & Discharge pressure for pre-membrane compressor     & \xlname{P\_disc\_PMC} & 1000 & 500-1500 & psia & & \\
-$\eta_{PMC}$   & Efficiency of pre-membrane compressor              & \xlname{Eta\_compressor\_PMC}  & 75    & 60-80 & [\%] & & \\
+$y_{mover,memb.}$    & Choice for pre-membrane compressor prime mover       & \xlname{Prime\_mover\_type\_PMC} &  2 & 1/2  & [-] &  & a \\
+$p_{disc.,memb.}$    & Discharge pressure for pre-membrane compressor     & \xlname{P\_disc\_PMC} & 1000 & 500-1500 & psia & & \\
+$\eta_{comp.,memb.}$   & Efficiency of pre-membrane compressor              & \xlname{Eta\_compressor\_PMC}  & 75    & 60-80 & [\%] & & \\
 \end{supertabular*}
 \begin{tablenotes}
 \item[a] Choice 1 = electric motor, Choice 2 = NG engine
@@ -7736,14 +7761,14 @@ Fugitives - Transmission compressor			& \stream{272}			& O		& Atmosphere					& [
 \tablecaption{Secondary inputs used in \sheet{Transmissions compressor} sheet.}
 \label{tab:secondary_inputs_transmissioncomp}
 \begin{threeparttable}
-\begin{supertabular*}{1\columnwidth}{p{0.03\columnwidth}p{0.2\columnwidth}p{0.3\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}}
-$C_{TRC}$    & Choice for pre-membrane compressor prime mover       & \xlname{Prime\_mover\_type\_PMC}          &  2 & 1/2  & [-] &  & a \\
-$d_{TRC}$    & Distance between transmission line compressors       & \xlname{Frequency\_gas\_transmission\_compressors} & 200 & 100-300 & [mi] & & \\
-$E_{f,TRC}$ & Fugitive emissions fraction from transmission compressors & \xlname{Fugitive\_loss\_transmission} & 0.003 & 0.001-0.005 & [-] & & \\ 
-$f_{ST}$    & Fraction of gas going to long-term storage            & \xlname{Frac\_gas\_storage\_01}           & 0 & 0-1 & [-] & & \\    
-$L_{TR}$        & Distance of transmissions line                    & \xlname{Distance\_gas\_transmission}      & 2000 & 50-5000 & [mi] & & \\ 
-$p_{d,TRC}$    & Discharge pressure for pre-membrane compressor     & \xlname{P\_disc\_PMC} & 1000 & 500-1500 & psia & & \\
-$\eta_{TRC}$   & Efficiency of pre-membrane compressor              & \xlname{Eta\_compressor\_PMC}  & 75    & 60-80 & [\%] & & \\
+\begin{supertabular*}{1\columnwidth}{p{0.035\columnwidth}p{0.25\columnwidth}p{0.3\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}}
+$y_{mover,transm.}$    & Choice for pre-membrane compressor prime mover       & \xlname{Prime\_mover\_type\_PMC}          &  2 & 1/2  & [-] &  & a \\
+$D_{transm.,1}$    & Distance between transmission line compressors       & \xlname{Frequency\_gas\_transmission\_compressors} & 200 & 100-300 & [mi] & & \\
+$f_{transm.}$ & Fugitive emissions fraction from transmission compressors & \xlname{Fugitive\_loss\_transmission} & 0.003 & 0.001-0.005 & [-] & & \\ 
+$f_{gas}$    & Fraction of gas going to long-term storage            & \xlname{Frac\_gas\_storage\_01}           & 0 & 0-1 & [-] & & \\    
+$D_{transm.,2}$   & Distance of transmissions line                    & \xlname{Distance\_gas\_transmission}      & 2000 & 50-5000 & [mi] & & \\ 
+$p_{comp.,transm.}$    & Discharge pressure for pre-membrane compressor     & \xlname{P\_disc\_PMC} & 1000 & 500-1500 & psia & & \\
+$\eta_{transm.}$   & Efficiency of pre-membrane compressor              & \xlname{Eta\_compressor\_PMC}  & 75    & 60-80 & [\%] & & \\
 \end{supertabular*}
 \begin{tablenotes}
 \item[a] Choice 1 = electric motor, Choice 2 = NG engine
@@ -7916,10 +7941,10 @@ Fugitives - Storage compressor			& \stream{262}			& O		& Atmosphere					& [t/d]	
 \tablecaption{Secondary inputs used in \sheet{Storage compressor} sheet.}
 \label{tab:secondary_inputs_storagecomp}
 \begin{threeparttable}
-\begin{supertabular*}{1\columnwidth}{p{0.03\columnwidth}p{0.2\columnwidth}p{0.3\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}}
-$C_{STC}$    & Choice for storage compressor prime mover       & \xlname{Prime\_mover\_type\_gasstorage} &  2 & 1/2  & [-] &  & a \\
-$p_{d,STC}$    & Discharge pressure for storage compressor     & \xlname{Pressure\_disc\_gasstorage} & 1000 & 500-1500 & psia & & \\
-$\eta_{STC}$   & Efficiency of storage compressor              & \xlname{Eta\_compressor\_gasstorage}  & 75    & 60-80 & [\%] & & \\
+\begin{supertabular*}{1\columnwidth}{p{0.07\columnwidth}p{0.2\columnwidth}p{0.3\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}}
+$y_{mover,storagecomp.}$    & Choice for storage compressor prime mover       & \xlname{Prime\_mover\_type\_gasstorage} &  2 & 1/2  & [-] &  & a \\
+$p_{disc.storagecomp.}$    & Discharge pressure for storage compressor     & \xlname{Pressure\_disc\_gasstorage} & 1000 & 500-1500 & psia & & \\
+$\eta_{storagecomp.}$   & Efficiency of storage compressor              & \xlname{Eta\_compressor\_gasstorage}  & 75    & 60-80 & [\%] & & \\
 \end{supertabular*}
 \begin{tablenotes}
 \item[a] Choice 1 = electric motor, Choice 2 = NG engine
@@ -7989,10 +8014,10 @@ Fugitives - Post-storage compressor			& \stream{265}		& O		& Atmosphere					& [t
 \tablecaption{Secondary inputs used in \sheet{Post-storage compressor} sheet.}
 \label{tab:secondary_inputs_poststoragecomp}
 \begin{threeparttable}
-\begin{supertabular*}{1\columnwidth}{p{0.03\columnwidth}p{0.2\columnwidth}p{0.3\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}}
-$C_{PSC}$       & Choice for post-storage compressor prime mover       & \xlname{Prime\_mover\_type\_poststorage} &  2 & 1/2  & [-] &  & a \\
-$p_{d,PSC}$     & Discharge pressure for post-storage compressor     & \xlname{Pressure\_disc\_poststorage} & 600 & 300-900 & psia & & \\
-$\eta_{PSC}$    & Efficiency of post-storage compressor              & \xlname{Eta\_compressor\_poststorage}  & 75    & 60-80 & [\%] & & \\
+\begin{supertabular*}{1\columnwidth}{p{0.05\columnwidth}p{0.2\columnwidth}p{0.3\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}}
+$y_{mover,postst.}$       & Choice for post-storage compressor prime mover       & \xlname{Prime\_mover\_type\_poststorage} &  2 & 1/2  & [-] &  & a \\
+$p_{disc.,postst.}$     & Discharge pressure for post-storage compressor     & \xlname{Pressure\_disc\_poststorage} & 600 & 300-900 & psia & & \\
+$\eta_{comp.,postst.}$    & Efficiency of post-storage compressor              & \xlname{Eta\_compressor\_poststorage}  & 75    & 60-80 & [\%] & & \\
 \end{supertabular*}
 \begin{tablenotes}
 \item[a] Choice 1 = electric motor, Choice 2 = NG engine
@@ -8210,6 +8235,8 @@ Fugitives - Storage wells		            & \stream{263}		& O		& Atmosphere					& [
 \section{Storage separator}
 \label{sec:storage_separator}
 
+% issue 11: there is no text for this section!
+
 
 
 
@@ -8241,10 +8268,10 @@ The default settings for the parameters for the gas partition A are given below 
 \label{tab:primary_inputs_gaspartitionA}
 \begin{threeparttable}
 \begin{supertabular*}{1\columnwidth}{p{0.03\columnwidth}p{0.2\columnwidth}p{0.2\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.08\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}}
-$F_{wo}$        & Water oil ratio                   & \xlname{WOR}      & 4.31 & 0-100  & [bbl water/bbl oil] & & \\
+$WOR$        & Water oil ratio                   & \xlname{WOR}      & 4.31 & 0-100  & [bbl water/bbl oil] & & \\
 $Q_o$           & Oil production rate               & \xlname{Oil\_prod} & 1500 & 10-3000000 & [bbl/d] & & \\
-$R_{GL}$       & Gas lifting injection ratio       & \xlname{GLIR} &  1500 & 100-5000  & [scf/bbl] &  &  \\
-$y_{GL}$       & Is gas lifting used?       & \xlname{Gas\_lifting\_01} &  0 & 0/1  & [logical 0-1] &  &  \\
+$f_{gas,lift.}$       & Gas lifting injection ratio       & \xlname{GLIR} &  1500 & 100-5000  & [scf/bbl] &  &  \\
+$y_{gas,lift.}$       & Is gas lifting used?       & \xlname{Gas\_lifting\_01} &  0 & 0/1  & [logical 0-1] &  &  \\
 \end{supertabular*}
 %\begin{tablenotes}
 %\item[a] Insert text of note here
@@ -8266,14 +8293,14 @@ The \sheet{Gas partition B} sheet serves to record the gas partitioning between 
 \begin{minipage}{0.6\columnwidth}
 \begin{fleqn}[0pt]
 \begin{equation} \label{eq:flare_emissions_stripping}
-m_{x,\mstream{43}} = \left(1 - f_{g,i}\right) m_{x,\mstream{41}} \eqnunitfrac{t}{d}
+m_{x,\mstream{43}} = \left(1 - f_{gas,inj.}\right) m_{x,\mstream{41}} \eqnunitfrac{t}{d}
 \end{equation}
 \end{fleqn}
 \end{minipage}\hfill
 \begin{minipage}{0.3\columnwidth}
         \begin{tabular}{|cl}
                         & \\
-        $f_{g,i}$      & \xlname{Fraction\_remaining\_gas\_inj}\\
+        $f_{gas,inj.}$      & \xlname{Fraction\_remaining\_gas\_inj}\\
         & \\
         \end{tabular}
 \end{minipage}
@@ -8296,7 +8323,7 @@ The default settings for the parameters for the gas partition B are given below 
 \label{tab:primary_inputs_gaspartitionB}
 \begin{threeparttable}
 \begin{supertabular*}{1\columnwidth}{p{0.03\columnwidth}p{0.2\columnwidth}p{0.2\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.08\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}}
-$f_{g,inj}$        & Fraction of remaining gas reinjected   & \xlname{Fraction\_remaining\_gas\_inj}      & 0 & 0-100  & [\% of gas] & & \\
+$f_{gas,inj.}$        & Fraction of remaining gas reinjected   & \xlname{Fraction\_remaining\_gas\_inj}      & 0 & 0-100  & [\% of gas] & & \\
 \end{supertabular*}
 %\begin{tablenotes}
 %\item[a] Insert text of note here
@@ -8374,7 +8401,7 @@ Possible exceptions could be the treatment and disposal of fracturing fluids and
 
 \subsection{Defaults for waste treatment}
 
-Waste treatment emissions default to 0 gCO$_2$/MJ. Any waste treatment emissions are assumed to be captured in the small sources emissions default parameter. 
+Waste treatment emissions default to 0 gCO$_2$eq/MJ. Any waste treatment emissions are assumed to be captured in the small sources emissions default parameter. 
 
 
 
@@ -8413,10 +8440,24 @@ where $\lambda_{Pj}$ = fraction of each pipeline pumping technology $j$ [-]; and
 Back haul trips are calculated using GREET factors for the energy intensity of return trips \cite{Wang2010}
 
 The energy-specific transport energy intensity is calculated from the transport effectiveness using the energy density of crude oil. For example, in the case of tanker transport:
+
 %%%%%%%%%%%%%%%%%%
-\begin{flalign}\label{eq:trans_eek}
-& e_{T} = U_T \frac{1}{LHV_o} \rho_w \gamma_o \frac{1}{2000} \quad\quad\eqnunitfrac{Btu}{mmBtu-mi}
-\end{flalign}
+\begin{minipage}{0.6\columnwidth}\label{eq:trans_eek}
+\begin{fleqn}[0pt]
+\begin{equation}
+e_{T} = U_T \frac{1}{LHV_o} \rho_w \gamma_o \frac{1}{2000} \quad\quad\eqnunitfrac{Btu}{mmBtu-mi}
+\end{equation}
+\end{fleqn}
+\end{minipage}\hfill
+\begin{minipage}{0.3\columnwidth}
+        \begin{tabular}{|cl}
+        & \\
+        $LHV_{o}$   & \xlname{LHV\_o}\\
+        $\gamma_o$   & \xlname{GAMMA\_o}\\
+        $\rho_{w}$ & \xlname{Density\_H2O}\\
+        & \\
+        \end{tabular}
+\end{minipage}
 %%%%%%%%%%%%%%%%%%
 where $UE_{T}$ = crude oil transport intensity per unit of energy transported [Btu/mmBtu-mi], $LHV_o$ = crude lower heating value [mmBtu/bbl]; $\rho_w$ = density of water [lb/bbl]; $\gamma_o$ = crude specific gravity [-]; and 1/2000 = conversion factor between lb and ton.
 
@@ -8459,7 +8500,7 @@ where $EM_{j}$ are the emissions from mode $j$ on a CO$_2$-equivalent basis.
 
 \subsection{Defaults for crude oil transport}
 
-Defaults for crude oil transport are generally taken from the CA-GREET model, with some modifications and simplifications applied. The default settings for the parameters for crude oil transport are given below in \ref{tab:primary_inputs_transport} and \ref{tab:secondary_inputs_transport}.
+Defaults for crude oil transport are generally taken from the CA-GREET model, with some modifications and simplifications applied. The default settings for the parameters for crude oil transport are given below in \ref{tab:primary_inputs_transport} and \ref{tab:secondary_inputs_transport}. Round trip transport distance (double of one way distance) is assumed for ocean tanker, barge, rail, and truck transportation means.
 
 \begin{landscape}
 
@@ -8554,7 +8595,7 @@ A similar approach that was followed to model crude oil transport in section \re
 
 \subsection{Defaults for petcoke transport}
 
-The default settings for the parameters for crude oil transport are given below in \ref{tab:secondary_inputs_petcoketransport}.
+The default settings for the parameters for crude oil transport are given below in \ref{tab:secondary_inputs_petcoketransport}. Round trip transport distance (double of one way distance) is assumed for ocean tanker, barge, rail, and truck transportation means.
 
 \clearpage
 
