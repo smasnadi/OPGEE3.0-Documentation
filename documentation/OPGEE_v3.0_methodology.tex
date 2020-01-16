@@ -970,15 +970,15 @@ The reservoir pressure (\xlname{Res\_press}) is calculated based on a multiplica
 \begin{minipage}{0.6\columnwidth} \label{eq:res_pressure1}
 \begin{fleqn}[0pt]
 \begin{equation}
-p_{res}= \alpha D_{field}/2.31 \quad\quad\eqnunit{psia}
+p_{R}= \alpha D_{w}/2.31 \quad\quad\eqnunit{psia}
 \end{equation}
 \end{fleqn}
 \end{minipage}\hfill
 \begin{minipage}{0.3\columnwidth}
         \begin{tabular}{|cl}
         & \\
-        $p_{res}$   & \xlname{Res\_press}\\
-        $D_{field}$   & \xlname{Field\_depth}\\
+        $p_{R}$   & \xlname{Res\_press}\\
+        $D_{w}$   & \xlname{Field\_depth}\\
         & \\
         \end{tabular}
 \end{minipage}
@@ -1011,20 +1011,20 @@ Reservoir temperature (\xlname{Res\_temp}) is also a direct function of the rese
 \begin{minipage}{0.6\columnwidth}\label{eq:res_temp}
 \begin{fleqn}[0pt]
 \begin{equation}
-T_{res}=T_{a}+\Delta T\cdot D_{field}/100^{\circ}F \quad\quad\eqnunit{$^{\circ}$F}
+T_{R}=T_{a}+\Delta T\cdot D_{w}/100 \quad\quad\eqnunit{$^{\circ}$F}
 \end{equation}
 \end{fleqn}
 \end{minipage}\hfill
 \begin{minipage}{0.3\columnwidth}
         \begin{tabular}{|cl}
         & \\
-        $T_{res}$   & \xlname{Res\_temp}\\
-        $D_{field}$   & \xlname{Field\_depth}\\
+        $T_{R}$   & \xlname{Res\_temp}\\
+        $D_{w}$   & \xlname{Field\_depth}\\
         & \\
         \end{tabular}
 \end{minipage}
 %%%%%%%%%%
-where $T_{res}$ and \emph{T$_{a}$} are reservoir and ambient temperatures, respectively. A geothermal gradient of 1.8$^{\circ}$ per 100 ft is assumed. 
+where $T_{R}$ and \emph{T$_{a}$} are reservoir and ambient temperatures, respectively. A geothermal gradient of 1.8$^{\circ}$ per 100 ft is assumed. 
 
 \subsection{Default API gravity}
 
@@ -1299,7 +1299,7 @@ H$_2$S \xlname{Gas\_comp\_H2S}                                                  
 5.3   Upgrader type \xlname{Upgrader\_type} (0: None, 1: Delayed coking, 2: Hydroconversion, 3: Hydroconversion and fluid coking)                                                      & 0        & 0          & 0         & 0          & 0                  & Uniform           \\
 5.4   Associated gas processing path \xlname{Gas\_processing\_path} (1: None, 2: Minimal - Dehydrator, 3: Acid Gas, 4: Wet Gas, 5: Acid Wet Gas, 6: CO$_2$-EOR Membrane, 7: CO$_2$-EOR Ryan Holmes) & 5        & 0          & 5         & 5          & -                  & Uniform           \\
 5.5   Flare-oil-ratio \xlname{FOR} {[}scf flared/bbl oil{]}                                                                                                           & NOAA     & NOAA*0.2   & 1         & 3000       & -                  & Normal            \\
-5.6   Ratio of venting to oil production \xlname{vOR}                                                                                                                       & 10       & 3          & 0         & 100        & -                  & Normal            \\
+5.6   Ratio of venting to oil production \xlname{VOR}                                                                                                                       & 10       & 3          & 0         & 100        & -                  & Normal            \\
 5.7   Volume fraction of diluent in diluted crude \xlname{Fraction\_diluent}                                                                                                             & 0        & 0          & 0         & 0          & -                  & Uniform           \\
 \midrule
 6. Land use impacts                                                                                                                                            &          &            &           &            &                    &                   \\
@@ -1331,7 +1331,7 @@ H$_2$S \xlname{Gas\_comp\_H2S}                                                  
 \midrule
 8. Other sources emissions                                                                                                                                    &          &            &           &            &                    &                   \\
 \midrule
-8.1.  Small sources emissions \xlname{Small\_sources\_adder}   {[}g CO$_2$eq./MJ{]}                                                                                                                & 0.5      & 0.15       & 0.1       & 1          & -                  & Normal \\
+8.1.  Small sources emissions \xlname{Small\_sources\_adder}   {[}g CO$_2$eq/MJ{]}                                                                                                                & 0.5      & 0.15       & 0.1       & 1          & -                  & Normal \\
 \end{supertabular*}
 \end{scriptsize}
 \end{landscape}
@@ -1517,6 +1517,8 @@ B_{ob} = a_1+ a_2 R_s (T_r - 60) + a_3\left( \frac{R_s }{\gamma_o}\right) + a_4 
 this correlation is useful for saturated oil, or oil with its associated gas at the maximum amount (i.e., as pressure drops gas is evolved). 
 
 For undersaturated oil, oil holds less gas in solution than it could at that temperature and pressure. In this case the pressure is above the bubblepoint pressure and the oil formation volume factor varies using a different functional form. The undersaturated oil FVF \xlname{FVF\_UNSAT} is:
+% issue 18: Where is FVF in below equation?
+
 \begin{equation}
 B_o = B_{ob} e^{[c_o (p_b-p)]} \eqnunitfrac{bbl}{STB}
 \label{eq:BO}
@@ -1525,7 +1527,7 @@ where $c_o$ is the isothermal compressibility of oil, $p_b$ the bubblepoint pres
 
 We use the correlation of Al-Marhoun \cite{Almarhoun1992} for the isothermal compressibility term $c_o$ \xlname{ISO\_CO}.
 
-\begin{minipage}{0.6\columnwidth}
+\begin{minipage}{0.75\columnwidth}
 \begin{fleqn}[0pt]
 \begin{equation}
 c_o = 55.233 \times 10^{-6} - 60.588\times 10^{-6}\gamma_o \quad\quad\eqnunitfrac{1}{psi}
@@ -1545,10 +1547,25 @@ Finally, we can uses these two terms to compute the oil FVF \xlname{FVF\_UNSAT}.
 \paragraph{Density of oil}
 
 Using the above terms, the density of crude \xlname{RHO\_O\_LB} can then be computed in using the following relation \cite[p. 277]{Fanchi2007}:
+
+\begin{minipage}{0.6\columnwidth}
+\begin{fleqn}[0pt]
 \begin{equation}
 \rho_o = \frac{a_1 \gamma_o+ a_2 \gamma_g R_{s}}{B_o} \eqnunitfrac{lbm}{ft$^3$}
 \label{eq:rho_o}
 \end{equation}
+\end{fleqn}
+\end{minipage}\hfill
+\begin{minipage}{0.3\columnwidth}
+        \begin{tabular}{|cl}
+        & \\
+        $\rho_o$   & \xlname{RHO\_O}\\
+        $\gamma_o$   & \xlname{GAMMA\_O}\\
+        $\gamma_g$   & \xlname{GAMMA\_g}\\
+        & \\
+        \end{tabular}
+\end{minipage}
+        
 where \xlname{GAMMA\_g} is the specific gravity of gas (defined below in Eq. \ref{eq:gamma_g}) and $a_1$ and $a_2$ are the densities of water and air at standard conditions. This value is also converted to SI units [kg/m$^3$] \xlname{RHO\_O}. For LPG the density is assumed to be 550 kg/m$^3$.
 
 \paragraph{Volumetric flow rate of oil}
@@ -1562,7 +1579,21 @@ Q_o = \frac{m_o}{\rho_o}  \eqnunitfrac{m$^3$}{d}
 The energy density (heating value per unit mass) of oil is computed using a polynomial correlation for LHV of crude as a function of crude API gravity from the API Technical Databook, eq. 14A1.3-3:
 
 \begin{equation}
+\begin{minipage}{0.75\columnwidth}
+\begin{fleqn}[0pt]
+\begin{equation}
 LHV_o = a_1 + a_2 API - a_3 API^2 - a_4 API^3  \eqnunitfrac{btu LHV}{lbm}
+\end{equation}
+\end{fleqn}
+\end{minipage}\hfill
+\begin{minipage}{0.3\columnwidth}
+        \begin{tabular}{|cl}
+        & \\
+        $LHV_o$   & \xlname{LHV\_o}\\
+        $API$   & \xlname{API\_o}\\
+        & \\
+        \end{tabular}
+\end{minipage}
 \label{eq:LHVO}
 \end{equation}
 
@@ -1759,18 +1790,43 @@ The experimentally-determined Standing and Katz hydrocarbon Z-factor correlation
 The gas formation volume factor \xlname{GVF} is the ratio of the volume of gas at the temperature and pressure of the stream in question to the volume of the same amount (moles) of gas at standard conditions.
 
 Given the Z-factor computed above \xlname{Z\_FACTOR}, the gas volume ratio can be computed as:
+
+\begin{minipage}{0.6\columnwidth}
+\begin{fleqn}[0pt]
 \begin{equation}
 FVF_g= \frac{Z p_{0} T}{p T_{0}} \eqnunitfrac{m$^3$}{std m$^3$}
 \end{equation}
+\end{fleqn}
+\end{minipage}\hfill
+\begin{minipage}{0.3\columnwidth}
+        \begin{tabular}{|cl}
+        & \\
+        $p_0$   & \xlname{Amb\_press}\\
+        $T_0$   & \xlname{Amb\_temp}\\
+        & \\
+        \end{tabular}
+\end{minipage}
 
 where $T$ is the absolute temperature of the stream [$^\circ$R], $T_0$ is the ambient absolute temperature \xlname{Amb\_temp} [$^\circ$R], $p$ is the pressure of the stream [psia] and $p_0$ is ambient pressure [psia] \xlname{Amb\_press}.
 
 \paragraph{Gas density}
 
 Gas density \xlname{RHO\_G} is given by the MW of gas relative to air, the density of air at standard conditions, and the gas formation volume factor:
+
+\begin{minipage}{0.6\columnwidth}
+\begin{fleqn}[0pt]
 \begin{equation}
 \rho_g = \frac{\rho_{air}\gamma_g}{FVF_g}  \eqnunitfrac{tonne}{m$^3$}
 \end{equation}
+\end{fleqn}
+\end{minipage}\hfill
+\begin{minipage}{0.3\columnwidth}
+        \begin{tabular}{|cl}
+        & \\
+        $\rho_g$   & \xlname{RHO\_G}\\
+        & \\
+        \end{tabular}
+\end{minipage}
 
 \paragraph{Gas molecular weight}
 
@@ -1782,17 +1838,42 @@ where $x_i$ is the mole fraction of species $i$ -- \xlname{MOL\_FRAC\_N2} $\ldot
 
 \paragraph{Gas volumetric flow rate}
 The volumetric flow rate of gas per day \xlname{Q\_G} [m$^3$/d] is given by:
+
+\begin{minipage}{0.6\columnwidth}
+\begin{fleqn}[0pt]
 \begin{equation}
 Q_g = \frac{m_{tot,g}}{\rho_g} 	\eqnunitfrac{m$^3$}{d}
 \end{equation}
-
+\end{fleqn}
+\end{minipage}\hfill
+\begin{minipage}{0.3\columnwidth}
+        \begin{tabular}{|cl}
+        & \\
+        $Q_g$    & \xlname{Q\_G}\\
+        $\rho_g$   & \xlname{RHO\_G}\\
+        & \\
+        \end{tabular}
+\end{minipage}
 
 \paragraph{Gas energy density}
 
 The energy density of the gas \xlname{LHV\_G} \xlname{LHV\_G\_lb} is given by the mass-fraction weighted energy densities of the species:
+
+\begin{minipage}{0.6\columnwidth}
+\begin{fleqn}[0pt]
 \begin{equation}
-LHV_g = \frac{\sum_{1}^{12} m_i LHV_i }{\sum_{1}^{12} m_i}	\eqnunitfrac{MJ}{kg}
+ LHV_g = \frac{\sum_{1}^{12} m_i LHV_i }{\sum_{1}^{12} m_i}	\eqnunitfrac{MJ}{kg}
 \end{equation}
+\end{fleqn}
+\end{minipage}\hfill
+\begin{minipage}{0.3\columnwidth}
+        \begin{tabular}{|cl}
+        & \\
+       \emph{LHV$_g$}   & \xlname{LHV\_G}\\
+        & \\
+        \end{tabular}
+\end{minipage}
+
 where $m_i$ is the mass of gas species $i$ and $LHV_i$ is the lower heating value (mass-specific) looked up from the \sheet{Fuel specs} sheet.
 
  \paragraph{Total gas energetic flow rate}
@@ -1847,16 +1928,42 @@ The water formation volume factor \xlname{WVF} is assumed to be 1.0 for all stre
 \paragraph{Water density}
 Water density \xlname{RHO\_W} is given by the specific gravity of water and the water formation volume factor:
 
+\begin{minipage}{0.6\columnwidth}
+\begin{fleqn}[0pt]
 \begin{equation}
 \rho_w = \frac{\gamma _{w} \rho_{w,0}}{B_w} \eqnunitfrac{tonne}{m$^3$}.
 \end{equation}
+\end{fleqn}
+\end{minipage}\hfill
+\begin{minipage}{0.3\columnwidth}
+        \begin{tabular}{|cl}
+        & \\
+        $\rho_w $   & \xlname{RHO\_W}\\
+        $\gamma _{w}$   & \xlname{GAMMA\_W}\\
+        & \\
+        \end{tabular}
+\end{minipage}
+
 where $\rho_{w,0}$ is the density of pure water [1000 kg/m$^3$]. Because we assume $B_w$ = 1 for simplicity, $\rho_w = \gamma _{w} \rho_{w,0}$. 
 
 \paragraph{Water flow rate}
 Water flow rate \xlname{Q\_W} is computed from mass flow rate of water $m_w$ for a given stream and the density of water $\rho_w$ for that stream:
+
+\begin{minipage}{0.6\columnwidth}
+\begin{fleqn}[0pt]
 \begin{equation}
 Q_w = \frac{m_w}{\rho_w} \eqnunitfrac{m$^3$}{d}
 \end{equation}
+\end{fleqn}
+\end{minipage}\hfill
+\begin{minipage}{0.3\columnwidth}
+        \begin{tabular}{|cl}
+        & \\
+        $Q_w$   & \xlname{Q\_W}\\
+         $\rho_w $   & \xlname{RHO\_W}\\
+        & \\
+        \end{tabular}
+\end{minipage}
 
 This water flow rate is also converted to bbl \xlname{Q\_W\_bbl} and ft$^3$ \xlname{Q\_W\_ft3} for simplicity of interpretation.
 
@@ -2220,13 +2327,13 @@ where $t$ is the amount of time that the rotary table is operating [h], $T$ is t
 
 The energy consumption for mud circulation is computed using the overall pressure drop in the mud circulation system \cite{Vafi2016b}:
 \begin{equation}
-E_{D}^{mp} = \frac{\Delta P_{mp} Q}{1714 \eta} \times t, \quad\quad\eqnunit{mmBtu}
+E_{D}^{mp} = \frac{\Delta p_{mp} Q}{1714 \eta} \times t, \quad\quad\eqnunit{mmBtu}
 \end{equation}
-where $\Delta P_{mp}$ is the pressure drop that must be overcome by the mud pump [psi], $Q$ is the mud flowrate [gal. per min.], $t$ is the time of mud pump operation [h] and 1714 is a conversion factor.
+where $\Delta p_{mp}$ is the pressure drop that must be overcome by the mud pump [psi], $Q$ is the mud flowrate [gal. per min.], $t$ is the time of mud pump operation [h] and 1714 is a conversion factor.
 
-This pressure drop $\Delta P_{mp}$ is made up of a series of terms, including:
+This pressure drop $\Delta p_{mp}$ is made up of a series of terms, including:
 \begin{equation}
-\Delta P_{mp} = \Delta P_{fric} + \Delta P_{dynamic} + \Delta P_{dm} - \Delta P_{hydrostatic} + \Delta P_{other} \quad\quad\eqnunit{psi}
+\Delta p_{mp} = \Delta p_{fric} + \Delta p_{dynamic} + \Delta p_{dm} - \Delta p_{hydrostatic} + \Delta p_{other} \quad\quad\eqnunit{psi}
 \end{equation}
 where subscripts refer to different pressure drop terms.  The $fric$ pressure drop is due to friction in drill string and annulus, modeled using a set of laminar and turbulent pipe and annulus flow models using different assumptions regarding non-Newtonian nature of drilling fluids (see \emph{GHGfrack} documentation \cite{Vafi2016a, Vafi2016b}).  The $dm$ term cooresponds to energy imparted on the mud motor and converted to rotational motion of the bit.  In developing results for OPGEE, all \emph{GHGfrack} mud circulation settings are left at \emph{GHGfrack} defaults. If the user wishes to change mud circulation inputs, please use the \emph{GHGfrack} model directly. 
 
@@ -2280,6 +2387,8 @@ where $F_{D}^{i,h}$ is the fuel consumed in the horizontal version of well $i$ a
 
 Using these two factors, we can compute the total fuel required to drill a horizontal or vertical well $i$ using a single expression:
 
+% issue 19: everywhere we used D_w as field depth. Shouldn't we change D_v in eq. below?
+
 \begin{minipage}{0.6\columnwidth}
 \begin{fleqn}[0pt]
 \begin{equation}
@@ -2302,6 +2411,7 @@ where $f_h$ is the fraction of wells [0-1] with horizontal segment of length $D_
 
 The total energy to drill the wells in the field is then:
 
+% issue 16: do we want to add a new name for LHV_di in OPGEE? see the below equ. (right hand side)
 \begin{minipage}{0.6\columnwidth}
 \begin{fleqn}[0pt]
 \begin{equation}
@@ -2328,16 +2438,16 @@ The energy intensity of drilling tends to be small when amortized over total wel
 
 \subsubsection{Emissions from hydraulic fracturing}
 
-The practice of hydraulic fracturing can consume large amounts of energy. This is because modern high-volume multi-stage hydraulic fracturing requires injecting large amounts of fluid at high pressures.  \emph{GHGfrack} models the injection of hydraulic fracturing fluids by accounting for the pressure required for fracturing:
+The practice of hydraulic fracturing can consume large amounts of energy. This is because modern high-volume multi-stage hydraulic fracturing requires injecting large amounts of fluid at high pressures. \emph{GHGfrack} models the injection of hydraulic fracturing fluids by accounting for the pressure required for fracturing:
 \begin{equation}
-\Delta P_{hf} = \Delta P_{fracture} + \Delta P_{fric} - \Delta P_{hydrostatic}  \quad\quad\eqnunit{psi} 
+\Delta p_{hf} = \Delta p_{fracture} + \Delta p_{fric} - \Delta p_{hydrostatic}  \quad\quad\eqnunit{psi} 
 \end{equation}
 
-where $\Delta P_{fracture}$ is the fracturing pressure required to overcome the fracturing gradient [psi], $ \Delta P_{fric}$ is the frictional pressure drop during injection [psi], and $\Delta P_{hydrostatic}$ is the contribution from the hydrostatic head of water in the wellbore [psi].
+where $\Delta p_{fracture}$ is the fracturing pressure required to overcome the fracturing gradient [psi], $ \Delta p_{fric}$ is the frictional pressure drop during injection [psi], and $\Delta p_{hydrostatic}$ is the contribution from the hydrostatic head of water in the wellbore [psi].
 
 As in the case of mud pump injection energy, the energy requirements of hydraulic fracturing are calculated from the pressure drop as follows:
 \begin{equation}
-E_{D}^{hf} = \frac{\Delta P_{hf} Q_{hf}}{1714 \eta} \times t \quad\quad\eqnunit{mmBtu} 
+E_{D}^{hf} = \frac{\Delta p_{hf} Q_{hf}}{1714 \eta} \times t \quad\quad\eqnunit{mmBtu} 
 \end{equation}
 and the fuel consumption due to hydraulic fracturing is computed similarly to the fuel consumption due to drilling:
 \begin{equation}
@@ -2489,7 +2599,7 @@ Foregone seq.\ & 0.00 & 0.00 & 0.00 & 0.02 & 0.03 & 0.05 & 0.03 & 0.05 & 0.09\\
 \begin{threeparttable}
 \begin{supertabular*}{1\columnwidth}{p{0.03\columnwidth}p{0.25\columnwidth}p{0.25\columnwidth}p{0.07\columnwidth}p{0.07\columnwidth}p{0.07\columnwidth}p{0.07\columnwidth}p{0.07\columnwidth}}
 $D_{w}$ 	    & Vertical depth of wells			    & \xlname{Field\_depth}  & 7240 		& 100-20,000 	&[ft] &  & \\ 
-$n_{wp}$ 		& Number of production wells			& \xlname{Num\_prod\_wells} & 8 		& 1-10,000 & [Wells] 	&  &  \\
+$n_{wo}$ 		& Number of production wells			& \xlname{Num\_prod\_wells} & 8 		& 1-10,000 & [Wells] 	&  &  \\
 $n_{wi}$ 		& Number of injector wells		    	& \xlname{Num\_water\_inj\_wells} & 5 		& 0-1000 & [Wells] 	&  &  \\
 $y_{OS,mi}$     & Oil sands mine integrated with upgrader?  & \xlname{Oil\_sands\_mine\_int\_01} & 0 & 0-1 & [binary 0-1] & & \\
 $y_{OS,mn}$     & Oil sands mine non-integrated with upgrader?  & \xlname{Oil\_sands\_mine\_nonint\_01} & 0 & 0-1 & [binary 0-1] & & \\
@@ -2520,7 +2630,7 @@ $y_{DO,h}$     & High intensity development and High oxidation  & \xlname{High\_
 \begin{threeparttable}
 \begin{supertabular*}{1\columnwidth}{p{0.03\columnwidth}p{0.25\columnwidth}p{0.25\columnwidth}p{0.07\columnwidth}p{0.07\columnwidth}p{0.09\columnwidth}p{0.07\columnwidth}p{0.07\columnwidth}}
 $C_{w}$        & Well complexity                                & \xlname{Well\_complexity} & Moderate & Simple-Complex & [-] & \cite{Vafi2016b} & \\
-$D_{w,L}$ 	    & Length of horizontal segment of well (lateral) & \xlname{Length\_lateral} & 5000 	& 1000-10,000 	&[ft] &  & a\\ 
+$L_{w,h}$ 	    & Length of horizontal segment of well (lateral) & \xlname{Length\_lateral} & 5000 	& 1000-10,000 	&[ft] &  & a\\ 
 $I_{f,D}^{h} $ 	& Horizontal drilling incremental fuel intensity	& - &0.380 	& 0.218 - 0.459 & [gal/ft. horizontal] & \cite{Vafi2016b} & b \\
 $I_{f,D}^{v} $ 	& Vertical drilling fuel intensity			 	& - &0.404 	& 0.226 - 0.724 & [gal/ft.] & \cite{Vafi2016b} & b \\
 $f_L$		    & Fraction of wells with horizontal segment		& \xlname{Fraction\_wells\_horizontal} & 0		& 0 - 1		& [fraction horizontal] & & \\
@@ -2608,7 +2718,7 @@ The expected bottomhole flowing pressure is computed in two different ways, and 
 \begin{minipage}{0.6\columnwidth}\label{eq:pressure_drawdown}
 \begin{fleqn}[0pt]
 \begin{equation}
-\emph{PI} = \frac{Q_{l,W}}{(p_{res}-p_{wf})} \quad\quad\eqnunitfrac{bbl}{psi-d}
+\emph{PI} = \frac{Q_{l,W}}{(p_{R}-p_{wf})} \quad\quad\eqnunitfrac{bbl}{psi-d}
 \end{equation}
 \end{fleqn}
 \end{minipage}\hfill
@@ -2616,13 +2726,13 @@ The expected bottomhole flowing pressure is computed in two different ways, and 
         \begin{tabular}{|cl}
         & \\
         \emph{PI}   & \xlname{Prod\_index}\\
-        $p_{res}$   & \xlname{Res\_press}\\
+        $p_{R}$   & \xlname{Res\_press}\\
         & \\
         \end{tabular}
 \end{minipage}
 %%%%%%%%%%
 
-where PI = well productivity index [bbl liquid/psi-d]; $Q_{l,W}$ = liquid production per well [bbl liquid/d]; $P_{res}$ = average reservoir pressure [psi]; and $p_{wf}$ = wellbore pressure [psi]. In OPGEE a default PI of 3.0 [bbl liquid/psi-d] is assumed to calculate the pressure drawdown. The \sheet{Active field} parameter \xlname{Prod\_index} is used to change the default PI.
+where \textit{PI} = well productivity index [bbl liquid/psi-d]; $Q_{l,W}$ = liquid production per well [bbl liquid/d]; $p_{res}$ = average reservoir pressure [psi]; and $p_{wf}$ = wellbore pressure [psi]. In OPGEE a default \textit{PI} of 3.0 [bbl liquid/psi-d] is assumed to calculate the pressure drawdown. The \sheet{Active field} parameter \xlname{Prod\_index} is used to change the default \textit{PI}.
 
 An increase in production requires an increase in pressure drawdown at a constant productivity index.  The user has to control the inputs to satisfy the condition of $p_{wf}$ $\geq$ 0.
 
@@ -2631,7 +2741,7 @@ Given the PI, the bottomhole flowing pressure is:
 \begin{minipage}{0.6\columnwidth}
 \begin{fleqn}[0pt]
 \begin{equation} \label{eq:bottomhole_pressure}
-p_{wf} =  p_{res} - \frac{Q_{o}+Q_{w}}{N_w PI}  \quad\quad\eqnunit{psi}
+p_{wf} =  p_{R} - \frac{Q_{o}+Q_{w}}{n_w PI}  \quad\quad\eqnunit{psi}
 \end{equation}
 \end{fleqn}
 \end{minipage}\hfill
@@ -2639,10 +2749,10 @@ p_{wf} =  p_{res} - \frac{Q_{o}+Q_{w}}{N_w PI}  \quad\quad\eqnunit{psi}
         \begin{tabular}{|cl}
                         & \\
         $p_{wf}$        & \xlname{Bottomhole\_flowing\_pressure}    \\    
-        $p_{res}$       & \xlname{Res\_press}\\
+        $p_{R}$       & \xlname{Res\_press}\\
         $Q_{o}$         & \xlname{INDEX(FlowTable,Q\_O\_bbl,1)}\\
         $Q_{w}$         & \xlname{INDEX(FlowTable,Q\_W\_bbl,1)}\\
-        $N_{w}$         & \xlname{Num\_Wells}\\
+        $n_{w}$         & \xlname{Num\_Wells}\\
         $PI$            & \xlname{Prod\_index}\\
                          & \\
         \end{tabular}
@@ -2697,6 +2807,7 @@ At low pressure,
 p_{wf} = \sqrt{p_e^2 - \frac{q_g p_{sc} T z \mu_g \text{ln}\left(\frac{r_2}{r_1} \right)}{\pi T_{sc} k h}} \quad\quad\eqnunit{psia}
 \end{equation}
 %%%%%%%%%%
+% issue 20: SPE uses w or d or e for thickness. I suggest to change h to w in eq. and in Table 7.12. I didn't change it as I am not sure if we want to re-name parameters in the main equations of text.
 
 Here, $p_e$ is the far field pressure, $q_g$ is the gas phase fluid rate per well, $p_{sc}$ and $T_{sc}$ are pressure and temperature at standard conditions, $T$ is the reservoir temperature, $z$ is the gas z-factor, $\mu_g$ is gas viscosity, $k$ is reservoir permeability, and $h$ is pay thickness. $\left(\frac{r_2}{r_1} \right)$ is the ratio of reservoir drainage radius to wellbore radius. We set this to an arbitrarily high value (1000 ft/0.5 ft).
 
@@ -2721,8 +2832,8 @@ The pressure for lifting can either be applied by a downhole pump or by gas lift
 \begin{supertabular*}{1\columnwidth}{p{0.03\columnwidth}p{0.25\columnwidth}p{0.25\columnwidth}p{0.07\columnwidth}p{0.07\columnwidth}p{0.07\columnwidth}p{0.07\columnwidth}p{0.07\columnwidth}}
 $PI$             & Productivity index                & \xlname{Prod\_index}  & 3         & 1-200   & [bbl/psi-d] & & \\ 
 $n_w$           & Number of wells                   & \xlname{Num\_prod\_wells} & 8     & 1-10,000      & - & & \\
-$p_{res}$           & Reservoir pressure                & \xlname{Res\_press}   & 1531      & 50-10,000     & [psi] & & \\
-$T_{res}$ 	    & Reservoir temperature			    & \xlname{Res\_temp}  & 198.2 		& 50-300 	& [$^\circ$ F] &  & \\ 
+$p_{R}$           & Reservoir pressure                & \xlname{Res\_press}   & 1531      & 50-10,000     & [psi] & & \\
+$T_{R}$ 	    & Reservoir temperature			    & \xlname{Res\_temp}  & 198.2 		& 50-300 	& [$^\circ$ F] &  & \\ 
 \end{supertabular*}
 %\begin{tablenotes}
 %\item[a] Insert text of note here
@@ -2860,7 +2971,7 @@ R_{os,avg} =  \frac{R_{os,wf}+R_{os,wh}}{2}  \quad\quad\eqnunit{psi}
 
 Other averaged properties include: 
 \begin{itemize}
-    \item Temperature (all phases) $T_w$ (\xlname{Wellhead\_temperature},\xlname{Res\_temp})
+    \item Temperature (all phases) $T_R$ (\xlname{Wellhead\_temperature},\xlname{Res\_temp})
     \item Density of crude oil $\rho_o$ (\xlname{INDEX(FlowTable,RHO\_O\_LB,3)},\xlname{INDEX(FlowTable,RHO\_O\_LB,4)})
     \item Volume of crude oil lifted $V_o$ (\xlname{INDEX(FlowTable, Q\_O\_bbl,3)},\xlname{INDEX(FlowTable,Q\_O\_bbl,4)}) 
     \item Density of water $\rho_w$ (\xlname{INDEX(FlowTable,RHO\_W\_LB,3)},\xlname{INDEX(FlowTable,RHO\_W\_LB,4)})
@@ -2874,7 +2985,7 @@ The area of the the production tubing cross section is computed from the product
 \begin{minipage}{0.6\columnwidth}
 \begin{fleqn}[0pt]
 \begin{equation} \label{eq:avg_wellbore_pressure}
-V_{W} =  \pi \left(\frac{d_{W}}{2}\right)^2 h_w  \quad\quad\eqnunit{psi}
+V_{W} =  \pi \left(\frac{D_{W}}{2}\right)^2 D_w  \quad\quad\eqnunit{psi}
 \end{equation}
 \end{fleqn}
 \end{minipage}\hfill
@@ -2882,7 +2993,7 @@ V_{W} =  \pi \left(\frac{d_{W}}{2}\right)^2 h_w  \quad\quad\eqnunit{psi}
         \begin{tabular}{|cl}
                         & \\
         $d_{W}$         & \xlname{Well\_diam}\\
-        $h_W$           & \xlname{Field\_depth}\\
+        $D_W$           & \xlname{Field\_depth}\\
                         & \\
         \end{tabular}
 \end{minipage}
@@ -2938,7 +3049,7 @@ The frictional pressure drop is calculated using the Darcy formula \cite[p. 447]
 p_{f}=\frac{fh_{el}{v_{l,W}^2}}{2d_{W}{g_{c}}} \quad\quad\eqnunit{psi}
 \end{equation}
 %%%%%%%%%%
-where $f$ = Moody friction factor [-]; $h_{el}$ = well depth [\unit{ft}]; $v_{l,W}$ = pipeline flow velocity [\unitfrac{ft}{s}]; $D_{P}$ = pipeline diameter [\unit{ft}]; and $g_{c}$ = gravitational constant, 32.2 [\unitfrac{lbm-ft}{lbf-$s^2$}]. A major determinant of friction losses is the pipeline diameter or production tubing diameter ($D_{W}$). API production tubing diameters range from 1.05 to 4.5 inches ID; the API system is a petroleum industry standardized measuring system \cite[p. 106]{Clegg2007}.
+where $f$ = Moody friction factor [-]; $h_{el}$ = well depth [\unit{ft}]; $v_{l,W}$ = pipeline flow velocity [\unitfrac{ft}{s}]; $D_{P}$ = pipeline diameter [\unit{ft}]; and $g_{c}$ = gravitational constant, 32.2 [\unitfrac{lbm-ft}{lbf-$s^2$}]. A major determinant of friction losses is the pipeline diameter or production tubing diameter ($d_{w}$). API production tubing diameters range from 1.05 to 4.5 inches ID; the API system is a petroleum industry standardized measuring system \cite[p. 106]{Clegg2007}.
 
 A Moody friction factor chart is shown in Figure\,\ref{fig:Moody_chart} \cite{Moody2008}. $f$ varies with the Reynold's Number (Re) and/or pipeline roughness, depending on whether the flow regime is laminar or turbulent \cite[p. 481]{Mcallister2009}. Table\,\ref{tab:NRe_ranges} shows the Re ranges of different flow patterns. 
 
@@ -2946,10 +3057,10 @@ The Moody friction factor is estimated using simplifications for the default cas
 
 The Reynolds number, Re, is calculated as follows \cite[p. 46]{Guo2007}:
 \begin{equation}\label{eq:Nre}
-\textrm{Re} = \frac{1.48 Q_l \rho_l}{D_P \mu_l} \quad\quad\eqnunit{-}
+\textrm{Re} = \frac{1.48 Q_l \rho_l}{d_P \mu_l} \quad\quad\eqnunit{-}
 \end{equation} 
 
-where $Q_l$ is the total liquid production rate [bbl/d]; $\rho_l$ is the liquid density (oil-water mixture) [lbm/ft$^3$]; $D_P$ is the wellbore production diameter [in], and $\mu_l$ is the fluid viscosity [cP]. Roughness of commercial steel of 0.0018 in is assumed \cite{Cengel2005}, for a relative roughness $r$ of 0.0006. The approximate friction factor is calculated as follows \cite[p. 625]{Cengel2005}:
+where $Q_l$ is the total liquid production rate [bbl/d]; $\rho_l$ is the liquid density (oil-water mixture) [lbm/ft$^3$]; $d_P$ is the wellbore production diameter [in], and $\mu_l$ is the fluid viscosity [cP]. Roughness of commercial steel of 0.0018 in is assumed \cite{Cengel2005}, for a relative roughness $r$ of 0.0006. The approximate friction factor is calculated as follows \cite[p. 625]{Cengel2005}:
 \begin{equation}\label{eq:fric_factor}
 f = \left( \frac{-1}{1.8\log\left(\left[ \frac{6.9}{\textrm{Re}}\right] + \left[ \frac{r}{3.7} \right]^{1.11} \right) } \right)^{2} \quad\quad\eqnunit{-}
 \end{equation} 
@@ -2990,7 +3101,7 @@ p_{lift}=(p_{trav,tot}+p_{wh})-p_{wf} \quad\quad\eqnunit{psi}
 %%%%%%%%%%
 where $p_{lift}$ = pressure for lifting [\unit{psi}]; $p_{tav,tot}$ = total pressure traverse [\unit{psi}]; $p_{wh}$ = wellhead pressure [\unit{psi}]; and $p_{wf}$ = bottomhole pressure [\unit{psi}]. The wellbore pressure is calculated from the average reservoir pressure by subtracting the pressure drawdown. The pressure drawdown is the difference between the reservoir pressure and the bottomhole pressure \cite[p. 22]{Takacs2005}.
 
-\subsubsection{Pump brake horsepower}
+\subsubsection{Pump brake horsepower} \label{sec:brake horsepower}
 
 The brake horsepower (BHP) is calculated using the pump discharge flow rate and the pumping pressure as \cite[p. 27]{Rose1989}: 
 %%%%%%%%%%
@@ -3022,11 +3133,11 @@ Default values for reservoir calculations are shown in Tables \ref{tab:primary_i
 \begin{threeparttable}
 \begin{supertabular*}{1\columnwidth}{p{0.03\columnwidth}p{0.25\columnwidth}p{0.25\columnwidth}p{0.07\columnwidth}p{0.07\columnwidth}p{0.07\columnwidth}p{0.07\columnwidth}p{0.07\columnwidth}}
 $d_{w}$ 	    & Well production tubing diameter	& \xlname{Well\_diam}  & 2.775 		& 1 - 4.5	& [in] &  & \\ 
-$D_{field}$         & Field depth                       & \xlname{Field\_depth} & 7,122      & 100-20,0000   & [ft] & & \\ 
+$D_{w}$         & Field depth                       & \xlname{Field\_depth} & 7,122      & 100-20,0000   & [ft] & & \\ 
 $n_w$           & Number of wells                   & \xlname{Num\_prod\_wells} & 8     & 1-10,000      & - & & \\
 $Q_o$           & Production rate of oil            & \xlname{Oil\_prod}    & 1,500     & 10-3,000,000  & [bbl/d] & & \\
 $GOR$          & Gas oil ratio, producing          & \xlname{GOR}          & var.      & 5-100,000     & [scf/bbl] & & \\
-$T_{res}$ 	    & Reservoir temperature			    & \xlname{Res\_temp}  & 198.2 		& 50-300 	& [$^\circ$ F] &  & \\ 
+$T_{R}$ 	    & Reservoir temperature			    & \xlname{Res\_temp}  & 198.2 		& 50-300 	& [$^\circ$ F] &  & \\ 
 \end{supertabular*}
 %\begin{tablenotes}
 %\item[a] Insert text of note here
@@ -3052,8 +3163,8 @@ $f$             & Moody friction factor                                 & \xlnam
 $O_{pm,w}$       & Option for prime mover type, well                    & \xlname{Prime\_mover\_type\_well}  & 1 & 1-4 & - & & \\
 $p_{wh}$        & Wellhead pressure                                     & \xlname{Wellhead\_pressure} & 1,000 & 50-2,000  & [psi] & & \\
 $T_{wh}$        & Wellhead temperature                                  & \xlname{Wellhead\_temperature} & 150 & 50-200 & [$^\circ$] & & \\
-$y_{lu,a}$      & Liquid unloading with automatic plunger               & \xlname{Liquid\_unloading\_automatic\_01} &  0 & 0/1 & logical & & \\ 
-$y_{lu,m}$      & Liquid unloading with manual plunger               & \xlname{Liquid\_unloading\_manual\_01} &  0 & 0/1 & logical & & \\ 
+$y_{lu,ap}$      & Liquid unloading with automatic plunger               & \xlname{Liquid\_unloading\_automatic\_01} &  0 & 0/1 & logical & & \\ 
+$y_{lu,mp}$      & Liquid unloading with manual plunger               & \xlname{Liquid\_unloading\_manual\_01} &  0 & 0/1 & logical & & \\ 
 $y_{lu,np}$      & Liquid unloading with no plunger                  & \xlname{Liquid\_unloading\_no\_plunger\_01} &  0 & 0/1 & logical & & \\ 
 $\eta_{pump}$   & Efficiency of downhole pump                           & \xlname{Eta\_pump\_well}  & 65    & 50-80 & [\%] & & \\
 \end{supertabular*}
@@ -3396,9 +3507,9 @@ $x_{H_{2}S}$     & H$_2$S gas composition & \xlname{Gas\_comp\_H2S} & 1 & var. &
 \label{tab:secondary_inputs_mining}
 \begin{threeparttable}
 \begin{supertabular*}{1\columnwidth}{p{0.03\columnwidth}p{0.3\columnwidth}p{0.25\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.025\columnwidth}}
-$T_{b,mi}$        & Mined bitumen temperature                                	& \xlname{Temperature\_mined\_bitumen} 			& 80					& 				& [$^\circ$F] 		& Assumption &  \\
-$p_{b,mi}$        & Mined bitumen pressure                                		& \xlname{Pressure\_mined\_bitumen} 				& 14.7				& 				& psia 			& Assumption &   \\
-$\Gamma_{b,mi}$        	& Crude bitumen specific gravity                                & \xlname{API\_bitumen} 							& 8	 				& 2-60 			& [$^\circ$API]  	& Assumption &   \\
+$T_{mined,b}$        & Mined bitumen temperature                                	& \xlname{Temperature\_mined\_bitumen} 			& 80					& 				& [$^\circ$F] 		& Assumption &  \\
+$p_{mined,b}$        & Mined bitumen pressure                                		& \xlname{Pressure\_mined\_bitumen} 				& 14.7				& 				& psia 			& Assumption &   \\
+$\Gamma_{b}$        	& Crude bitumen specific gravity                                & \xlname{API\_bitumen} 							& 8	 				& 2-60 			& [$^\circ$API]  	& Assumption &   \\
         	$f_{g,con.}$ 			& Fraction of gas consumed in equip.                          & \xlname{Fraction\_natural\_equip\_mined\_bitumen} 	& [binary 0-1]	 		& 				&   				& Assumption &    \\
 
 \end{supertabular*}
@@ -3511,7 +3622,7 @@ Separator leaks to air					& \stream{251}			& O		& Environment - Atmosphere		& [
 $WOR$        & Water oil ratio                   & \xlname{WOR} & 8     & 1-10,000   & [-] & & \\
 $Q_o$           & Production rate of oil            & \xlname{Oil\_prod}    & 1,500     & 10-3,000,000  & [bbl/d] & & \\
 $GOR$          & Gas oil ratio, producing          & \xlname{GOR}          & var.      & 5-100,000     & [scf/bbl] & & \\
-$y_{a}$         & Mole fraction of species $a$ in gas   & \xlname{Gas\_comp\_a}     & var.      & 5-100,000     & [scf/bbl] & & \\ 
+$x_{a}$         & Mole fraction of species $a$ in gas   & \xlname{Gas\_comp\_a}     & var.      & 5-100,000     & [scf/bbl] & & \\ 
 \end{supertabular*}
 %\begin{tablenotes}
 %\item[a] Insert text of note here
@@ -3535,9 +3646,9 @@ $y_{a}$         & Mole fraction of species $a$ in gas   & \xlname{Gas\_comp\_a} 
 $C_{cm,sp}$    & Choice of separation compressor prime mover type       & \xlname{Prime\_mover\_type\_separator\_compressor} &   2 & 1 or 2  & [-] &  & $a$ \\
 $f_{w,e}$        & Mass fraction water in emulsion after separation     & \xlname{Water\_content\_oil\_emulsion} & 14 & 0-20 & [wt\%] & & \\
 $n_{sp}$        & Number of separation stages                    & \xlname{Number\_stages\_separator}  & 3 & 1-3 & - & & \\
-$p_{sp,1}$       & First stage separator pressure                       & \xlname{Pressure\_first\_separator} & 1000 & 50-2000  & [psig] & & \\
-$p_{sp,2}$       & Second stage separator pressure                       & \xlname{Pressure\_second\_separator} & 575 & 50-2000  & [psig] & & \\
-$p_{sp,3}$       & Third stage separator pressure                       & \xlname{Pressure\_third\_separator} & 150 & 50-2000  & [psig] & & \\
+$p_{sp,1st}$       & First stage separator pressure                       & \xlname{Pressure\_first\_separator} & 1000 & 50-2000  & [psig] & & \\
+$p_{sp,2nd}$       & Second stage separator pressure                       & \xlname{Pressure\_second\_separator} & 575 & 50-2000  & [psig] & & \\
+$p_{sp,3rd}$       & Third stage separator pressure                       & \xlname{Pressure\_third\_separator} & 150 & 50-2000  & [psig] & & \\
 $p_{sp,f}$       & Final stage separator pressure                       & \xlname{Pressure\_outlet\_separator} & 150 & 50-2000  & [psig] & & \\
 $p_{l}$         & Line-specification pressure to leave separation       & \xlname{Pressure\_after\_boosting\_separator} & 1000 & 50-2000  & [psig] & & \\
 $T_{sp}$        & Separator temperature, final                          & \xlname{Temperature\_outlet\_separator} & 90 & 50-200 & [$^\circ$] & & \\
@@ -3676,7 +3787,7 @@ Water from dewatering					& \stream{115}			& O		& Produced water treatment		& [t
 \begin{supertabular*}{1\columnwidth}{p{0.03\columnwidth}p{0.25\columnwidth}p{0.25\columnwidth}p{0.07\columnwidth}p{0.07\columnwidth}p{0.07\columnwidth}p{0.07\columnwidth}p{0.07\columnwidth}}
 $T_{dw}$    & Dewatering temperature	& \xlname{Temperature\_heater\_treater}		& 165	& 150-240	    & [$^\circ$F]	& \cite{Manning1991}		& -			\\
 $\epsilon_{dw}$ & Heat loss				 & \xlname{Heat\_loss\_heater\_treater}	        & 2		& 1-3			& [\%] 		& \cite{Manning1991}		& -			\\
-$C_{dw}$        & Type of heater		& \xlname{Type\_heater\_treater}	        & ``gas''	& ``gas'' or ``elec'' & [option]		& Assumption			& a			\\
+$y_{dw}$        & Type of heater		& \xlname{Type\_heater\_treater}	        & ``gas''	& ``gas'' or ``elec'' & [option]		& Assumption			& a			\\
 $\eta_{dw,ng}$  & Heater fuel use factor	& \xlname{Eta\_heater\_treater\_gas}	& 0.8	& 0.7-0.85	        & [Btu/Btu]		& \cite{EPA2008}	    & -			\\
 $\eta_{dw,e-}$  & Heater fuel use factor	& \xlname{Eta\_heater\_treater\_electric}	& 0.23	& 0.2-0.25		& [kWh/Btu]		& \cite{EPA2008}		& -			\\
 \end{supertabular*}
@@ -3708,7 +3819,7 @@ The default type of stabilizer in OPGEE is a high-pressure stabilizer (100 psi) 
 
 The stabilizer column heat duty is calculated as:
 
-\begin{minipage}{0.6\columnwidth}
+\begin{minipage}{0.7\columnwidth}
 \begin{fleqn}[0pt]
 \begin{equation}  \label{eq:crude_stabilizer_heat}
 \Delta H_{S}= \Delta T_{S} m_{\mstream{8},o} C_{p,o} \left(1+\epsilon_{S} \right) \left(\frac{1}{10^6} \right) \quad\quad\eqnunitfrac{mmBtu}{d}
@@ -3786,7 +3897,7 @@ Stabilizer gas							& \stream{32}			& O		& Gas gathering				& [t/d]			&			\\
 $p_{S}$    & Stabilizer pressure	& \xlname{P\_S}		& 100	& 14-200	    & [psig]	& \cite{Manning1991}		& -	\\
 $T_{S}$    & Stabilizer temperature	& \xlname{T\_S}		& 344	& 300-400	    & [$^\circ$F]	& \cite{Manning1991}		& -	\\
 $\epsilon_S$ & Stabilizer heat loss & \xlname{Eps\_S}   & 2     & 1-3           & [\%]          & \cite{Manning1991}        & - \\
-$C_{dw}$        & Type of heater		& \xlname{Type\_S}	        & ``gas''	& ``gas'' or ``elec'' & [option]		& Assumption			& a			\\
+$y_{S}$        & Type of heater		& \xlname{Type\_S}	        & ``gas''	& ``gas'' or ``elec'' & [option]		& Assumption			& a			\\
 $\eta_{dw,ng}$  & Heater fuel use factor	& \xlname{Eta\_S\_fg}	& 0.8	& 0.7-0.85	        & [Btu/Btu]		& \cite{EPA2008}	    & -			\\
 $\eta_{dw,e-}$  & Heater fuel use factor	& \xlname{Eta\_S\_el}	& 0.23	& 0.2-0.25		& [kWh/Btu]		& \cite{EPA2008}		& -			\\
 \end{supertabular*}
@@ -3984,7 +4095,7 @@ Default values for heavy oil upgrading calculations are shown in Tables \ref{tab
 \label{tab:primary_inputs_upgrading}
 \begin{threeparttable}
 \begin{supertabular*}{1\columnwidth}{p{0.03\columnwidth}p{0.3\columnwidth}p{0.25\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.025\columnwidth}p{0.025\columnwidth}}
-$x_{elec}$ & Fraction of required electricity generated onsite & \xlname{Fraction\_elec\_onsite} & 1 & 0-1 & [-]  & Assumption & -\\  
+$x_{elec,onsite}$ & Fraction of required electricity generated onsite & \xlname{Fraction\_elec\_onsite} & 1 & 0-1 & [-]  & Assumption & -\\  
 $y_{upgrader}$  & Upgrader type & \xlname{Upgrader\_type} & 0 & 0-3 & [-]  & Assumption & -\\
 $y_{OS,mi}$     & Oil sands mine integrated with upgrader?  & \xlname{Oil\_sands\_mine\_int\_01} & 0 & 0-1 & [binary 0-1] & Assumption & - \\
 $y_{OS,mn}$     & Oil sands mine non-integrated with upgrader?  & \xlname{Oil\_sands\_mine\_nonint\_01} & 0 & 0-1 & [binary 0-1] & Assumption & - \\
@@ -4590,10 +4701,10 @@ $y_{w,inj}$  & Water reinjection & \xlname{Water\_reinjection\_01} & 0 & 0-1 & [
 $y_{w,flood}$  & Water flooding & \xlname{Water\_flooding\_01} & 0 & 0-1 & [binary 0-1]   & Assumption & \\
   $D_{w}$     & Field depth  & \xlname{Field\_depth} & 7122      & 100-20,0000   & [ft] & & \\ 
 $Q_0$ & Oil production volume & \xlname{Oil\_prod} & 1500 & 10-3,000,000 & [bbl/d]   & Assumption & \\
- $n_{wi}$ & Number of water injecting wells & \xlname{Num\_water\_inj\_wells} & Function of \xlname{Oil\_prod} and \xlname{Num\_prod\_wells}  & 1-2000 & [\#]   & Assumption & \\
- $d_field$  & Well diameter     & \xlname{Well\_diam}  & 2.8         & 2-10   & [in] & Assumption & \\ 
- $p_{res}$ & Average reservoir pressure & \xlname{Res\_press} & Function of \xlname{Field\_depth}  & 1000-10,000 & [psia]   & Assumption &\\
-$API$             & Productivity index                & \xlname{Prod\_index}  & 3         & 1-200   & [bbl/psi-d] & Assumption & \\ 
+ $n_{w,inj}$ & Number of water injecting wells & \xlname{Num\_water\_inj\_wells} & Function of \xlname{Oil\_prod} and \xlname{Num\_prod\_wells}  & 1-2000 & [\#]   & Assumption & \\
+ $d_{w}$  & Well diameter     & \xlname{Well\_diam}  & 2.8         & 2-10   & [in] & Assumption & \\ 
+ $p_{R}$ & Average reservoir pressure & \xlname{Res\_press} & Function of \xlname{Field\_depth}  & 1000-10,000 & [psia]   & Assumption &\\
+$PI$             & Productivity index                & \xlname{Prod\_index}  & 3         & 1-200   & [bbl/psi-d] & Assumption & \\ 
 $WIR$ & Water injection ratio & \xlname{WIR} & 1+\xlname{WOR} & 1-100 & [bbl water/bbl oil]   & Assumption &\\
 
 \end{supertabular*}
@@ -4710,7 +4821,7 @@ Q_{ws} = (0.454 \frac{kg}{lbm}) \frac{SOR \rho_w Q_{o}}{X_{g}} \quad\quad\eqnuni
 
 where $Q_{ws}$ = steam required to be generated per day [kg water/d]; $X_{g}$ = steam quality at generator outlet; $SOR$ = steam oil ratio [bbl steam as cold water equivalent/bbl oil]; $\rho_w$ = density of water [lbm/bbl]; and $Q_o$ = quantity of oil produced [bbl/d]. Steam quantities are measured as volume of cold water equivalent.
 
-Steam enthalpy is calculated with XSteam, which is an implementation of the IAPWS IF97 standard formulation. Xsteam provides Excel built-in functions for computing water and steam and mixtures of water and steam properties from 0 - 1000 bar and from 0 - 2000$^\circ$C. \cite{knovel2006} As an example, saturated water enthalpy at liquid and vapor phase can be directly computed with Xsteam built-in functions eq.\eqref{eq:steam_h_saturated_liquid} and eq.\eqref{eq:steam_h_saturated_gas}:
+Steam enthalpy is calculated with XSteam, which is an implementation of the IAPWS IF97 standard formulation. Xsteam provides Excel built-in functions for computing water and steam and mixtures of water and steam properties from 0 - 1000 bar and from 0 - 2000$^\circ$C \cite{Knovel}. As an example, saturated water enthalpy at liquid and vapor phase can be directly computed with Xsteam built-in functions eq.\eqref{eq:steam_h_saturated_liquid} and eq.\eqref{eq:steam_h_saturated_gas}:
 
 %%%%%%%%%%%%%%
 \begin{minipage}{0.6\columnwidth}
@@ -4829,6 +4940,7 @@ where $h_{r,bd}$ = recovered heat via heat exchange between blow-down water and 
 Another source for heat recovery is the exiting flue gas. The excessive heat in flue gas can be recovered by an economizer or an air-preheater, thus substantially increasing the efficiency of the steam generator \cite{Buchanan2009}. An economizer enables heat exchange between flue gas and inlet water. An air-preheater enables heat exchange between flue gas and inlet air for combustion. As long as the exhaust temperature stays higher than the limit to avoid condensation of moisture (to be discussed more in detail in section 7.15.2.2) after heat exchange, such heat recovery devices can be added to grab recoverable heat and increase systems efficiency.
 
 The amount of heat recovered by economizer and air pre-heater can be computed with eq.\eqref{eq:steam_h_recovery_economizer} and eq.\eqref{eq:steam_h_recovery_preheater}.
+% issue 17: the equ. is out of page borders.
 
 %%%%%%%%%%%%%%
 \begin{minipage}{0.8\columnwidth}
@@ -4863,14 +4975,14 @@ Steam is generated at sufficient pressure to ensure that it will flow into the s
 \begin{minipage}{0.6\columnwidth}
 \begin{fleqn}[0pt]
 \begin{equation}\label{eq:steam_ps}
-p_{ws} = p_{res} \epsilon_{p} \quad\quad\eqnunit{psia}
+p_{ws} = p_{R} \epsilon_{p} \quad\quad\eqnunit{psia}
 \end{equation}
 \end{fleqn}
 \end{minipage}\hfill
 \begin{minipage}{0.3\columnwidth}
         \begin{tabular}{|cl}
                         & \\
-        $p_{res}$   & \xlname{Res\_press}\\
+        $p_{R}$   & \xlname{Res\_press}\\
         $\epsilon_p$   & \xlname{Friction\_loss\_stream\_distr}\\
                         & \\
         \end{tabular}
@@ -5188,8 +5300,8 @@ $p_{R}$ & Average reservoir pressure & \xlname{Res\_press} & Function of \xlname
 \begin{supertabular*}{1\columnwidth}{p{0.03\columnwidth}p{0.3\columnwidth}p{0.25\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.025\columnwidth}}
     $y_{canada} $ & Binary variable for deciding whether defaults of Canadian oil fields (100\% quality steam) should be used & \xlname{defaults\_oil\_sands} & 0 & ${0,1}$ & [] &  & \\
     $y_{s,inj}$ & Steam injection type  & \xlname{Steam\_injection\_type} & SF	& ${SF,CSS,SAGD}$ & [] & & \\
-    $f_{s,inj} $ & Frictional losses in steam distribution and injection lines & \xlname{Friction\_loss\_stream\_distr} & 1.1 & & [psia/psia] & \cite{Chilingarian1987} &  \\
-    $\Delta P_{w,choke} $ & Choke Pressure drop at wellhead & \xlname{Pressure\_loss\_choke\_wellhead} & 1.7 &  & [psia/psia] &  & \\
+    $\epsilon_{p} $ & Frictional losses in steam distribution and injection lines & \xlname{Friction\_loss\_stream\_distr} & 1.1 & & [psia/psia] & \cite{Chilingarian1987} &  \\
+    $\Delta p_{w,choke} $ & Choke Pressure drop at wellhead & \xlname{Pressure\_loss\_choke\_wellhead} & 1.7 &  & [psia/psia] &  & \\
     $X_d$ & Desired steam quality after blowdown and recycle (if any) & \xlname{Quality\_after\_blowdown} & SAGD 0.95, otherwise 0.7 & & [kg/kg] & \cite{COSIA2014} & \\
     $X_g$ & Steam quality at generator outlet & \xlname{Quality\_generator\_outlet} & 0.7 &  & [kg/kg] & \cite{COSIA2014} & \\
     $Per_{w,recy.} $ & Percentage of blowdown water recycled & \xlname{fraction\_blowdown\_recycled} & 0.7 & & [kg/kg] & Assumption & \\
@@ -5202,29 +5314,29 @@ $p_{R}$ & Average reservoir pressure & \xlname{Res\_press} & Function of \xlname
     $T_{air,OTSG} $ & OTSG inlet air temperature & \xlname{Temperature\_inlet\_air\_OTSG} & 80.33 & & [$^\circ$F] & & annual average temperature \\
     $T_{outlet,OTSG} $ & OTSG outlet exhaust temperature & \xlname{Temperature\_outlet\_exhaust\_OTSG} & 350 if no economizer or pre-heater & & [$^\circ$F] & Assumption & \\
     $\eta_{loss,OTSG} $ & OTSG shell loss inefficiency & \xlname{Loss\_shell\_OTSG} & 0.04 & & [MJ loss/MJ LHV] & \cite{Ganapathy2003} & \\
-    $ $ & blowdown heat recovery availability & \xlname{blowdown\_heat\_recovery\_OTSG} & 1 & 0,1 & [-] & Assumption &  \\
+    $A_{blowdown}$ & blowdown heat recovery availability & \xlname{blowdown\_heat\_recovery\_OTSG} & 1 & 0,1 & [-] & Assumption &  \\
     $\eta_{bd}$ & OTSG heat recovery efficiency from blowdown rejected & \xlname{eta\_blowdown\_heat\_rec\_OTSG} & 0.95 & range & [MJ/MJ] & Assumption & \\
     $T_{w,inj,OTSG} $ & OTSG blowdown water rejection temperature (after heat recovery) & \xlname{Temperature\_water\_blowdown\_OTSG} & \xlname{Temperature\_makeupH2Oinlet\_steamgen}+60 &  & [$^\circ$F] & Assumption & \\
-    $ $ & OTSG economizer availability & \xlname{Economizer\_OTSG} & 0 & 0,1 & [] & Assumption & \\
+    $A_{OTSG,econ}$ & OTSG economizer availability & \xlname{Economizer\_OTSG} & 0 & 0,1 & [] & Assumption & \\
     $ T_{exh. bc,OTSG} $ & OTSG outlet exhaust temperature before economizer & \xlname{Temperature\_outlet\_exhaust\_OTSG\_before\_economizer} & 350 & & [$^\circ$F] & Assumption & \\
     $\eta_{econ}$ & OTSG economizer recovery efficiency from exhaust & \xlname{eta\_economizer\_heat\_rec\_OTSG} & 0.95 & & [MJ/MJ] & Assumption & \\
-    $ $ & OTSG air pre-heater availability & \xlname{Preheater\_OTSG} & 0 & 0,1 & [] & Assumption & \\
+    $A_{OSTG,preheater} $ & OTSG air pre-heater availability & \xlname{Preheater\_OTSG} & 0 & 0,1 & [] & Assumption & \\
     $ T_{exh. ac,OTSG} $ & OTSG outlet exhaust temperature before pre-heater after economizer (if any) & \xlname{Temperature\_outlet\_exhaust\_OTSG\_before\_preheater} & 248 & & [$^\circ$F] & Assumption &  \\
     $\eta_{preh}$ & OTSG air pre-heater recovery efficiency from exhaust & \xlname{eta\_preheater\_heat\_rec\_OTSG} & 0.95 & & [MJ/MJ] & Assumption & \\
     $E_{air,HRSG} $ & Air blower energy consumption for HRSG & \xlname{Eta\_air\_blower\_HRSG} & 0 & & [hpper mmBtu/d HRSG capacity] & Assumption & \\
     $y_{turbine} $ & Gas turbine type & \xlname{Turbine\_type\_HRSG} & C & A,B,C,D & [] & \cite{Kim2004} & \\
-    $} $ & Share of natural gas in HRSG gaseous fuels & \xlname{NG\_fuel\_share\_HRSG\_offsite} & 1 & 0-1 & [kg/kg] & Assumption & \\
-    $ $ & Share of produced gas in HRSG gaseous fuels & \xlname{NG\_fuel\_share\_HRSG\_produced} & 0 & 0-1 & [kg/kg] & Assumption & \\
+    $S_{HRSG,ng}$ & Share of natural gas in HRSG gaseous fuels & \xlname{NG\_fuel\_share\_HRSG\_offsite} & 1 & 0-1 & [kg/kg] & Assumption & \\
+    $S_{HRSG,pg} $ & Share of produced gas in HRSG gaseous fuels & \xlname{NG\_fuel\_share\_HRSG\_produced} & 0 & 0-1 & [kg/kg] & Assumption & \\
     $T_{exh,HRSG} $ & HRSG outlet exhaust temperature & \xlname{Temperature\_outlet\_exhaust\_HRSG} & 350 & & [$^\circ$F] & Assumption & \\
-    $ $ & HRSG shell losses & \xlname{Loss\_shell\_HRSG} & 0.05 & & [MJ/MJ] & Assumption & \\
-    $ $ & Duct firing availability & \xlname{Duct\_firing\_HRSG} & 0 & 0,1 & [] & Assumption & \\
-    $ $ & HRSG blowdown heat recovery availability & \xlname{blowdown\_heat\_recovery\_HRSG} & 1 & 0,1 & [] & Assumption &  \\
+    $\epsilon_{HRSG,shell}$ & HRSG shell losses & \xlname{Loss\_shell\_HRSG} & 0.05 & & [MJ/MJ] & Assumption & \\
+    $A_{duct} $ & Duct firing availability & \xlname{Duct\_firing\_HRSG} & 0 & 0,1 & [] & Assumption & \\
+    $A_{HRSG,blowdown}$ & HRSG blowdown heat recovery availability & \xlname{blowdown\_heat\_recovery\_HRSG} & 1 & 0,1 & [] & Assumption &  \\
     $\eta_{bd}$ & HRSG heat recovery efficiency from blowdown rejected & \xlname{eta\_blowdown\_heat\_rec\_HRSG} & 0.95 & range & [MJ/MJ] & Assumption & \\
     $T_{w,HRSG} $ & HRSG blowdown water rejection temperature (after heat recovery) & \xlname{Temperature\_water\_blowdown\_HRSG} & \xlname{Temperature\_makeupH2Oinlet\_steamgen}+60 &  & [$^\circ$F] & Assumption & \\
-    $ $ & HRSG economizer availability & \xlname{Economizer\_HRSG} & 0 & 0,1 & [] & Assumption & \\
+    $A_{HRSG,econ.} $ & HRSG economizer availability & \xlname{Economizer\_HRSG} & 0 & 0,1 & [] & Assumption & \\
     $T_{exh,bc,HRSG} $ & HRSG outlet exhaust temperature before economizer & \xlname{Temperature\_outlet\_exhaust\_HRSG\_before\_economizer} & 350 & & [$^\circ$F] & Assumption & \\
     $\eta_{econ}$ & HRSG economizer recovery efficiency from exhaust & \xlname{eta\_economizer\_heat\_rec\_HRSG} & 0.95 & & [MJ/MJ] & Assumption & \\
-    $ $ & HRSG air pre-heater availability & \xlname{Preheater\_HRSG} & 0 & 0,1 & [] & Assumption & \\
+    $A_{HRSG,air}$ & HRSG air pre-heater availability & \xlname{Preheater\_HRSG} & 0 & 0,1 & [] & Assumption & \\
     $T_{exh,ac,HRSG}$ & HRSG outlet exhaust temperature before preheater after economizer (if any) & \xlname{Temperature\_outlet\_exhaust\_HRSG\_before\_preheater} & 248 & & [$^\circ$F] & Assumption &  \\
     $\eta_{econ}$ & HRSG economizer recovery efficiency from exhaust & \xlname{eta\_economizer\_heat\_rec\_HRSG} & 0.95 & & [MJ/MJ] & Assumption & \\
      $T_{w,makeup}$ & Makeup water inlet temperature & \xlname{Temperature\_makeupH2Oinlet\_steamgen} & 60 & & [$^\circ$F] & Assumption & notes \\
@@ -5537,7 +5649,7 @@ Default values for flaring calculations are shown in Tables \ref{tab:primary_inp
 \begin{supertabular*}{1\columnwidth}{p{0.03\columnwidth}p{0.3\columnwidth}p{0.25\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.025\columnwidth}p{0.025\columnwidth}}
 
 $Q_0$ & Oil production volume & \xlname{Oil\_prod} & 1500 & 10-3,000,000 & [bbl/d]   & Assumption & -\\
-$n_wp$ & Number of producing wells & \xlname{Num\_prod\_wells} & Function of \xlname{Oil\_prod} & 1-10,000 & [\#]   & Assumption & -\\
+$n_{wp}$ & Number of producing wells & \xlname{Num\_prod\_wells} & Function of \xlname{Oil\_prod} & 1-10,000 & [\#]   & Assumption & -\\
  
 \end{supertabular*}
 %\begin{tablenotes}
@@ -5559,15 +5671,15 @@ $n_wp$ & Number of producing wells & \xlname{Num\_prod\_wells} & Function of \xl
 \label{tab:secondary_inputs_flaring}
 \begin{threeparttable}
 \begin{supertabular*}{1\columnwidth}{p{0.03\columnwidth}p{0.3\columnwidth}p{0.25\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.08\columnwidth}p{0.05\columnwidth}p{0.025\columnwidth}}
-      & Data availability for detailed analysis & \xlname{Data\_sufficiency\_flaring} & 0	& 0-1  & [binary 0-1] & Assumption  &  \\
+   $A_{data}$   & Data availability for detailed analysis & \xlname{Data\_sufficiency\_flaring} & 0	& 0-1  & [binary 0-1] & Assumption  &  \\
     $Year_{ref}$   & Reference year for default flaring intensity  & \xlname{Year\_ref\_flaring} & 2015	& 2015 & [year] & Assumption  &  \\
  $Year_{valid}$ & 2010-2015 valid years  & \xlname{Year\_counter\_flaring} & 7 & var.  & [year]  & Assumption  &   \\
  $U$ & Average yearly windspeed  & \xlname{Windspeed\_ave\_flaring} & 10 & 1-50 & [mph]  & Assumption  &   \\
-  & Is the flare tip diameter fixed or variable?  & \xlname{Type\_flaretip} & 0 & 0-1 & [binary 0-1] & Assumption  &   \\
+ $y_{tip,dia}$ & Is the flare tip diameter fixed or variable?  & \xlname{Type\_flaretip} & 0 & 0-1 & [binary 0-1] & Assumption  &   \\
   $U_{exit}$ & Fixed design exit velocity & \xlname{Velocity\_flaretip} &  & & [ft/sec] & Assumption  &   \\
   $d_{flare}$ & Fixed flare tip diameter & \xlname{Diameter\_flaretip} & &  & [in] & Assumption  &   \\
     $n_{w,flare}$  & Number of wells per flare & \xlname{Numwells\_flare} & &  & [wells/flare] & Assumption  &  \\
-    & Flare tips per flare & \xlname{Numtips\_flare} & &  & [Tips per flare] & Assumption  &   \\
+  $TI_{flare}$  & Flare tips per flare & \xlname{Numtips\_flare} & &  & [Tips per flare] & Assumption  &   \\
 \end{supertabular*}
 %\begin{tablenotes}
 %\item[a] Insert text of note here
@@ -6272,7 +6384,7 @@ $x_{H_{2}S}$     & H$_2$S gas composition & \xlname{Gas\_comp\_H2S} & 1 & var. &
        $p_{AGR}$ & Operating pressure & \xlname{Pressure\_operating\_AGR} & 350	& 300-400  & [psi]  & Assumption  &  \\
        \eta_{reboiler,AGR} & Reboiler Gas-fired heater fuel use & \xlname{eta\_reboiler\_AGR} & 1.25	& 1-2  & [btu/btu]  & Assumption  &  \\
     $\Delta T_{cooler,AGR}$    & Air cooler delta T, air side & \xlname{delta\_temperature\_aircooler\_AGR} & 40	& 30-50  & {[}$^\circ$F{]} & Assumption  &  \\
-      $\Delta P_{cooler,AGR}$    & Air cooler pressure drop & \xlname{delta\_pressure\_aircooler\_AGR} & 0.6	& 0.5-0.7  & [in. H2O] & Assumption  & \\
+      $\Delta p_{cooler,AGR}$    & Air cooler pressure drop & \xlname{delta\_pressure\_aircooler\_AGR} & 0.6	& 0.5-0.7  & [in. H2O] & Assumption  & \\
 \end{supertabular*}
 \multicolumn{8}{p{1\columnwidth}}{\emph{a} - The default is monoethanolamine (MEA).}\\
 %\begin{tablenotes}
@@ -6578,7 +6690,7 @@ Default values for flaring calculations are shown in Tables \ref{tab:primary_inp
 \begin{threeparttable}
 \begin{supertabular*}{1\columnwidth}{p{0.03\columnwidth}p{0.3\columnwidth}p{0.25\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.025\columnwidth}p{0.025\columnwidth}}
 
- $y_{ass. gas}$ & Associated Gas Processing Path & \xlname{Gas\_processing\_path} & 5 & var. & [] & Assumption & \\
+ $y_{ass. g}$ & Associated Gas Processing Path & \xlname{Gas\_processing\_path} & 5 & var. & [] & Assumption & \\
 
 \end{supertabular*}
 %\begin{tablenotes}
@@ -6608,8 +6720,8 @@ Default values for flaring calculations are shown in Tables \ref{tab:primary_inp
       $\Delta p_{cooler,demeth.}$ & Air cooler pressure drop & \xlname{delta\_pressure\_aircooler\_demethanizer} & 0.6	& 0.5-0.7  & [in. H_{2}O]  & Assumption  &  \\
       $\eta _{comp.,demeth.}$ & Compressor efficiency & \xlname{eta\_compressor\_demeth} & 75	& 70-80  & [\%]  & Assumption  &  \\
      $y_{p. mover,demeth.}$   & Prime mover type & \xlname{Prime\_mover\_type\_demeth} & 2	& 1,2  & [binary 1-2]  & Assumption  &  \\
-      $f_{gas/heavy,demth}$    & Fractions of gas to demethanizer product heavy streams & \xlname{Composition\_demethanizer\_heavy} & var.	& var.  & [mol frac.]  & Assumption  &  \\
-        $f_{gas/light,demth}$     & Fractions of gas to demethanizer product light streams & \xlname{Composition\_demethanizer\_light} & var.	& var.  & [mol frac.]  & Assumption  &  \\
+      $f_{g/heavy,demth}$    & Fractions of gas to demethanizer product heavy streams & \xlname{Composition\_demethanizer\_heavy} & var.	& var.  & [mol frac.]  & Assumption  &  \\
+        $f_{g/light,demth}$     & Fractions of gas to demethanizer product light streams & \xlname{Composition\_demethanizer\_light} & var.	& var.  & [mol frac.]  & Assumption  &  \\
        $P_{ref.,demeth.}$      & Refrigeration system power & \xlname{Energy\_intensity\_refrigeration} & 3.6	& 3-4  & [bhp-hr/kmolCOND]  & Assumption  &  \\
       $P_{comp.,demeth.}$        & Compressor system power & \xlname{Energy\_intensity\_compressor} & 0.6	& 0-1  & [bhp-hr/kmolFEED]  & Assumption  &  \\
        
@@ -6697,9 +6809,9 @@ Default values for chiller calculations are shown in Tables \ref{tab:secondary_i
 \tablecaption{Secondary inputs used in \sheet{Chiller} sheet.}
 \label{tab:secondary_inputs_chiller}
 \begin{threeparttable}
-\begin{supertabular*}{1\columnwidth}{p{0.03\columnwidth}p{0.3\columnwidth}p{0.25\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.025\columnwidth}}
+\begin{supertabular*}{1\columnwidth}{p{0.05\columnwidth}p{0.3\columnwidth}p{0.25\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.025\columnwidth}}
      $T_{out,chiller}$ & Chiller outlet temperature & \xlname{Temperature\_chiller\_outlet} & 35	& 30-40  & [$^\circ$F] & \cite{NETLChillerModel}  & -  \\
-      FE_{chiller} & Chiller fugitive emissions rate & \xlname{Fug\_emissions\_chiller} & 0	& 0-5  & [\%] & Assumption  & -  \\
+      ER_{chiller,fug.} & Chiller fugitive emissions rate & \xlname{Fug\_emissions\_chiller} & 0	& 0-5  & [\%] & Assumption  & -  \\
       
 \end{supertabular*}
 %\begin{tablenotes}
@@ -6771,7 +6883,7 @@ Defaults for the CO$_2$ separation membrane are shown in Table \ref{tab:secondar
 \label{tab:secondary_inputs_membrane}
 \begin{threeparttable}
 \begin{supertabular*}{1\columnwidth}{p{0.05\columnwidth}p{0.3\columnwidth}p{0.25\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.025\columnwidth}}
-  $x_{gas,membrane}$    & Membrane gas compositions & \xlname{Composition\_membrane} & var.	& 0-1  & [mol frac.] & Assumption  & \\
+  $x_{g,memb}$    & Membrane gas compositions & \xlname{Composition\_membrane} & var.	& 0-1  & [mol frac.] & Assumption  & \\
        
 \end{supertabular*}
 %\begin{tablenotes}
@@ -6874,7 +6986,7 @@ Default values for Ryan-Holmes unit calculations are shown in Tables \ref{tab:se
 \begin{threeparttable}
 \begin{supertabular*}{1\columnwidth}{p{0.05\columnwidth}p{0.3\columnwidth}p{0.25\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.025\columnwidth}}
      H_{backup,R-H} & Backup diesel engine daily usage & \xlname{Daily\_Usage\_Engine\_RyanHolmes} & 2.6	& 2-3  & [h/d] & \cite{NETLRyanHolmesModel}  &  \\
-   $f_{gas,R-H}$   & Ryan-Holmes gas fractions & \xlname{Composition\_Ryan\_Holmes} & VAR.	& 0-1  & [mol. frac.] & \cite{NETLRyanHolmesModel}  & \\
+   $x_{g,R-H}$   & Ryan-Holmes gas fractions & \xlname{Composition\_Ryan\_Holmes} & VAR.	& 0-1  & [mol. frac.] & \cite{NETLRyanHolmesModel}  & \\
 \end{supertabular*}
 %\begin{tablenotes}
 %\item[a] Insert text of note here
@@ -6932,7 +7044,7 @@ The total gas compression ratio is calculated using:
 R_{C} = \frac{p_{d}}{p_{s}} \begin{footnotesize} \quad\quad\eqnunit{-}
 \end{equation}
 %%%%%%%%%%
-where $P_{d}$ = discharge pressure [psia]; and $P_{s}$ = suction pressure [psia]. 
+where $p_{d}$ = discharge pressure [psia]; and $p_{s}$ = suction pressure [psia]. 
 
 Multi-stage compression applies when \textit{R$_C$} > 5 \cite[p. 295]{Mcallister2009}. The compression of gas generates significant amount of heat, but compressors can only handle a limited temperature change. Multiple stage compressors allow cooling between stages making compression less adiabatic and more isothermal. OPGEE sets the compression ratio for each of the $N$ stages equal to the $N^{th}$ root of the total compression ratio \cite[p. 295]{Mcallister2009}:
 %%%%%%%%%%
@@ -7055,8 +7167,8 @@ $p_{R}$ 	    & Reservoir pressure			    & \xlname{Res\_press}  & 198.2 		& 50-30
 \label{tab:secondary_inputs_gasreinjection}
 \begin{threeparttable}
 \begin{supertabular*}{1\columnwidth}{p{0.08\columnwidth}p{0.2\columnwidth}p{0.26\columnwidth}p{0.08\columnwidth}p{0.06\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}}
-$y_{mover,reinjection}$    & Prime mover type & \xlname{Prime\_mover\_type\_reinjection\_gas} &  2 & 1/2  & [-] &  & a \\
-$\eta_{comp,reinjection}$   & Compressor efficiency    & \xlname{Eta\_compressor\_reinjection\_gas}  & 75    & 60-80 & [\%] & & \\
+$y_{mover,reinj}$    & Prime mover type & \xlname{Prime\_mover\_type\_reinjection\_gas} &  2 & 1/2  & [-] &  & a \\
+$\eta_{comp,reinj}$   & Compressor efficiency    & \xlname{Eta\_compressor\_reinjection\_gas}  & 75    & 60-80 & [\%] & & \\
 \end{supertabular*}
 \begin{tablenotes}
 \item[a] Choice 1 = electric motor, Choice 2 = NG engine
@@ -7243,7 +7355,7 @@ Default values for Gas flooding compressor calculations are shown in Tables \ref
 $p_{R}$ 	    & Reservoir pressure			    & \xlname{Res\_press}  & 198.2 		& 50-300 	& [psia] &  & \\
 $Q_0$ & Oil production volume & \xlname{Oil\_prod} & 1500 & 10-3,000,000 & [bbl/d]   & Assumption & \\
  $GFIR$ & Gas flooding injection ratio & \xlname{GFIR} & var. & var. & [scf/bbl]   & Assumption & \\
- $y_{flood gas}$    & Flood gas type & \xlname{Flood\_gas\_type} & 1 & 1-3 & [\#] & Assumption & \\
+ $y_{g,flood}$    & Flood gas type & \xlname{Flood\_gas\_type} & 1 & 1-3 & [\#] & Assumption & \\
 
 \end{supertabular*}
 %\begin{tablenotes}
@@ -7265,16 +7377,16 @@ $Q_0$ & Oil production volume & \xlname{Oil\_prod} & 1500 & 10-3,000,000 & [bbl/
 \label{tab:secondary_inputs_gasflooding}
 \begin{threeparttable}
 \begin{supertabular*}{1\columnwidth}{p{0.04\columnwidth}p{0.26\columnwidth}p{0.25\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.02\columnwidth}}
- $x_{gas,offsite}$  & Offsite hydrocarbon gas composition & \xlname{Composition\_offsite\_HC\_gas} &  var. & var.  & [mol. \%] & Assumption & \\
-  $T_{gas,offsite}$   & Offsite hydrocarbon gas temperature & \xlname{Temperature\_offsite\_gas} &  60 & 50-70  & {[}$^{\circ}$F{]} & Assumption & \\
-  $p_{gas,offsite}$    & Offsite hydrocarbon gas pressure & \xlname{Pressure\_offsite\_gas} &  600 & 550-650  & [psia] & Assumption & \\
+ $x_{g,offsite}$  & Offsite hydrocarbon gas composition & \xlname{Composition\_offsite\_HC\_gas} &  var. & var.  & [mol. \%] & Assumption & \\
+  $T_{g,offsite}$   & Offsite hydrocarbon gas temperature & \xlname{Temperature\_offsite\_gas} &  60 & 50-70  & {[}$^{\circ}$F{]} & Assumption & \\
+  $p_{g,offsite}$    & Offsite hydrocarbon gas pressure & \xlname{Pressure\_offsite\_gas} &  600 & 550-650  & [psia] & Assumption & \\
     E_{air sep.}  & Air separation unit electricity consumption (cryogenic N2 gas production) & \xlname{Energy\_intensity\_airseparation} &  0 & var.  & [kWh/scf] & Assumption & \\
     $T_{N2,offsite}$   & Offsite N2 temperature & \xlname{Temperature\_offsite\_N2} &  197 & 190-200  & {[}$^{\circ}$F{]} & Assumption & \\
     $p_{N2,offsite}$  & Offsite N2 pressure & \xlname{Pressure\_offsite\_N2} &  125 & 110-130  & [psia] & Assumption & \\
     L_{CO2,seq.} & Long-term leakage rate of sequestered carbon from reservoir & \xlname{Leakage\_rate\_sequestered\_CO2} &  0.5 & var.  & [\%] & Assumption & \\
      P_{CO2,released}    & Proportion of sequestered CO2 released from reservoir during post-production blow-down & \xlname{fraction\_CO2\_lost\_blowdown} &  0 & var. & [\%] & Assumption & \\
       $T_{CO2,offsite}$   & Offsite CO2 temperature & \xlname{Temperature\_offsite\_CO2} &  60 & 50-70 & {[}$^{\circ}$F{]} & Assumption & \\
-     $\eta_{comp.,flooding}$     & Compressor efficiency & \xlname{eta\_compressor\_flooding} & 75 & 70-78  & [\%] & Assumption & \\
+     $\eta_{comp.,flood}$     & Compressor efficiency & \xlname{eta\_compressor\_flooding} & 75 & 70-78  & [\%] & Assumption & \\
          $p_{CO2,offsite}$     & Offsite CO2 pressure & \xlname{Pressure\_offsite\_CO2} & 600 & 550-650  & [psia] & Assumption & \\
      $y_{mover,flooding}$    & Prime mover type & \xlname{Prime\_mover\_type\_flooding} & 2 & 1-2  & [binary 1-2] & Assumption & \\
 
@@ -7368,8 +7480,8 @@ $p_{R}$ 	    & Reservoir pressure			    & \xlname{Res\_press}  & 198.2 		& 50-30
 \label{tab:secondary_inputs_gaslifting}
 \begin{threeparttable}
 \begin{supertabular*}{1\columnwidth}{p{0.05\columnwidth}p{0.2\columnwidth}p{0.2\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}}
-$y_{mover,lift.}$    & Choice for gas lifting compressor prime mover    & \xlname{Prime\_mover\_type\_lifting} &  2 & 1/2  & [-] &  & a \\
-$\eta_{comp.,lift.}$   & Efficiency of gas lifting compressor           & \xlname{Eta\_compressor\_lifting}  & 75    & 60-80 & [\%] & & \\
+$y_{mover,lift}$    & Choice for gas lifting compressor prime mover    & \xlname{Prime\_mover\_type\_lifting} &  2 & 1/2  & [-] &  & a \\
+$\eta_{comp,lift}$   & Efficiency of gas lifting compressor           & \xlname{Eta\_compressor\_lifting}  & 75    & 60-80 & [\%] & & \\
 \end{supertabular*}
 \begin{tablenotes}
 \item[a] Choice 1 = electric motor, Choice 2 = NG engine
@@ -7467,8 +7579,8 @@ $p_{R}$ 	    & Reservoir pressure   & \xlname{Res\_press}  & 198.2 	& 50-300 	& 
 \label{tab:secondary_inputs_CO2injection}
 \begin{threeparttable}
 \begin{supertabular*}{1\columnwidth}{p{0.05\columnwidth}p{0.2\columnwidth}p{0.2\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}}
-$y_{mover,CO2inj.}$    & Choice for gas lifting compressor prime mover    & \xlname{Prime\_mover\_type\_injection\_CO2} &  2 & 1/2  & [-] &  & a \\
-$\eta_{CO2inj.}$   & Efficiency of gas lifting compressor           & \xlname{Eta\_compressor\_injection\_CO2}  & 75    & 60-80 & [\%] & & \\
+$y_{mover,CO2inj}$    & Choice for gas lifting compressor prime mover    & \xlname{Prime\_mover\_type\_injection\_CO2} &  2 & 1/2  & [-] &  & a \\
+$\eta_{CO2inj}$   & Efficiency of gas lifting compressor           & \xlname{Eta\_compressor\_injection\_CO2}  & 75    & 60-80 & [\%] & & \\
 \end{supertabular*}
 \begin{tablenotes}
 \item[a] Choice 1 = electric motor, Choice 2 = NG engine
@@ -7537,8 +7649,8 @@ Fugitives - Sour gas reinjection compressor	& \stream{274}			& O		& Atmosphere		
 \label{tab:secondary_inputs_sourinjection}
 \begin{threeparttable}
 \begin{supertabular*}{1\columnwidth}{p{0.05\columnwidth}p{0.25\columnwidth}p{0.25\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}}
-$y_{mover,sourinj.}$    & Choice for sour gas reinjection compressor prime mover    & \xlname{Prime\_mover\_type\_reinjection\_sourgas} &  2 & 1/2  & [-] &  & a \\
-$\eta_{comp.,sourinj.}$   & Efficiency of sour gas reinjection compressor           & \xlname{Eta\_compressor\_reinjection\_sourgas}  & 75    & 60-80 & [\%] & & \\
+$y_{mover,sourinj}$    & Choice for sour gas reinjection compressor prime mover    & \xlname{Prime\_mover\_type\_reinjection\_sourgas} &  2 & 1/2  & [-] &  & a \\
+$\eta_{comp.,sourinj}$   & Efficiency of sour gas reinjection compressor           & \xlname{Eta\_compressor\_reinjection\_sourgas}  & 75    & 60-80 & [\%] & & \\
 \end{supertabular*}
 \begin{tablenotes}
 \item[a] Choice 1 = electric motor, Choice 2 = NG engine
@@ -7611,8 +7723,8 @@ Fugitives - VRU compressor				& \stream{280}			& O		& Atmosphere					& [t/d]			&
 \begin{threeparttable}
 \begin{supertabular*}{1\columnwidth}{p{0.03\columnwidth}p{0.25\columnwidth}p{0.2\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}}
 $y_{mover,VRU}$    & Choice for sour gas reinjection compressor prime mover    & \xlname{Prime\_mover\_type\_VRU} &  2 & 1/2  & [-] &  & a \\
-$p_{disc.,VRU}$    & Discharge pressure for VRU compressor                     & \xlname{P\_disc\_VRUC} & 1000 & 500-1500 & psia & & \\
-$\eta_{comp.,VRU}$   & Efficiency of sour gas reinjection compressor           & \xlname{Eta\_compressor\_VRU}  & 75    & 60-80 & [\%] & & \\
+$p_{disc,VRU}$    & Discharge pressure for VRU compressor                     & \xlname{P\_disc\_VRUC} & 1000 & 500-1500 & psia & & \\
+$\eta_{comp,VRU}$   & Efficiency of sour gas reinjection compressor           & \xlname{Eta\_compressor\_VRU}  & 75    & 60-80 & [\%] & & \\
 \end{supertabular*}
 \begin{tablenotes}
 \item[a] Choice 1 = electric motor, Choice 2 = NG engine
@@ -7686,9 +7798,9 @@ Fugitives - Pre-membrane compressor			& \stream{272}			& O		& Atmosphere					& [
 \label{tab:secondary_inputs_membranecomp}
 \begin{threeparttable}
 \begin{supertabular*}{1\columnwidth}{p{0.05\columnwidth}p{0.2\columnwidth}p{0.2\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}}
-$y_{mover,memb.}$    & Choice for pre-membrane compressor prime mover       & \xlname{Prime\_mover\_type\_PMC} &  2 & 1/2  & [-] &  & a \\
-$p_{disc.,memb.}$    & Discharge pressure for pre-membrane compressor     & \xlname{P\_disc\_PMC} & 1000 & 500-1500 & psia & & \\
-$\eta_{comp.,memb.}$   & Efficiency of pre-membrane compressor              & \xlname{Eta\_compressor\_PMC}  & 75    & 60-80 & [\%] & & \\
+$y_{mover,memb}$    & Choice for pre-membrane compressor prime mover       & \xlname{Prime\_mover\_type\_PMC} &  2 & 1/2  & [-] &  & a \\
+$p_{disc,memb}$    & Discharge pressure for pre-membrane compressor     & \xlname{P\_disc\_PMC} & 1000 & 500-1500 & psia & & \\
+$\eta_{comp.,memb}$   & Efficiency of pre-membrane compressor              & \xlname{Eta\_compressor\_PMC}  & 75    & 60-80 & [\%] & & \\
 \end{supertabular*}
 \begin{tablenotes}
 \item[a] Choice 1 = electric motor, Choice 2 = NG engine
@@ -7763,9 +7875,9 @@ Fugitives - Transmission compressor			& \stream{272}			& O		& Atmosphere					& [
 \begin{threeparttable}
 \begin{supertabular*}{1\columnwidth}{p{0.04\columnwidth}p{0.25\columnwidth}p{0.3\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}}
 $y_{mover,transm.}$    & Choice for pre-membrane compressor prime mover       & \xlname{Prime\_mover\_type\_PMC}          &  2 & 1/2  & [-] &  & a \\
-$D_{freq.}$    & Distance between transmission line compressors       & \xlname{Frequency\_gas\_transmission\_compressors} & 200 & 100-300 & [mi] & & \\
-$f_{transm.}$ & Fugitive emissions fraction from transmission compressors & \xlname{Fugitive\_loss\_transmission} & 0.003 & 0.001-0.005 & [-] & & \\ 
-$f_{gas}$    & Fraction of gas going to long-term storage            & \xlname{Frac\_gas\_storage\_01}           & 0 & 0-1 & [-] & & \\    
+$D_{freq}$    & Distance between transmission line compressors       & \xlname{Frequency\_gas\_transmission\_compressors} & 200 & 100-300 & [mi] & & \\
+$\epsilon_{transm.}$ & Fugitive emissions fraction from transmission compressors & \xlname{Fugitive\_loss\_transmission} & 0.003 & 0.001-0.005 & [-] & & \\ 
+$f_{g}$    & Fraction of gas going to long-term storage            & \xlname{Frac\_gas\_storage\_01}           & 0 & 0-1 & [-] & & \\    
 $D_{transm.}$   & Distance of transmissions line                    & \xlname{Distance\_gas\_transmission}      & 2000 & 50-5000 & [mi] & & \\ 
 $p_{comp.,transm.}$    & Discharge pressure for pre-membrane compressor     & \xlname{P\_disc\_PMC} & 1000 & 500-1500 & psia & & \\
 $\eta_{transm.}$   & Efficiency of pre-membrane compressor              & \xlname{Eta\_compressor\_PMC}  & 75    & 60-80 & [\%] & & \\
@@ -8271,7 +8383,7 @@ The default settings for the parameters for the gas partition A are given below 
 $WOR$        & Water oil ratio                   & \xlname{WOR}      & 4.31 & 0-100  & [bbl water/bbl oil] & & \\
 $Q_o$           & Oil production rate               & \xlname{Oil\_prod} & 1500 & 10-3000000 & [bbl/d] & & \\
 $GLIR$       & Gas lifting injection ratio       & \xlname{GLIR} &  1500 & 100-5000  & [scf/bbl] &  &  \\
-$y_{gas,lift.}$       & Is gas lifting used?       & \xlname{Gas\_lifting\_01} &  0 & 0/1  & [logical 0-1] &  &  \\
+$y_{g,lift}$       & Is gas lifting used?       & \xlname{Gas\_lifting\_01} &  0 & 0/1  & [logical 0-1] &  &  \\
 \end{supertabular*}
 %\begin{tablenotes}
 %\item[a] Insert text of note here
@@ -8323,7 +8435,7 @@ The default settings for the parameters for the gas partition B are given below 
 \label{tab:primary_inputs_gaspartitionB}
 \begin{threeparttable}
 \begin{supertabular*}{1\columnwidth}{p{0.03\columnwidth}p{0.2\columnwidth}p{0.2\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.08\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}}
-$f_{gas,inj.}$        & Fraction of remaining gas reinjected   & \xlname{Fraction\_remaining\_gas\_inj}      & 0 & 0-100  & [\% of gas] & & \\
+$FRGI$        & Fraction of remaining gas reinjected   & \xlname{Fraction\_remaining\_gas\_inj}      & 0 & 0-100  & [\% of gas] & & \\
 \end{supertabular*}
 %\begin{tablenotes}
 %\item[a] Insert text of note here
@@ -8484,7 +8596,11 @@ EM_{T} = \sum_i EM_{Ti} GWP_i, \quad\quad\eqnunitfrac{g CO$_2$ eq.}{mmBtu-mi}
 \begin{minipage}{0.3\columnwidth}
         \begin{tabular}{|cl}
         & \\
-        $GWP_i$   & \xlname{GWP\_i}\\
+        $GWP_i$       & \xlname{GWP\_CH4}\\
+         & \xlname{GWP\_CO}\\
+          & \xlname{GWP\_CO2}\\
+           & \xlname{GWP\_N2O}\\
+                      & \xlname{GWP\_VOC}\\
         & \\
         \end{tabular}
 \end{minipage}
@@ -8512,7 +8628,7 @@ where $EM_{j}$ are the emissions from mode $j$ on a CO$_2$-equivalent basis.
 
 \subsection{Defaults for crude oil transport}
 
-Defaults for crude oil transport are generally taken from the CA-GREET model, with some modifications and simplifications applied. The default settings for the parameters for crude oil transport are given below in \ref{tab:primary_inputs_transport} and \ref{tab:secondary_inputs_transport}. Round trip transport distance (double of one way distance) is assumed for ocean tanker, barge, rail, and truck transportation means.
+Defaults for crude oil transport are generally taken from the CA-GREET model, with some modifications and simplifications applied. The default settings for the parameters for crude oil transport are given below in \ref{tab:primary_inputs_transport} and \ref{tab:secondary_inputs_transport}.
 
 \begin{landscape}
 
@@ -8584,7 +8700,7 @@ $l_{B,o-d}$   & Barge load factor (origin to destination) & \xlname{Load\_factor
              
           $S_{fuel}$    & Share of fuel inputs table & \xlname{Fuel\_inputs\_share\_crude}  & var. & var. 	& [-] & Assumption   & \\
               
-    $L_{feed}$ & Feed losses: btu/mmBtu fuel transported & \xlname{Losses\_feed}  & 62 & var.	& [Btu/mmBtu transported] & Assumption   & \\
+    $\epsilon_{feed}$ & Feed losses: btu/mmBtu fuel transported & \xlname{Losses\_feed}  & 62 & var.	& [Btu/mmBtu transported] & Assumption   & \\
 
 \end{supertabular*}
 \begin{tablenotes}
@@ -8607,7 +8723,7 @@ A similar approach that was followed to model crude oil transport in section \re
 
 \subsection{Defaults for petcoke transport}
 
-The default settings for the parameters for crude oil transport are given below in \ref{tab:secondary_inputs_petcoketransport}. Round trip transport distance (double of one way distance) is assumed for ocean tanker, barge, rail, and truck transportation means.
+The default settings for the parameters for crude oil transport are given below in \ref{tab:secondary_inputs_petcoketransport}.
 
 \clearpage
 
@@ -8650,7 +8766,7 @@ The default settings for the parameters for crude oil transport are given below 
  	          
  	          $S_{fuel}$ & Share of fuel inputs table & \xlname{Fuel\_inputs\_share\_petcoke}  & var.	& var. 	& [btu/btu] & Assumption   & \\
  	           
- 	           $L_{feed}$  & Feed losses: btu/mmBtu fuel transported & \xlname{Losses\_feed}  & 62 & var.	& [btu/mmBtu transported] & Assumption   & \\
+ 	           $\epsilon_{feed}$  & Feed losses: btu/mmBtu fuel transported & \xlname{Losses\_feed}  & 62 & var.	& [btu/mmBtu transported] & Assumption   & \\
 
 \end{supertabular*}
 \begin{tablenotes}
@@ -8688,8 +8804,8 @@ The default settings for the parameters for gas distribution are given below in 
 \begin{threeparttable}
 \begin{supertabular*}{1\columnwidth}{p{0.03\columnwidth}p{0.25\columnwidth}p{0.25\columnwidth}p{0.03\columnwidth}p{0.03\columnwidth}p{0.1\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}}
 
-$L_{customer}$ & Loss fraction at customer meter  & \xlname{Losses\_customermeter}  & 0.001 	& var. 	& [\%] & Assumption   & \\
-$L_{equ.}$ & Loss fraction at end use appliance or equipment  & \xlname{Losses\_enduse}  & 0.001 	& var. 	& [\%] & Assumption   & \\
+$\epsilon_{customer}$ & Loss fraction at customer meter  & \xlname{Losses\_customermeter}  & 0.001 	& var. 	& [\%] & Assumption   & \\
+$\epsilon_{equ.}$ & Loss fraction at end use appliance or equipment  & \xlname{Losses\_enduse}  & 0.001 	& var. 	& [\%] & Assumption   & \\
  	     
 \end{supertabular*}
 \begin{tablenotes}
@@ -8726,10 +8842,10 @@ The default settings for the parameters for gas distribution are given below in 
 \begin{threeparttable}
 \begin{supertabular*}{1\columnwidth}{p{0.05\columnwidth}p{0.25\columnwidth}p{0.25\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}}
 
-$T_{gas,impo.}$  & Imported gas temperature  & \xlname{Temperature\_gasimport}  & 60 	& 50-70 	& {[}$^{\circ}$F{]} & Assumption   & \\
-$p_{gas,impo.}$  & Imported gas pressure  & \xlname{Pressure\_gasimport}  & 1000 	& 900-1100 	& [psia] & Assumption   & \\
-$T_{gas,dist.}$    & Distributed gas temperature  & \xlname{Temperature\_gasdistributed}  & 90 	& 80-100 	& {[}$^{\circ}$F{]} & Assumption   & \\
-$p_{gas,dist.}$   & Distributed gas pressure  & \xlname{Pressure\_gasdistributed}  & 150 	& 100-200 	& [psia] & Assumption   & \\
+$T_{g,impo.}$  & Imported gas temperature  & \xlname{Temperature\_gasimport}  & 60 	& 50-70 	& {[}$^{\circ}$F{]} & Assumption   & \\
+$p_{g,impo.}$  & Imported gas pressure  & \xlname{Pressure\_gasimport}  & 1000 	& 900-1100 	& [psia] & Assumption   & \\
+$T_{g,dist.}$    & Distributed gas temperature  & \xlname{Temperature\_gasdistributed}  & 90 	& 80-100 	& {[}$^{\circ}$F{]} & Assumption   & \\
+$p_{g,dist.}$   & Distributed gas pressure  & \xlname{Pressure\_gasdistributed}  & 150 	& 100-200 	& [psia] & Assumption   & \\
  	     
 \end{supertabular*}
 \begin{tablenotes}
@@ -8860,7 +8976,7 @@ $p_{diluent}$ & Imported diluent pressure & \xlname{Pressure\_import\_diluent}  
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Drivers} \label{sec:drivers}
 
-Drivers (also known as prime movers) of pumps, compressors, and onsite electricity generators come in different types and sizes. Drivers in OPGEE include natural gas driven engines, natural gas turbines, diesel engines, and electric motors. The size and energy consumption of the driver is required to convert power requirements (e.g., downhole pump brake horsepower) into energy consumption as explained in Section \,\ref{sec:prod_drivers}. A database of drivers specifications of different types and sizes is included in OPGEE. Table \,\ref{tab:drivers_size} shows the types and size ranges of the drivers included in OPGEE.
+Drivers (also known as prime movers) of pumps, compressors, and onsite electricity generators come in different types and sizes. Drivers in OPGEE include natural gas driven engines, natural gas turbines, diesel engines, and electric motors. The size and energy consumption of the driver is required to convert power requirements (e.g., downhole pump brake horsepower) into energy consumption as explained in Section \,\ref{sec:brake horsepower}. A database of drivers specifications of different types and sizes is included in OPGEE. Table \,\ref{tab:drivers_size} shows the types and size ranges of the drivers included in OPGEE.
 \begin{table}
 \begin{scriptsize}
 \caption{Types and size ranges of the drivers embedded in OPGEE.}
@@ -8933,7 +9049,7 @@ OPGEE retrieves the energy consumption of the appropriate driver based on the us
 \begin{supertabular*}{1\columnwidth}{p{0.05\columnwidth}p{0.30\columnwidth}p{0.05\columnwidth}p{0.05\columnwidth}p{0.12\columnwidth}p{0.15\columnwidth}p{0.08\columnwidth}p{0.05\columnwidth}}
 $e_{D}$ & Driver energy consumption & \eqref{eq:calc_EC_eff} & - & - & [Btu/bhp-hr] & & a\\ 
 $\eta_M $ & Electric motor efficiency & - & var. & 0.84-0.96 & [-] & \cite{GE2011} & b \\ 
-$\eta_GS $ & Efficiency of electricity generator set & - & var. & 0.36-0.40 & [-] & \cite{Caterpillar2012} & c \\ 
+$\eta_{GS}$ & Efficiency of electricity generator set & - & var. & 0.36-0.40 & [-] & \cite{Caterpillar2012} & c \\ 
 $\eta_G $ & Efficiency of electricity generator (no engine) & - & 0.96 & - & [-] & \cite[p. 4]{Caterpillar2012b} & d \\ 
 $P_{D}$ & Driver brakehorse power & \eqref{eq:BHP_from_BkW} & - & - & [bhp] & & \\
 $P_{GS}$ & Electric power of elect. gen. set & - & var. & 275-2000 & [ekWh] & \cite{Caterpillar2012} & e \\
@@ -9013,7 +9129,7 @@ For each product included in OPGEE, a functional unit of 1 kg was used in EcoInv
 
 In order to choose the material production process, by default we use ROW (rest of world) or GLO (global) processes where possible. Because OPGEE is a global model, we prefer to use these `generic' values rather than country-specific values. Specifically, each material input is documented below:
 \begin{itemize}
-\item Sand: The ``gravel and sand quarry operation ROW'' with output of 1 kg of sand was used. No specific entry was available for hydraulic fracturing propant sand.
+\item Sand: The ``gravel and sand quarry operation RoW'' with output of 1 kg of sand was used. No specific entry was available for hydraulic fracturing propant sand.
 \item Cement: The ``cement production, Portland, RoW'' process is used, with a functional unit of 1 kg of cement. Mitchell suggests \cite[p. 382]{Mitchell2006} that ``almost all drilling cements are made of Portland cement, a calcined (burned) blend of limestone and clay.'' The types of cement included in SPE documents are ASTM type I, II, III, and IV, which correspond to API classes A, C, G, H.
 \item Pipe manufacture: the ``drawing of pipe, steel, RoW'' process is used, with a functional unit of 1 kg of pipe manufactured. Mitchell and Miska \cite[p. 387]{Mitchell2011} suggest that most casing is manufactured via seamless production, which is a drawing mechanism. In EcoInvent, the pipe drawing process is modeled as a multiple of the wire drawing process.
 \item Gravel: the ``gravel production, crushed, RoW'' process is used, with a functional unit of 1 kg of gravel.
@@ -9131,7 +9247,7 @@ OPGEE defaults are set to 3 in.\ average  diameter of surface piping, extra-stre
 
 Materials requirements for fracturing are assumed (in the current version of OPGEE) to include only fracturing water and sand. We therefore currently neglect all other fracturing chemicals.
 
-The water  requirements of fracturing are set by default to 2 million gallons per well, a number near the median value observed in a recent study of the Bakken formation \cite{Brandtetal2015}. Across all studied Bakken wells, about 1.1 lb of sand was injected per gallon of fracturing water, which we use to estimate a default fracturing sand loading of 2.2 million lbs of sand per well. If well-specific data are available, or if regional or play-specific estimates for these quantities are available, those should be used in preference to defaults.
+The water  requirements of fracturing are set by default to 2 million gallons per well, a number near the median value observed in a recent study of the Bakken formation \cite{Brandt2015a}. Across all studied Bakken wells, about 1.1 lb of sand was injected per gallon of fracturing water, which we use to estimate a default fracturing sand loading of 2.2 million lbs of sand per well. If well-specific data are available, or if regional or play-specific estimates for these quantities are available, those should be used in preference to defaults.
 
 \subsection{Embodied emissions in surface processing equipment}
 
@@ -9147,9 +9263,9 @@ The wellhead pressure entered into the \sheet{Production \& Extraction} workshee
 
 Acid gas  removal contactor columns assume a 20-tray system, with a tray spacing of 18 in. \cite[p.116]{Manning1991}, for a total contactor tower height of 30 ft. Correlations for sizing acid gas removal contacting towers are gathered from the technical literature \cite{Manning1991}. For different gas pressures and gas flow rates, the required contactor tower diameter is  computed using correlations from Manning and Thompson \cite{Manning1991}. The log-log relationship plotted in the literature is converted to an exponential relationship, where for each operating pressure, the required contactor inner diameter is computed as:
 \begin{equation}
-D_{abs} = a_{abs} Q_{pg}^{b_{abs}} \quad\quad\eqnunit{in}
+d_{abs} = a_{abs} Q_{pg}^{b_{abs}} \quad\quad\eqnunit{in}
 \end{equation}
-Where $D_{abs}$ is the absorber diameter [in.], $a$ and $b$ are fitting constants, and $Q_{pg}$ is the flow rate of processed gas  [mmscf/d], defined as associated gas less well-bore fugitives and flaring. The required inner diameter is combined with assumed steel thickness  to compute the mass of the shell. The mass of contactor trays and auxiliary piping is assumed by default to equal the mass of the shell. 
+Where $d_{abs}$ is the absorber diameter [in.], $a$ and $b$ are fitting constants, and $Q_{pg}$ is the flow rate of processed gas  [mmscf/d], defined as associated gas less well-bore fugitives and flaring. The required inner diameter is combined with assumed steel thickness  to compute the mass of the shell. The mass of contactor trays and auxiliary piping is assumed by default to equal the mass of the shell. 
 
 Detailed correlations for acid gas removal regenerator column sizing were not found in the public literature. Therefore, the mass of the desorber unit is assumed by default to equal the mass of the absorption column.
 
@@ -9203,10 +9319,27 @@ Emissions factors are required for the calculation of GHG emissions from combust
 \subsection{Combustion emissions factors}
 
 The emissions factors for fuel combustion are from CA-GREET \cite{Wang2009}. Table\,\ref{tab:combustion_EF} shows the technologies and fuels included. Gas species tracked include VOC, CO, CH$_{4}$, N$_{2}$O, and CO$_{2}$. Emissions are converted into carbon dioxide equivalent using IPCC GWPs \cite{IPCC2007} as shown in eq.\ \eqref{eq:emissions_conversion}. 
+
 %%%%%%%%%%%%%%
-\begin{equation} \label{eq:emissions_conversion}
+\begin{minipage}{0.6\columnwidth}
+\label{eq:emissions_conversion}
+\begin{fleqn}[0pt]
+\begin{equation}
 EM_{CO_{2}eq,i} = EM_{i} \cdot \text{GWP}_{i} \quad\quad\eqnunit{gCO$_{2}$eq}
-\end{equation} 
+\end{equation}
+\end{fleqn}
+\end{minipage}\hfill
+\begin{minipage}{0.3\columnwidth}
+        \begin{tabular}{|cl}
+        & \\
+        $GWP_i$       & \xlname{GWP\_CH4}\\
+         & \xlname{GWP\_CO}\\
+          & \xlname{GWP\_CO2}\\
+           & \xlname{GWP\_N2O}\\
+                      & \xlname{GWP\_VOC}\\
+            & \\
+        \end{tabular}
+\end{minipage}
 %%%%%%%%%%%%%%
 where $EM_{CO_{2}eq,i}$ = emissions of species $i$ in carbon dioxide equivalent [gCO$_{2}$eq]; $EM_{i}$ = emissions of species $i$ [g]; and GWP$_{i}$ = GWP of species $i$ [gCO$_2$eq/g]. GWPs are discussed in Section\,\ref{sec:GWPs}.
 
@@ -9238,6 +9371,7 @@ Reciprocating engine & \checkmark & \checkmark & & & & \\
 
 \subsection{Non-combustion emissions factors} \label{sec:VF_emissions_factors}
 
+% issue 13: which section is referred below? Are we still referencing ARB survey as the entire section is updated? Shouldn't we update this section entirely? 
 Section \ref{sec:VF} describes how emissions factors for venting and some fugitives sources are generated from the ARB survey data \cite{Lee2011}. Emissions factors from ARB are specified by gas component. The ARB survey data used to generate emissions factors for venting are shown in Table \,\ref{tab:ARB_venting_EF}.
 
 \begin{table}
@@ -9350,7 +9484,7 @@ Fugitives - All dehyd. & 23,630 & 1,024 & 701,123 \\
 
 As described in Section\,\ref{sec:AGR}, venting from the amine unit is calculated from the gas balance of OPGEE by assuming that all CO$_{2}$ left in the gas stream after flaring, fugitives, and other venting is vented. In Gas Processing Path 6 (membrane-amine CO$_2$ EOR) the vented CO$_2$ is reinjected into the reservoir. The emissions factor for CH$_{4}$ fugitives from the AGR unit is 965 scf CH$_{4}$/mmscf of gas throughput \cite[p. 23]{EPA1996}. 
 
-EPA emissions factors for fugitives from the components listed in Table\,\ref{tab:component_estimation} are reported by API as total hydrocarbons (THC) by service type, i.e. gas service, heavy oil service \cite[p. 20]{API1996b}. As explained in Section\,\ref{sec:VFF} the THC emissions factors are calculated assuming that 25\% of the components are associated with gas service and the remaining 75\% are associated with oil service. An example of EPA emissions factors for oil and gas production components after speciation is shown in Table\,\ref{tab:EPA_EF_components} for valves and connectors \cite[p. 20]{API1996b}. Fugitives from non-leaking components are negligible. The user determines the percentage of leaking components in the \sheet{Venting \& Fugitives} worksheet. 
+EPA emissions factors for fugitives from the components listed in Table\,\ref{tab:EPA_EF_components} are reported by API as total hydrocarbons (THC) by service type, i.e. gas service, heavy oil service \cite[p. 20]{API1996b}. As explained in Section\,\ref{sec:VFF} the THC emissions factors are calculated assuming that 25\% of the components are associated with gas service and the remaining 75\% are associated with oil service. An example of EPA emissions factors for oil and gas production components after speciation is shown in Table\,\ref{tab:EPA_EF_components} for valves and connectors \cite[p. 20]{API1996b}. Fugitives from non-leaking components are negligible. The user determines the percentage of leaking components in the \sheet{Venting \& Fugitives} worksheet. 
 
 \begin{table}
 \begin{scriptsize}
@@ -9489,6 +9623,7 @@ The resulting fit and residuals are presented in Figure \ref{fig:production_site
 
 \subsubsection{Default site counts for production sites}
 
+% issue 14: which paper of Omara is referred below? please cite.
 Omara et al. includes survey data from a number of sites in different producing regions. The number of wells per site can vary greatly between different regions with different drilling plans and well designs. 
 
 For this reason, we generate site counts as follows. The well count is divided by 2 to generate a production site count \cite{Englander2018}. Further work could be performed to better characterize this value across producing basins or regions.
@@ -9753,7 +9888,7 @@ EPA1995 	& EPA		& 1995 	& US (Various)   	& All   	& \cite{EPA1995b} & US EPA, R
 EPA1996 	& EPA		& 1996 	& US (Various)   	& All   	& \cite{EPA1996}     & US EPA, Report Number EPA-600/R-96-080A to EPA-600/R-96-080O        \\
 ERG2011 	& ERG		& 2011 	& Fort Worth TX  	& U/M   	& \cite{ERG2011}     & City of Fort Worth\\
 ERG2012 	& ERG		& 2012 	& TX, USA        	& U     	& \cite{ERG2012}         & ERG, Eastern Research Group, Inc. Report Number 0292.01.011.001     \\
-Gidney2009        	& B. Gidney    		& 2009 	& TX, USA        	& U     	& \cite{Gidney2009}     & Hy-Bon Engineering Company, Ltd for Texas Commission on Environmental Quality \\
+Gidney2009        	& B. Gidney    		& 2009 	& TX, USA        	& U     	& \cite{Gidney2009}     & Hy-Bon Eng. Company, Ltd for Texas Commission on Env. Quality \\
 Greenpath2017     	& Greenpath Energy Ltd.  & 2017 	& Alberta/British Columbia & U/M   	& \cite{Greenpath2017}   & Greenpath Energy Ltd. For PTAC        \\
 Hendler2009		& A.  Hendler  		& 2009 	& TX, USA        	& M     	&\cite{Hendler2009}         & Texas Environmental Research Consortium         \\
 Harrison2011      	& M. Harrison  	& 2011 	& TX, NM, USA    	& M     	& \cite{Harrison2011} & URS     \\
@@ -10548,6 +10683,7 @@ Crude oil heating values are a function of the chemical composition of the crude
 \subsection{Crude oil chemical composition as a function of density}
 
 Crude oil chemical compositions (C, H, S, (O+N)) are given as a function of the density of crude oil \cite[Table 9]{Schmidt1985}. Values are interpolated between those given in the table using a relationship for fraction H as a function of API gravity. O + N contents are assumed to sum to 0.2 wt.\%. Sulfur content ranges from 5 wt\% to 0.5 wt.\%, with approximate concentrations derived from Figure \ref{fig:crude_contaminants}. Carbon mass fraction is computed by difference. 
+%issue 15: Which figure is referenced above? I found a figure in OPGEE 2.0 (Fig. 5.2) documentation but could not find it here in 3.0 
 
 \subsection{Heat of combustion of gaseous fuel components}
 
